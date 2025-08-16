@@ -41,15 +41,29 @@ export class MusicParser {
   parse(notation: string): MusicData {
     const musicData: MusicData = {
       tracks: [],
-      tempo: 120
+      tempo: 125 // Default rock tempo
     };
 
     // Remove comments first, then clean up the input
     const commentFreeNotation = this.removeComments(notation);
     const cleanNotation = commentFreeNotation.trim();
     
+    // Check for tempo specification at the beginning
+    const tempoMatch = cleanNotation.match(/^tempo:(\d+)\s*;?\s*/);
+    if (tempoMatch) {
+      musicData.tempo = parseInt(tempoMatch[1], 10);
+      // Remove tempo from notation
+      const withoutTempo = cleanNotation.replace(/^tempo:\d+\s*;?\s*/, '');
+      return this.parseTracksFromNotation(withoutTempo, musicData);
+    }
+    
+    return this.parseTracksFromNotation(cleanNotation, musicData);
+  }
+
+  private parseTracksFromNotation(notation: string, musicData: MusicData): MusicData {
+    
     // Split by instruments (separated by semicolons)
-    const trackStrings = cleanNotation.split(';').filter(t => t.trim().length > 0);
+    const trackStrings = notation.split(';').filter(t => t.trim().length > 0);
     
     for (const trackString of trackStrings) {
       const [instrumentPart, patternPart] = trackString.trim().split(':');
