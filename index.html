@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Notation Converter</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .examples {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+    }
+    .example-button {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      background-color: #2196F3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Music Notation Converter</h1>
+  
+  <div>
+    <h2>Enter Music Notation:</h2>
+    <textarea id="notation-input" placeholder="Enter music notation here...">piano:C4.1+E4.1+G4.1|F4.1+A4.1+C5.1;
+bass:C2.2|G2.2;
+drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;</textarea>
+    <button id="play-button">Play Music</button>
+    <button id="stop-button">Stop</button>
+  </div>
+  
+  <div class="syntax-guide">
+    <h2>Notation Syntax Guide:</h2>
+    <pre>
+instrument:note1.duration,note2.duration|nextMeasure;
+nextInstrument:note1.duration;
+
+Format:
+- Instruments separated by semicolons (;)
+- Measures separated by pipes (|)
+- Notes separated by commas (,)
+- Chords created by joining notes with plus (+)
+- Note format: pitchOctave.duration (e.g., C4.1)
+- Drum sounds: k (kick), s (snare), h (hi-hat)
+
+Examples:
+piano:C4.1+E4.1+G4.1|F4.1+A4.1+C5.1;  // C chord then F chord
+bass:C2.2|G2.2;                        // Bass line
+drums:k.0.5,s.0.5,k.0.5,s.0.5;         // Basic drum pattern
+    </pre>
+  </div>
+  
+  <div class="examples">
+    <h2>Example Patterns:</h2>
+    <button class="example-button" data-pattern="// Main Georgian-inspired melody (violin/duduk sound)
+    violin:,,D5.0.5,E5.0.5|F5.1.5,E5.0.5,D5.1,A4.1|C5.1.5,D5.0.5,C5.1,A4.1|
+    G4.1.5,A4.0.5,Bb4.1,C5.1|D5.2,A4.2|F5.1.5,E5.0.5,D5.1,E5.1|F5.1,G5.0.5,F5.0.5,E5.1,D5.1|
+    C5.1.5,D5.0.5,C5.1,A4.1|G4.1.5,A4.0.5,Bb4.1,G4.1|A4.3,A4.0.5,Bb4.0.5|
+    C5.1,D5.1,C5.1,A4.1|G4.1.5,A4.0.5,Bb4.1,C5.1|D5.2,F5.0.5,E5.0.5,D5.0.5,C5.0.5|
+    D5.1.5,C5.0.5,A4.1,G4.1|A4.3,,;
+    
+    // Panduri/chonguri accompaniment (plucked string sound)
+    panduri:D4.0.25,A4.0.25,D5.0.25,A4.0.25,D4.0.25,A4.0.25,D5.0.25,A4.0.25|
+    D4.0.25,A4.0.25,D5.0.25,A4.0.25,D4.0.25,A4.0.25,D5.0.25,A4.0.25|
+    F4.0.25,A4.0.25,C5.0.25,A4.0.25,F4.0.25,A4.0.25,C5.0.25,A4.0.25|
+    G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25,G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25|
+    D4.0.25,A4.0.25,D5.0.25,A4.0.25,D4.0.25,A4.0.25,D5.0.25,A4.0.25|
+    D4.0.25,A4.0.25,D5.0.25,A4.0.25,D4.0.25,A4.0.25,D5.0.25,A4.0.25|
+    F4.0.25,A4.0.25,C5.0.25,A4.0.25,F4.0.25,A4.0.25,C5.0.25,A4.0.25|
+    F4.0.25,A4.0.25,C5.0.25,A4.0.25,F4.0.25,A4.0.25,C5.0.25,A4.0.25|
+    G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25,G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25|
+    A4.0.25,C5.0.25,E5.0.25,C5.0.25,A4.0.25,C5.0.25,E5.0.25,C5.0.25|
+    F4.0.25,A4.0.25,C5.0.25,A4.0.25,F4.0.25,A4.0.25,C5.0.25,A4.0.25|
+    G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25,G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25|
+    D4.0.25,A4.0.25,D5.0.25,A4.0.25,D4.0.25,A4.0.25,D5.0.25,A4.0.25|
+    G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25,G4.0.25,Bb4.0.25,D5.0.25,Bb4.0.25|
+    A4.0.25,C5.0.25,E5.0.25,C5.0.25,A4.0.25,C5.0.25,E5.0.25,C5.0.25;
+    
+    // Bass drone (traditional bass sound)
+    bass:D3.4|D3.4|F3.2,F3.2|G3.2,G3.2|D3.4|D3.4|F3.2,F3.2|F3.2,F3.2|
+    G3.2,G3.2|A3.2,A3.2|F3.2,F3.2|G3.2,G3.2|D3.2,D3.2|G3.2,G3.2|A3.4;
+    
+    // Percussion (frame drum/doli)
+    drums:,,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|
+    d.1,d.0.5,d.0.5,d.1,d.0.5,d.0.5|d.1,d.1,d.1,d.1;
+    
+    // Vocal/choir melody (traditional polyphony)
+    choir:,,,,|,,,,|,,,,|,,,,|
+    A4.1+D5.1,A4.1+D5.1,A4.1+D5.1,A4.1+D5.1|A4.1+D5.1,A4.1+D5.1,A4.1+D5.1,A4.1+D5.1|
+    A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|
+    G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1|A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|
+    A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1|
+    F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1|G4.1+Bb4.1+D5.1,G4.1+Bb4.1+D5.1,A4.1+C5.1+E5.1,A4.1+C5.1+E5.1;
+  ">yviteli potlebi</button>
+    <button class="example-button" data-pattern="piano:C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5,C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5;drums:k.0.5,h.0.25+s.0.5,k.0.5,h.0.25+s.0.5;">Simple Pop Pattern</button>
+    <button class="example-button" data-pattern="piano:C4.0.25,E4.0.25,G4.0.25,C5.0.25|D4.0.25,F4.0.25,A4.0.25,D5.0.25;bass:C2.1|D2.1;drums:k.0.25,h.0.25,s.0.25,h.0.25|k.0.25,h.0.25,s.0.25,h.0.25;">Arpeggiated Pattern</button>
+    <button class="example-button" data-pattern="
+    //dasdas
+    violin:B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|B4.1.5,A4.0.5,A4.2|
+    B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|A4.1.5,G4.0.5,G4.2|
+    A4.1,A4.1,B4.1,G4.1|A4.1,B4.0.5,C5.0.5,B4.1,G4.1|A4.1,B4.0.5,C5.0.5,B4.1,A4.1|G4.1,A4.1,D4.2|
+    B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|A4.1.5,G4.0.5,G4.2;
+    
+    piano:G3.0.5+D4.0.5,G3.0.5+D4.0.5,A3.0.5+E4.0.5,B3.0.5+F#4.0.5|B3.0.5+F#4.0.5,A3.0.5+E4.0.5,G3.0.5+D4.0.5,D3.0.5+A3.0.5|
+    G3.0.5+B3.0.5,G3.0.5+B3.0.5,D3.0.5+A3.0.5,G3.0.5+B3.0.5|G3.0.5+B3.0.5,D3.0.5+A3.0.5,D3.0.5+A3.0.5,D3.0.5+A3.0.5|
+    G3.0.5+D4.0.5,G3.0.5+D4.0.5,A3.0.5+E4.0.5,B3.0.5+F#4.0.5|B3.0.5+F#4.0.5,A3.0.5+E4.0.5,G3.0.5+D4.0.5,D3.0.5+A3.0.5|
+    G3.0.5+B3.0.5,G3.0.5+B3.0.5,D3.0.5+A3.0.5,G3.0.5+B3.0.5|D3.0.5+A3.0.5,B2.0.5+G3.0.5,G2.0.5+G3.0.5,G2.0.5+G3.0.5|
+    F#3.0.5+A3.0.5,F#3.0.5+A3.0.5,G3.0.5+B3.0.5,G3.0.5+D4.0.5|F#3.0.5+A3.0.5,G3.0.5+B3.0.5,A3.0.5+C4.0.5,G3.0.5+B3.0.5|
+    F#3.0.5+A3.0.5,G3.0.5+B3.0.5,A3.0.5+C4.0.5,G3.0.5+B3.0.5,F#3.0.5+A3.0.5|G3.0.5+B3.0.5,D3.0.5+A3.0.5,D3.1+F#3.1|
+    G3.0.5+D4.0.5,G3.0.5+D4.0.5,A3.0.5+E4.0.5,B3.0.5+F#4.0.5|B3.0.5+F#4.0.5,A3.0.5+E4.0.5,G3.0.5+D4.0.5,D3.0.5+A3.0.5|
+    G3.0.5+B3.0.5,G3.0.5+B3.0.5,D3.0.5+A3.0.5,G3.0.5+B3.0.5|D3.0.5+A3.0.5,B2.0.5+G3.0.5,G2.0.5+G3.0.5,G2.0.5+B3.0.5;
+    
+    bass:G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|G2.2,G1.2|G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|D2.2,G1.2|
+    D2.2,G2.2|D2.2,G2.2|D2.2,F#2.2|G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|D2.2,G1.2;
+    
+    timpani:D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|,,,D2.2|D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|,,,G1.2|
+    ,,,,|,,,,|,,,,|,,D2.0.5,D2.0.5,D2.1|D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|D2.0.5,D2.0.5,D2.0.5,D2.0.5,G1.2;
+  ">Beethoven</button>
+  </div>
+
+  <script src="dist/index.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Wait for our module to load
+      setTimeout(() => {
+        if (typeof MusicConverter !== 'undefined') {
+          const converter = new MusicConverter();
+          const notationInput = document.getElementById('notation-input');
+          const playButton = document.getElementById('play-button');
+          const stopButton = document.getElementById('stop-button');
+          const exampleButtons = document.querySelectorAll('.example-button');
+          
+          playButton.addEventListener('click', async () => {
+            if (notationInput.value.trim()) {
+              await converter.convertToMusic(notationInput.value);
+            }
+          });
+          
+          stopButton.addEventListener('click', () => {
+            // This would need to be implemented in the AudioEngine
+            if (converter.audioEngine && typeof converter.audioEngine.stop === 'function') {
+              converter.audioEngine.stop();
+            }
+          });
+          
+          exampleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+              const pattern = button.getAttribute('data-pattern');
+              if (pattern) {
+                notationInput.value = pattern;
+              }
+            });
+          });
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>
