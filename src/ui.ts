@@ -1,6 +1,9 @@
 // UI and Application Logic for Music Notation Converter
 // Extracted from index.html to keep concerns separated
 
+import * as MidiWriter from 'midi-writer-js';
+import { MusicData, Note } from './parser';
+
 // Types and interfaces
 interface SavedNotation {
   id: number;
@@ -325,6 +328,7 @@ class MusicAppController {
     const notationInput = document.getElementById('notation-input') as HTMLTextAreaElement;
     const playButton = document.getElementById('play-button');
     const stopButton = document.getElementById('stop-button');
+    const downloadButton = document.getElementById('download-btn');
     const exampleButtons = document.querySelectorAll('.example-item');
     const textExampleButtons = document.querySelectorAll('.text-example-item');
     
@@ -346,6 +350,9 @@ class MusicAppController {
     
     // Stop button
     stopButton?.addEventListener('click', () => this.handleStopButton());
+    
+    // Download button
+    downloadButton?.addEventListener('click', () => this.handleDownloadButton(notationInput));
     
     // Example buttons (new sidebar location)
     exampleButtons.forEach(button => {
@@ -492,6 +499,134 @@ class MusicAppController {
       // Show success message using the notification UI instance
       (window as any).notationUI?.showToast?.('Text example loaded!', 'info');
     }
+  }
+
+  private handleDownloadButton(notationInput: HTMLTextAreaElement | null): void {
+    if (!notationInput?.value) {
+      this.notationUI.showToast('Please enter some notation to download', 'info');
+      return;
+    }
+
+    try {
+      const musicData = this.parseNotationForMIDI(notationInput.value);
+      if (!musicData) {
+        this.notationUI.showToast('Invalid notation format', 'error');
+        return;
+      }
+
+      const midiBlob = this.generateMIDI(musicData);
+      this.downloadMIDI(midiBlob);
+      this.notationUI.showToast('MIDI file downloaded!', 'success');
+    } catch (error) {
+      console.error('MIDI generation error:', error);
+      this.notationUI.showToast('Error generating MIDI file', 'error');
+    }
+  }
+
+  private parseNotationForMIDI(input: string): MusicData | null {
+    try {
+      if (this.isTextMode) {
+        // For text mode, convert text to music data
+        const options = this.getTextToMusicOptions();
+        return this.converter.textConverter.convertTextToMusic(input, options);
+      } else {
+        // For notation mode, parse the notation directly
+        return this.converter.parser.parse(input);
+      }
+    } catch (error) {
+      console.error('Error parsing notation:', error);
+      return null;
+    }
+  }
+
+  private generateMIDI(musicData: MusicData): Blob {
+    const track = new (MidiWriter as any).Track();
+    
+    // Set tempo
+    track.addEvent(new (MidiWriter as any).TempoEvent({ bpm: musicData.tempo }));
+    
+    // Calculate timing
+    const ticksPerQuarter = 128;
+    
+    for (const trackData of musicData.tracks) {
+      // Map instrument to MIDI program
+      const program = this.getMIDIProgram(trackData.instrument);
+      track.addEvent(new (MidiWriter as any).ProgramChangeEvent({ instrument: program }));
+      
+      let currentTime = 0;
+      
+      for (const pattern of trackData.patterns) {
+        for (const chord of pattern) {
+          const duration = Math.round(chord.duration * ticksPerQuarter);
+          
+          if (chord.notes.length === 0) {
+            // Rest
+            currentTime += duration;
+            continue;
+          }
+          
+          // Handle chords by starting all notes at the same time
+          const notesToAdd = chord.notes.map(note => ({
+            pitch: this.noteToMIDI(note),
+            duration: `T${duration}`,
+            startTick: currentTime
+          }));
+          
+          track.addEvent(new (MidiWriter as any).NoteEvent({
+            pitch: notesToAdd.map(n => n.pitch),
+            duration: `T${duration}`,
+            startTick: currentTime
+          }));
+          
+          currentTime += duration;
+        }
+      }
+    }
+    
+    const writer = new (MidiWriter as any).Writer(track);
+    return new Blob([writer.dataUri().split(',')[1]], { type: 'audio/midi' });
+  }
+
+  private getMIDIProgram(instrument: string): number {
+    const instrumentMap: { [key: string]: number } = {
+      'piano': 0,        // Acoustic Grand Piano
+      'bass': 32,        // Acoustic Bass
+      'violin': 40,      // Violin
+      'panduri': 24,     // Acoustic Guitar (nylon)
+      'choir': 91,       // Pad 4 (choir)
+      'timpani': 47,     // Timpani
+      'drums': 0,        // Drums use channel 10
+      'synth': 80,       // Lead 1 (square)
+      'lead': 80,        // Lead 1 (square)
+      'brass': 56,       // Trumpet
+      'strings': 48      // String Ensemble 1
+    };
+    
+    return instrumentMap[instrument.toLowerCase()] || 0;
+  }
+
+  private noteToMIDI(note: Note): number {
+    const noteMap: { [key: string]: number } = {
+      'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4,
+      'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9,
+      'A#': 10, 'Bb': 10, 'B': 11
+    };
+    
+    const noteName = note.pitch.replace(/\d/g, '');
+    const octave = parseInt(note.pitch.replace(/\D/g, '')) || 4;
+    
+    return (octave + 1) * 12 + (noteMap[noteName] || 0);
+  }
+
+  private downloadMIDI(blob: Blob): void {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `music-${new Date().getTime()}.mid`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   private getTextToMusicOptions(): TextToMusicOptions {
