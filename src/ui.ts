@@ -99,16 +99,27 @@ class NotationUI {
   }
 
   private switchTab(tabName: string): void {
-    // Remove active class from all tabs and content
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    // Remove active classes from all tabs and content
+    document.querySelectorAll('.flex-1').forEach(btn => {
+      if (btn.id?.endsWith('-tab')) {
+        btn.classList.remove('text-blue-500', 'border-b-blue-500', 'bg-white');
+        btn.classList.add('text-gray-500', 'border-transparent');
+      }
+    });
+    document.querySelectorAll('[id$="-content"]').forEach(content => {
+      content.classList.remove('block');
+      content.classList.add('hidden');
+    });
 
-    // Add active class to selected tab and content
+    // Add active classes to selected tab and content
     const selectedTab = document.getElementById(`${tabName}-tab`);
     const selectedContent = document.getElementById(`${tabName}-content`);
 
-    selectedTab?.classList.add('active');
-    selectedContent?.classList.add('active');
+    selectedTab?.classList.remove('text-gray-500', 'border-transparent');
+    selectedTab?.classList.add('text-blue-500', 'border-b-blue-500', 'bg-white');
+    
+    selectedContent?.classList.remove('hidden');
+    selectedContent?.classList.add('block');
   }
 
   bindEvents(): void {
@@ -123,34 +134,34 @@ class NotationUI {
     const notations = this.storage.getNotations();
 
     if (notations.length === 0) {
-      container.innerHTML = '<div class="no-notations">No saved notations yet</div>';
+      container.innerHTML = '<div class="text-gray-500 text-sm text-center py-8 px-4">No saved notations yet</div>';
       return;
     }
 
     container.innerHTML = notations.map((notation: SavedNotation) => `
-      <div class="notation-item">
-        <div class="notation-header">
-          <h4 class="notation-title">${this.escapeHtml(notation.name)}</h4>
-          <div class="notation-actions">
-            <button onclick="notationUI.loadNotation(${notation.id})" class="btn-icon load" title="Load">
-              <svg class="icon icon-sm" viewBox="0 0 20 20">
+      <div class="bg-white border border-gray-200 rounded-md p-3 mb-3 hover:bg-gray-50 transition-colors duration-200">
+        <div class="flex items-start justify-between mb-2">
+          <h4 class="font-medium text-gray-900 text-sm truncate flex-1 mr-2">${this.escapeHtml(notation.name)}</h4>
+          <div class="flex gap-1 flex-shrink-0">
+            <button onclick="notationUI.loadNotation(${notation.id})" class="inline-flex items-center justify-center w-6 h-6 rounded hover:bg-blue-100 text-blue-600 transition-colors duration-200" title="Load">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
               </svg>
             </button>
-            <button onclick="notationUI.editNotation(${notation.id})" class="btn-icon edit" title="Edit">
-              <svg class="icon icon-sm" viewBox="0 0 20 20">
+            <button onclick="notationUI.editNotation(${notation.id})" class="inline-flex items-center justify-center w-6 h-6 rounded hover:bg-yellow-100 text-yellow-600 transition-colors duration-200" title="Edit">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
               </svg>
             </button>
-            <button onclick="notationUI.deleteNotation(${notation.id})" class="btn-icon delete" title="Delete">
-              <svg class="icon icon-sm" viewBox="0 0 20 20">
+            <button onclick="notationUI.deleteNotation(${notation.id})" class="inline-flex items-center justify-center w-6 h-6 rounded hover:bg-red-100 text-red-600 transition-colors duration-200" title="Delete">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
               </svg>
             </button>
           </div>
         </div>
-        <p class="notation-meta">Updated: ${new Date(notation.updatedAt).toLocaleDateString()}</p>
-        <div class="notation-content">
+        <p class="text-xs text-gray-500 mb-2">Updated: ${new Date(notation.updatedAt).toLocaleDateString()}</p>
+        <div class="text-xs text-gray-600 bg-gray-50 rounded p-2 font-mono leading-relaxed">
           ${this.truncateContent(notation.content)}
         </div>
       </div>
@@ -225,19 +236,44 @@ class NotationUI {
   }
 
   showToast(message: string, type: 'info' | 'success' | 'error' = 'info'): void {
+    // Get or create toast container
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'fixed top-4 right-4 z-50 space-y-2';
+      document.body.appendChild(container);
+    }
+
     // Create toast element
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+    
+    // Apply Tailwind classes based on type
+    let typeClasses = '';
+    switch (type) {
+      case 'success':
+        typeClasses = 'bg-green-500 text-white border-green-600';
+        break;
+      case 'error':
+        typeClasses = 'bg-red-500 text-white border-red-600';
+        break;
+      case 'info':
+      default:
+        typeClasses = 'bg-blue-500 text-white border-blue-600';
+        break;
+    }
+    
+    toast.className = `px-4 py-2 rounded-md shadow-lg border text-sm font-medium transition-all duration-300 transform translate-x-0 opacity-100 ${typeClasses}`;
     toast.textContent = message;
     
-    document.body.appendChild(toast);
+    container.appendChild(toast);
     
-    // Fade out and remove after 3 seconds
+    // Slide out and remove after 3 seconds
     setTimeout(() => {
-      toast.style.opacity = '0';
+      toast.classList.add('translate-x-full', 'opacity-0');
       setTimeout(() => {
-        if (document.body.contains(toast)) {
-          document.body.removeChild(toast);
+        if (container?.contains(toast)) {
+          container.removeChild(toast);
         }
       }, 300);
     }, 3000);
@@ -330,8 +366,12 @@ class MusicAppController {
     notationInput: HTMLTextAreaElement | null
   ): void {
     this.isTextMode = false;
-    if (notationModeBtn) notationModeBtn.className = 'btn btn-primary';
-    if (textModeBtn) textModeBtn.className = 'btn';
+    if (notationModeBtn) {
+      notationModeBtn.className = 'px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200';
+    }
+    if (textModeBtn) {
+      textModeBtn.className = 'px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200';
+    }
     if (textSettings) textSettings.style.display = 'none';
     if (convertTextBtn) convertTextBtn.style.display = 'none';
     if (notationInput) notationInput.placeholder = 'Enter music notation here...';
@@ -345,8 +385,12 @@ class MusicAppController {
     notationInput: HTMLTextAreaElement | null
   ): void {
     this.isTextMode = true;
-    if (textModeBtn) textModeBtn.className = 'btn btn-primary';
-    if (notationModeBtn) notationModeBtn.className = 'btn';
+    if (textModeBtn) {
+      textModeBtn.className = 'px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200';
+    }
+    if (notationModeBtn) {
+      notationModeBtn.className = 'px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200';
+    }
     if (textSettings) textSettings.style.display = 'block';
     if (convertTextBtn) convertTextBtn.style.display = 'inline-flex';
     if (notationInput) notationInput.placeholder = 'Enter any text to convert to music...';
@@ -417,9 +461,7 @@ class MusicAppController {
       }
 
       // Show success message using the notification UI instance
-      if ((window as any).notationUI && (window as any).notationUI.showToast) {
-        (window as any).notationUI.showToast('Example pattern loaded!', 'info');
-      }
+      (window as any).notationUI?.showToast?.('Example pattern loaded!', 'info');
     }
   }
 
@@ -448,9 +490,7 @@ class MusicAppController {
       if (scaleSelect) scaleSelect.value = scale;
 
       // Show success message using the notification UI instance
-      if ((window as any).notationUI && (window as any).notationUI.showToast) {
-        (window as any).notationUI.showToast('Text example loaded!', 'info');
-      }
+      (window as any).notationUI?.showToast?.('Text example loaded!', 'info');
     }
   }
 

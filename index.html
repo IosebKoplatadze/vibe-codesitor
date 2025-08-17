@@ -4,483 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Notation Converter</title>
-  <style>
-    /* Modern CSS styling without external dependencies */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #f9fafb;
-      color: #111827;
-      line-height: 1.6;
-    }
-
-    .container {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Left Sidebar */
-    .sidebar {
-      width: 320px;
-      background: white;
-      border-right: 1px solid #e5e7eb;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar-header {
-      padding: 1rem;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .sidebar-header h2 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 0.75rem;
-    }
-
-    .sidebar-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-
-    .sidebar-content::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .sidebar-content::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 10px;
-    }
-    
-    .sidebar-content::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 10px;
-    }
-    
-    .sidebar-content::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    /* Tab Navigation */
-    .tab-navigation {
-      display: flex;
-      border-bottom: 1px solid #e5e7eb;
-      background: #f9fafb;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 0.75rem 0.5rem;
-      border: none;
-      background: transparent;
-      color: #6b7280;
-      font-weight: 500;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border-bottom: 2px solid transparent;
-    }
-
-    .tab-btn:hover {
-      background: rgba(59, 130, 246, 0.05);
-      color: #3b82f6;
-    }
-
-    .tab-btn.active {
-      color: #3b82f6;
-      border-bottom-color: #3b82f6;
-      background: white;
-    }
-
-    /* Tab Content */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Example Grid */
-    .example-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .example-item,
-    .text-example-item {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 0.375rem;
-      padding: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
-    }
-
-    .example-item:hover,
-    .text-example-item:hover {
-      background: #f3f4f6;
-      border-color: #3b82f6;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .example-title {
-      font-weight: 600;
-      color: #1f2937;
-      font-size: 0.875rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .example-description {
-      font-size: 0.75rem;
-      color: #6b7280;
-      line-height: 1.4;
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .header {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 1.5rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .header h1 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 0.5rem;
-    }
-
-    .header p {
-      color: #6b7280;
-      font-size: 1rem;
-    }
-
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.5rem;
-    }
-
-    .content-inner {
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    /* Cards */
-    .card {
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
-    }
-
-    .card h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 1rem;
-    }
-
-    /* Form Elements */
-    .textarea {
-      width: 100%;
-      height: 10rem;
-      padding: 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 0.875rem;
-      line-height: 1.5;
-      resize: none;
-      background: #fafafa;
-      transition: all 0.2s ease;
-    }
-
-    .textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      background: white;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.625rem 1.25rem;
-      border-radius: 0.375rem;
-      font-weight: 500;
-      font-size: 0.875rem;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: #3b82f6;
-      color: white;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: #2563eb;
-    }
-
-    .btn-success {
-      background: #10b981;
-      color: white;
-    }
-
-    .btn-success:hover:not(:disabled) {
-      background: #059669;
-    }
-
-    .btn-danger {
-      background: #ef4444;
-      color: white;
-    }
-
-    .btn-danger:hover:not(:disabled) {
-      background: #dc2626;
-    }
-
-    .btn-full {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    /* Grid Layout */
-    .grid {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .grid-cols-1 {
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 768px) {
-      .grid-cols-md-2 {
-        grid-template-columns: repeat(2, 1fr);
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'mono': ['Monaco', 'Menlo', 'Ubuntu Mono', 'monospace'],
+          }
+        }
       }
     }
-
-    @media (min-width: 1024px) {
-      .grid-cols-lg-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Syntax Guide */
-    .syntax-guide {
-      background: #f9fafb;
-      padding: 1rem;
-      border-radius: 0.375rem;
-      border: 1px solid #e5e7eb;
-    }
-
-    .syntax-guide pre {
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: #374151;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    /* Saved Notations */
-    .notation-item {
-      background: #f9fafb;
-      padding: 0.75rem;
-      border-radius: 0.375rem;
-      border: 1px solid #e5e7eb;
-      margin-bottom: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .notation-item:hover {
-      background: #f3f4f6;
-      border-color: #d1d5db;
-    }
-
-    .notation-header {
-      display: flex;
-      justify-content: between;
-      align-items: flex-start;
-      margin-bottom: 0.5rem;
-    }
-
-    .notation-title {
-      font-weight: 500;
-      color: #1f2937;
-      font-size: 0.875rem;
-      flex: 1;
-      margin-right: 0.5rem;
-      word-break: break-word;
-    }
-
-    .notation-actions {
-      display: flex;
-      gap: 0.25rem;
-      flex-shrink: 0;
-    }
-
-    .btn-icon {
-      padding: 0.25rem;
-      border-radius: 0.25rem;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-icon:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-icon.load:hover {
-      color: #3b82f6;
-    }
-
-    .btn-icon.edit:hover {
-      color: #10b981;
-    }
-
-    .btn-icon.delete:hover {
-      color: #ef4444;
-    }
-
-    .notation-meta {
-      font-size: 0.75rem;
-      color: #6b7280;
-      margin-bottom: 0.5rem;
-    }
-
-    .notation-content {
-      font-size: 0.75rem;
-      color: #4b5563;
-      background: white;
-      padding: 0.5rem;
-      border-radius: 0.25rem;
-      border: 1px solid #e5e7eb;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      overflow: hidden;
-      word-break: break-all;
-    }
-
-    .no-notations {
-      color: #6b7280;
-      font-size: 0.875rem;
-      text-align: center;
-      padding: 2rem 1rem;
-    }
-
-    /* Icons */
-    .icon {
-      width: 1rem;
-      height: 1rem;
-      fill: currentColor;
-    }
-
-    .icon-sm {
-      width: 0.75rem;
-      height: 0.75rem;
-    }
-
-    /* Toast notifications */
-    .toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 0.375rem;
-      color: white;
-      font-weight: 500;
-      font-size: 0.875rem;
-      z-index: 1000;
-      transition: opacity 0.3s ease;
-    }
-
-    .toast.success {
-      background: #10b981;
-    }
-
-    .toast.error {
-      background: #ef4444;
-    }
-
-    .toast.info {
-      background: #3b82f6;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-      
-      .sidebar {
-        width: 100%;
-        height: 40vh;
-      }
-      
-      .main-content {
-        height: 60vh;
-      }
-      
-      .content-inner {
-        max-width: none;
-      }
-    }
-  </style>
+  </script>
 </head>
-<body>
-  <div class="container">
+<body class="bg-gray-50 text-gray-900 leading-relaxed">
+  <div class="flex h-screen overflow-hidden">
     <!-- Left Sidebar for Saved Notations and Examples -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h2>Library</h2>
-        <button id="save-notation-btn" class="btn btn-primary btn-full">
-          <svg class="icon" viewBox="0 0 20 20">
+    <div class="w-80 bg-white border-r border-gray-200 shadow-sm flex flex-col">
+      <div class="p-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">Library</h2>
+        <button id="save-notation-btn" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
           Save Current Notation
@@ -488,24 +32,24 @@
       </div>
       
       <!-- Tab Navigation -->
-      <div class="tab-navigation">
-        <button id="saved-tab" class="tab-btn active">Saved</button>
-        <button id="examples-tab" class="tab-btn">Examples</button>
-        <button id="text-examples-tab" class="tab-btn">Text Examples</button>
+      <div class="flex border-b border-gray-200 bg-gray-50">
+        <button id="saved-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500 text-blue-500 border-b-blue-500 bg-white">Saved</button>
+        <button id="examples-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500">Examples</button>
+        <button id="text-examples-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500">Text Examples</button>
       </div>
       
-      <div class="sidebar-content">
+      <div class="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full hover:scrollbar-thumb-slate-400">
         <!-- Saved Notations Tab -->
-        <div id="saved-content" class="tab-content active">
+        <div id="saved-content" class="block">
           <div id="saved-notations-list">
-            <div class="no-notations">No saved notations yet</div>
+            <div class="text-gray-500 text-sm text-center py-8 px-4">No saved notations yet</div>
           </div>
         </div>
         
         <!-- Examples Tab -->
-        <div id="examples-content" class="tab-content">
-          <div class="example-grid">
-            <button class="example-item" data-pattern="// Main Georgian-inspired melody (violin/duduk sound)
+        <div id="examples-content" class="hidden">
+          <div class="flex flex-col gap-3">
+            <button class="example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-pattern="// Main Georgian-inspired melody (violin/duduk sound)
 violin:,,D5.0.5,E5.0.5|F5.1.5,E5.0.5,D5.1,A4.1|C5.1.5,D5.0.5,C5.1,A4.1|
 G4.1.5,A4.0.5,Bb4.1,C5.1|D5.2,A4.2|F5.1.5,E5.0.5,D5.1,E5.1|F5.1,G5.0.5,F5.0.5,E5.1,D5.1|
 C5.1.5,D5.0.5,C5.1,A4.1|G4.1.5,A4.0.5,Bb4.1,G4.1|A4.3,A4.0.5,Bb4.0.5|
@@ -549,21 +93,21 @@ A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|
 G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1|A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|
 A4.1+C5.1,A4.1+C5.1,A4.1+C5.1,A4.1+C5.1|G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1,G4.1+Bb4.1|
 F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1,F#4.1+A4.1+D5.1|G4.1+Bb4.1+D5.1,G4.1+Bb4.1+D5.1,A4.1+C5.1+E5.1,A4.1+C5.1+E5.1;">
-              <div class="example-title">Georgian Folk</div>
-              <div class="example-description">Traditional Georgian polyphonic music</div>
+              <div class="font-semibold text-gray-800 text-sm mb-1">Georgian Folk</div>
+              <div class="text-xs text-gray-500 leading-tight">Traditional Georgian polyphonic music</div>
             </button>
             
-            <button class="example-item" data-pattern="piano:C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5,C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5;drums:k.0.5,h.0.25+s.0.5,k.0.5,h.0.25+s.0.5;">
-              <div class="example-title">Simple Pop</div>
-              <div class="example-description">Basic pop chord progression with drums</div>
+            <button class="example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-pattern="piano:C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5,C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5;drums:k.0.5,h.0.25+s.0.5,k.0.5,h.0.25+s.0.5;">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Simple Pop</div>
+              <div class="text-xs text-gray-500 leading-tight">Basic pop chord progression with drums</div>
             </button>
             
-            <button class="example-item" data-pattern="piano:C4.0.25,E4.0.25,G4.0.25,C5.0.25|D4.0.25,F4.0.25,A4.0.25,D5.0.25;bass:C2.1|D2.1;drums:k.0.25,h.0.25,s.0.25,h.0.25|k.0.25,h.0.25,s.0.25,h.0.25;">
-              <div class="example-title">Arpeggiated</div>
-              <div class="example-description">Fast arpeggiated piano pattern</div>
+            <button class="example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-pattern="piano:C4.0.25,E4.0.25,G4.0.25,C5.0.25|D4.0.25,F4.0.25,A4.0.25,D5.0.25;bass:C2.1|D2.1;drums:k.0.25,h.0.25,s.0.25,h.0.25|k.0.25,h.0.25,s.0.25,h.0.25;">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Arpeggiated</div>
+              <div class="text-xs text-gray-500 leading-tight">Fast arpeggiated piano pattern</div>
             </button>
             
-            <button class="example-item" data-pattern="violin:B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|B4.1.5,A4.0.5,A4.2|
+            <button class="example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-pattern="violin:B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|B4.1.5,A4.0.5,A4.2|
 B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|A4.1.5,G4.0.5,G4.2|
 A4.1,A4.1,B4.1,G4.1|A4.1,B4.0.5,C5.0.5,B4.1,G4.1|A4.1,B4.0.5,C5.0.5,B4.1,A4.1|G4.1,A4.1,D4.2|
 B4.1,B4.1,C5.1,D5.1|D5.1,C5.1,B4.1,A4.1|G4.1,G4.1,A4.1,B4.1|A4.1.5,G4.0.5,G4.2;
@@ -582,11 +126,11 @@ D2.2,G2.2|D2.2,G2.2|D2.2,F#2.2|G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|G2.2,D2.2|D2.2,G1.2
 
 timpani:D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|,,,D2.2|D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|,,,G1.2|
 ,,,,|,,,,|,,,,|,,D2.0.5,D2.0.5,D2.1|D2.0.5,,,,D2.0.5,D2.0.5|,,,,|,,,,|D2.0.5,D2.0.5,D2.0.5,D2.0.5,G1.2;">
-              <div class="example-title">Beethoven</div>
-              <div class="example-description">Classical orchestral composition</div>
+              <div class="font-semibold text-gray-800 text-sm mb-1">Beethoven</div>
+              <div class="text-xs text-gray-500 leading-tight">Classical orchestral composition</div>
             </button>
             
-            <button class="example-item" data-pattern="tempo:125;
+            <button class="example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-pattern="tempo:125;
 lead:F#5.0.5,D5.0.5,Bb4.1,C5.0.5,A4.0.5|D5.0.5,Bb4.0.5,C5.0.5,A4.0.5,F#4.1|
 F#5.0.5,D5.0.5,Bb4.1,C5.0.5,A4.0.5|D5.0.5,Bb4.0.5,C5.1,A4.1|
 G5.0.5,E5.0.5,C5.1,D5.0.5,B4.0.5|E5.0.5,C5.0.5,D5.0.5,B4.0.5,G4.1|
@@ -609,43 +153,43 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
-              <div class="example-title">Countdown Rock</div>
-              <div class="example-description">Epic rock anthem with full band</div>
+              <div class="font-semibold text-gray-800 text-sm mb-1">Countdown Rock</div>
+              <div class="text-xs text-gray-500 leading-tight">Epic rock anthem with full band</div>
             </button>
           </div>
         </div>
         
         <!-- Text Examples Tab -->
-        <div id="text-examples-content" class="tab-content">
-          <div class="example-grid">
-            <button class="text-example-item" data-text="Hello world! This is beautiful music." data-style="melodic" data-scale="major">
-              <div class="example-title">Simple Greeting</div>
-              <div class="example-description">Melodic major scale conversion</div>
+        <div id="text-examples-content" class="hidden">
+          <div class="flex flex-col gap-3">
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="Hello world! This is beautiful music." data-style="melodic" data-scale="major">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Simple Greeting</div>
+              <div class="text-xs text-gray-500 leading-tight">Melodic major scale conversion</div>
             </button>
             
-            <button class="text-example-item" data-text="The quick brown fox jumps over the lazy dog." data-style="rhythmic" data-scale="pentatonic">
-              <div class="example-title">Classic Phrase</div>
-              <div class="example-description">Rhythmic pentatonic style</div>
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="The quick brown fox jumps over the lazy dog." data-style="rhythmic" data-scale="pentatonic">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Classic Phrase</div>
+              <div class="text-xs text-gray-500 leading-tight">Rhythmic pentatonic style</div>
             </button>
             
-            <button class="text-example-item" data-text="Music is the universal language of mankind." data-style="harmonic" data-scale="minor">
-              <div class="example-title">Poetic Quote</div>
-              <div class="example-description">Harmonic minor composition</div>
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="Music is the universal language of mankind." data-style="harmonic" data-scale="minor">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Poetic Quote</div>
+              <div class="text-xs text-gray-500 leading-tight">Harmonic minor composition</div>
             </button>
             
-            <button class="text-example-item" data-text="Jazz, blues, rock, and classical music." data-style="melodic" data-scale="chromatic">
-              <div class="example-title">Music Genres</div>
-              <div class="example-description">Chromatic melodic interpretation</div>
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="Jazz, blues, rock, and classical music." data-style="melodic" data-scale="chromatic">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Music Genres</div>
+              <div class="text-xs text-gray-500 leading-tight">Chromatic melodic interpretation</div>
             </button>
             
-            <button class="text-example-item" data-text="In the beginning was silence. Then came sound." data-style="ambient" data-scale="minor">
-              <div class="example-title">Philosophical</div>
-              <div class="example-description">Ambient minor soundscape</div>
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="In the beginning was silence. Then came sound." data-style="ambient" data-scale="minor">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Philosophical</div>
+              <div class="text-xs text-gray-500 leading-tight">Ambient minor soundscape</div>
             </button>
             
-            <button class="text-example-item" data-text="Dance like nobody's watching!" data-style="rhythmic" data-scale="major">
-              <div class="example-title">Motivational</div>
-              <div class="example-description">Upbeat rhythmic major</div>
+            <button class="text-example-item bg-gray-50 border border-gray-200 rounded-md p-4 cursor-pointer transition-all duration-200 text-left hover:bg-gray-100 hover:border-blue-500 hover:-translate-y-0.5 hover:shadow-md" data-text="Dance like nobody's watching!" data-style="rhythmic" data-scale="major">
+              <div class="font-semibold text-gray-800 text-sm mb-1">Motivational</div>
+              <div class="text-xs text-gray-500 leading-tight">Upbeat rhythmic major</div>
             </button>
           </div>
         </div>
@@ -653,93 +197,114 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
     </div>
 
     <!-- Main Content Area -->
-    <div class="main-content">
+    <div class="flex-1 flex flex-col bg-white">
       <!-- Header -->
-      <div class="header">
-        <h1>Music Notation Converter</h1>
-        <p>Create, edit, and play music using text notation or convert any text to music</p>
+      <div class="bg-white border-b border-gray-200 p-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-1">Vibe Codesitor</h1>
+            <p class="text-sm text-gray-500">Create music with simple notation</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="tempo" class="text-sm font-medium text-gray-700">Tempo:</label>
+            <input 
+              type="number" 
+              id="tempo" 
+              value="120" 
+              min="60" 
+              max="200" 
+              class="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            <span class="text-sm text-gray-500">BPM</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Content -->
-      <div class="content">
-        <div class="content-inner">
-          <!-- Music Input Section -->
-          <div class="card">
-            <h2>Enter Music Notation or Plain Text:</h2>
-            
-            <!-- Input Mode Toggle -->
-            <div class="button-group" style="margin-bottom: 1rem;">
-              <button id="notation-mode-btn" class="btn btn-primary">Notation Mode</button>
-              <button id="text-mode-btn" class="btn">Text Mode</button>
-            </div>
+      <!-- Editor Section -->
+      <div class="flex-1 flex flex-col p-6">
+        <!-- Input Mode Toggle -->
+        <div class="flex gap-2 mb-4">
+          <button id="notation-mode-btn" class="px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Notation Mode</button>
+          <button id="text-mode-btn" class="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Text Mode</button>
+        </div>
 
-            <!-- Text-to-Music Settings (hidden by default) -->
-            <div id="text-settings" class="card-section" style="display: none; margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 0.375rem;">
-              <h3 style="margin: 0 0 1rem 0; font-size: 1rem;">Text-to-Music Settings:</h3>
-              <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <div>
-                  <label>Style:</label>
-                  <select id="style-select" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
-                    <option value="melodic">Melodic</option>
-                    <option value="rhythmic">Rhythmic</option>
-                    <option value="harmonic">Harmonic</option>
-                    <option value="ambient">Ambient</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Scale:</label>
-                  <select id="scale-select" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
-                    <option value="major">Major</option>
-                    <option value="minor">Minor</option>
-                    <option value="pentatonic">Pentatonic</option>
-                    <option value="chromatic">Chromatic</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Tempo:</label>
-                  <input type="number" id="tempo-input" class="form-control" value="120" min="60" max="200" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
-                </div>
-                <div>
-                  <label>Base Octave:</label>
-                  <input type="number" id="octave-input" class="form-control" value="4" min="2" max="6" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
-                </div>
-              </div>
+        <!-- Text-to-Music Settings (hidden by default) -->
+        <div id="text-settings" class="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg" style="display: none;">
+          <h3 class="text-sm font-semibold text-gray-800 mb-3">Text-to-Music Settings:</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-700 mb-1">Style:</label>
+              <select id="style-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="melodic">Melodic</option>
+                <option value="rhythmic">Rhythmic</option>
+                <option value="harmonic">Harmonic</option>
+                <option value="ambient">Ambient</option>
+              </select>
             </div>
-
-            <textarea 
-              id="notation-input" 
-              class="textarea"
-              placeholder="Enter music notation here...">piano:C4.1+E4.1+G4.1|F4.1+A4.1+C5.1;
-bass:C2.2|G2.2;
-drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;</textarea>
-            
-            <div class="button-group">
-              <button id="play-button" class="btn btn-success">
-                <svg class="icon" viewBox="0 0 20 20">
-                  <path d="M8 5v10l8-5-8-5z"/>
-                </svg>
-                Play Music
-              </button>
-              <button id="stop-button" class="btn btn-danger">
-                <svg class="icon" viewBox="0 0 20 20">
-                  <path d="M6 6h8v8H6V6z"/>
-                </svg>
-                Stop
-              </button>
-              <button id="convert-text-btn" class="btn btn-primary" style="display: none;">
-                <svg class="icon" viewBox="0 0 20 20">
-                  <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
-                </svg>
-                Convert to Notation
-              </button>
+            <div>
+              <label class="block text-xs font-medium text-gray-700 mb-1">Scale:</label>
+              <select id="scale-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="major">Major</option>
+                <option value="minor">Minor</option>
+                <option value="pentatonic">Pentatonic</option>
+                <option value="chromatic">Chromatic</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-700 mb-1">Tempo:</label>
+              <input type="number" id="tempo-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="120" min="60" max="200">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-700 mb-1">Base Octave:</label>
+              <input type="number" id="octave-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="4" min="2" max="6">
             </div>
           </div>
+        </div>
 
-          <!-- Syntax Guide Section -->
-          <div class="card">
-            <h2>Notation Syntax Guide:</h2>
-            <div class="syntax-guide">
-              <pre>instrument:note1.duration,note2.duration|nextMeasure;
+        <div class="mb-4">
+          <label for="notation-input" class="block text-sm font-medium text-gray-700 mb-2">
+            Music Notation or Text Description:
+          </label>
+          <textarea 
+            id="notation-input" 
+            placeholder="Enter music notation (e.g., 'piano:C4.1,E4.1,G4.1;') or describe your music in plain text..."
+            class="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg resize-y focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 font-mono text-sm leading-relaxed bg-gray-50"></textarea>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <button id="play-button" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-green-500 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M8 5v10l8-5z"/>
+            </svg>
+            Play
+          </button>
+          
+          <button id="stop-button" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <rect x="6" y="6" width="8" height="8"/>
+            </svg>
+            Stop
+          </button>
+          
+          <button id="convert-text-btn" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+            </svg>
+            Convert Text to Music
+          </button>
+          
+          <button id="download-btn" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-purple-500 text-white hover:bg-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
+            </svg>
+            Download MIDI
+          </button>
+        </div>
+
+        <!-- Syntax Guide Section -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Notation Syntax Guide:</h2>
+          <div class="bg-white border border-gray-200 rounded-md p-4 overflow-x-auto">
+            <pre class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">instrument:note1.duration,note2.duration|nextMeasure;
 nextInstrument:note1.duration;
 
 Format:
@@ -755,12 +320,14 @@ Examples:
 piano:C4.1+E4.1+G4.1|F4.1+A4.1+C5.1;  // C chord then F chord
 bass:C2.2|G2.2;                        // Bass line
 drums:k.0.5,s.0.5,k.0.5,s.0.5;         // Basic drum pattern</pre>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
   <script src="dist/index.js"></script>
   <script src="dist/ui.js"></script>
