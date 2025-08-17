@@ -2,7 +2,8 @@ const path = require('path');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
-  const publicPath = isProduction ? '/vibe-codesitor/dist/' : '/dist/';
+  // For GitHub Pages, use relative paths
+  const publicPath = isProduction ? './dist/' : '/dist/';
   
   return {
     entry: {

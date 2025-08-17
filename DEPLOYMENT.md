@@ -74,21 +74,54 @@ This starts a local server to test the production build before deployment.
 
 **Common Issues:**
 
-1. **"Source should be GitHub Actions"**: In repository Settings → Pages, make sure Source is set to "GitHub Actions" (not "Deploy from a branch")
+1. **404 Error on GitHub Pages**:
+   - Ensure the workflow uploads the entire project (not just `dist` folder)
+   - Check that `index.html` is in the root of the uploaded artifact
+   - Verify the `publicPath` in webpack is set to `./dist/` for production
+   - Wait 5-10 minutes after deployment for changes to propagate
 
-2. **Build failing**: Check the Actions tab for detailed error logs
+2. **"Source should be GitHub Actions"**: In repository Settings → Pages, make sure Source is set to "GitHub Actions" (not "Deploy from a branch")
+
+3. **Build failing**: Check the Actions tab for detailed error logs
    - Ensure all dependencies are in `package.json`
    - Verify TypeScript compilation passes locally
 
-3. **Assets not loading**: Check webpack `publicPath` configuration in production
+4. **Assets not loading**: Check webpack `publicPath` configuration in production
 
-4. **Permissions error**: The workflow includes proper permissions for Pages deployment
+5. **Permissions error**: The workflow includes proper permissions for Pages deployment
 
 **Debug Steps:**
 1. Check GitHub Actions workflow logs in the Actions tab
 2. Verify build completes successfully locally with `npm run build:gh-pages`
 3. Ensure `.nojekyll` file is present (prevents Jekyll processing)
 4. Check browser console for asset loading errors on the live site
+5. Test locally with `npm run preview` to ensure production build works
+6. If 404 persists, try force-refreshing the browser (Ctrl+F5 or Cmd+Shift+R)
+
+### Quick Fix for 404 Error
+
+If you're getting a 404 error after deployment:
+
+1. **Check the deployment logs**:
+   - Go to your repository's Actions tab
+   - Click on the latest workflow run
+   - Look for any errors in the build or deploy steps
+
+2. **Force a new deployment**:
+   ```bash
+   git commit --allow-empty -m "Force redeploy to GitHub Pages"
+   git push origin main
+   ```
+
+3. **Verify GitHub Pages settings**:
+   - Go to Settings → Pages
+   - Ensure Source is set to "GitHub Actions"
+   - Check that the custom domain (if any) is correct
+
+4. **Wait and clear cache**:
+   - GitHub Pages can take 5-10 minutes to update
+   - Try accessing the site in incognito/private mode
+   - Clear your browser cache
 
 ### Repository Settings Checklist
 
