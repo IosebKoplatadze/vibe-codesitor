@@ -21,6 +21,10 @@ export class AudioEngine {
     // Create basic instrument types
     this.instruments.set('piano', new SynthInstrument(this.audioContext, 'piano'));
     this.instruments.set('bass', new SynthInstrument(this.audioContext, 'bass'));
+    this.instruments.set('violin', new SynthInstrument(this.audioContext, 'violin'));
+    this.instruments.set('panduri', new SynthInstrument(this.audioContext, 'panduri'));
+    this.instruments.set('choir', new SynthInstrument(this.audioContext, 'choir'));
+    this.instruments.set('timpani', new SynthInstrument(this.audioContext, 'timpani'));
     this.instruments.set('drums', new DrumKit(this.audioContext));
     
     // Add synthesizer instruments for rock/electronic sounds
@@ -83,6 +87,114 @@ class SynthInstrument implements AudioInstrument {
     const secondsPerBeat = 60 / 120; // Default tempo
     
     for (const note of chord.notes) {
+      switch (this.type.toLowerCase()) {
+        case 'violin':
+          this.playViolinNote(note, time, secondsPerBeat);
+          break;
+        case 'panduri':
+          this.playPanduriNote(note, time, secondsPerBeat);
+          break;
+        case 'choir':
+          this.playChoirNote(note, time, secondsPerBeat);
+          break;
+        case 'timpani':
+          this.playTimpaniNote(note, time, secondsPerBeat);
+          break;
+        case 'piano':
+        case 'bass':
+        default:
+          this.playBasicNote(note, time, secondsPerBeat);
+          break;
+      }
+    }
+  }
+  
+  private playBasicNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    
+    // Set oscillator type based on instrument
+    oscillator.type = this.type === 'piano' ? 'triangle' : 'sine';
+    
+    // Calculate frequency from note information
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Configure envelope
+    gainNode.gain.value = note.velocity;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + note.duration * secondsPerBeat);
+    
+    // Connect nodes
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    // Play the note
+    oscillator.start(time);
+    oscillator.stop(time + note.duration * secondsPerBeat + 0.1);
+  }
+  
+  private playViolinNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    // Violin-like sound: sawtooth wave with filter
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Low-pass filter for warmth
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 1;
+    
+    // Violin-like envelope with slow attack
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.7, time + Math.min(0.1, duration * 0.3));
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    // Connect nodes
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    // Play the note
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+  
+  private playPanduriNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    
+    // Plucked string sound: triangle wave with quick decay
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Sharp attack, quick decay like a plucked string
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    // Connect nodes
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    // Play the note
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+  
+  private playChoirNote(note: Note, time: number, secondsPerBeat: number): void {
+    const frequency = this.noteToFrequency(note);
+    const duration = note.duration * secondsPerBeat;
+    
+    // Create multiple oscillators for choir effect
+    for (let i = 0; i < 3; i++) {
       const oscillator = this.context.createOscillator();
       const gainNode = this.context.createGain();
       const filterNode = this.context.createBiquadFilter();
@@ -92,7 +204,14 @@ class SynthInstrument implements AudioInstrument {
       
       // Calculate frequency from note information
       const frequency = this.noteToFrequency(note);
+
       oscillator.frequency.value = frequency;
+      oscillator.detune.value = detune;
+      
+      // Formant-like filtering for voice characteristics
+      filter.type = 'bandpass';
+      filter.frequency.value = frequency * (2 + i * 0.5);
+      filter.Q.value = 2;
       
       // Configure envelope based on instrument type
       this.configureEnvelope(gainNode, note, time, secondsPerBeat);
@@ -104,7 +223,7 @@ class SynthInstrument implements AudioInstrument {
       
       // Play the note
       oscillator.start(time);
-      oscillator.stop(time + note.duration * secondsPerBeat + 0.1);
+      oscillator.stop(time + duration + 0.1);
     }
   }
   
