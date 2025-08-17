@@ -18,6 +18,13 @@ interface TextToMusicOptions {
   scale: string;
   tempo: number;
   baseOctave: number;
+  useLangChain?: boolean;
+  mood?: string;
+  complexity?: string;
+  langChainOptions?: {
+    apiKey?: string;
+    model?: string;
+  };
 }
 
 // LocalStorage management for saved notations
@@ -363,6 +370,41 @@ class MusicAppController {
     textExampleButtons.forEach(button => {
       button.addEventListener('click', () => this.handleTextExampleButton(button as HTMLElement, notationInput, textModeBtn, notationModeBtn, textSettings, convertTextBtn));
     });
+
+    // LangChain UI controls
+    this.bindLangChainEvents();
+  }
+
+  private bindLangChainEvents(): void {
+    const langchainEnabled = document.getElementById('langchain-enabled') as HTMLInputElement;
+    const langchainSettings = document.getElementById('langchain-settings');
+    const langchainStatus = document.getElementById('langchain-status');
+    const openaiKeyInput = document.getElementById('openai-key') as HTMLInputElement;
+
+    // Toggle LangChain settings panel
+    langchainEnabled?.addEventListener('change', () => {
+      const isEnabled = langchainEnabled.checked;
+      if (langchainSettings) {
+        langchainSettings.style.display = isEnabled ? 'block' : 'none';
+      }
+      if (langchainStatus) {
+        langchainStatus.textContent = isEnabled ? 'AI-powered' : 'Rule-based';
+      }
+    });
+
+    // Save API key to localStorage when entered
+    openaiKeyInput?.addEventListener('change', () => {
+      const apiKey = openaiKeyInput.value.trim();
+      if (apiKey) {
+        localStorage.setItem('openai-api-key', apiKey);
+      }
+    });
+
+    // Load API key from localStorage on page load
+    const savedApiKey = localStorage.getItem('openai-api-key');
+    if (savedApiKey && openaiKeyInput) {
+      openaiKeyInput.value = savedApiKey;
+    }
   }
 
   private switchToNotationMode(
@@ -420,18 +462,25 @@ class MusicAppController {
     }
   }
 
-  private handleConvertTextButton(
+  private async handleConvertTextButton(
     notationInput: HTMLTextAreaElement | null,
     notationModeBtn: HTMLElement | null,
     textModeBtn: HTMLElement | null,
     textSettings: HTMLElement | null,
     convertTextBtn: HTMLElement | null
-  ): void {
+  ): Promise<void> {
     if (!notationInput?.value.trim()) return;
     
+    const options = this.getTextToMusicOptions();
+    
+    // Show loading state for AI generation
+    if (options.useLangChain) {
+      convertTextBtn!.textContent = '🤖 Generating...';
+      convertTextBtn!.setAttribute('disabled', 'true');
+    }
+    
     try {
-      const options = this.getTextToMusicOptions();
-      const notation = this.converter.convertTextToNotation(notationInput.value, options);
+      const notation = await this.converter.convertTextToNotation(notationInput.value, options);
       
       // Show the generated notation in a modal or replace input
       if (confirm('Replace current input with generated notation?')) {
@@ -441,7 +490,17 @@ class MusicAppController {
       }
     } catch (error) {
       console.error('Error converting text:', error);
-      alert('Error converting text to notation. Please try again.');
+      if (options.useLangChain && (error as Error).message?.includes('API key')) {
+        alert('OpenAI API key is required for AI-powered generation. Please enter your API key in the settings.');
+      } else {
+        alert('Error converting text to notation. Please try again.');
+      }
+    } finally {
+      // Restore button state
+      if (convertTextBtn) {
+        convertTextBtn.textContent = 'Convert to Notation';
+        convertTextBtn.removeAttribute('disabled');
+      }
     }
   }
 
@@ -634,13 +693,37 @@ class MusicAppController {
     const scaleSelect = document.getElementById('scale-select') as HTMLSelectElement;
     const tempoInput = document.getElementById('tempo-input') as HTMLInputElement;
     const octaveInput = document.getElementById('octave-input') as HTMLInputElement;
+    
+    // LangChain options
+    const langchainEnabled = document.getElementById('langchain-enabled') as HTMLInputElement;
+    const openaiKeyInput = document.getElementById('openai-key') as HTMLInputElement;
+    const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+    const moodSelect = document.getElementById('mood-select') as HTMLSelectElement;
+    const complexitySelect = document.getElementById('complexity-select') as HTMLSelectElement;
 
-    return {
+    const options: TextToMusicOptions = {
       style: styleSelect ? styleSelect.value : 'melodic',
       scale: scaleSelect ? scaleSelect.value : 'major',
       tempo: tempoInput ? parseInt(tempoInput.value) : 120,
       baseOctave: octaveInput ? parseInt(octaveInput.value) : 4
     };
+
+    // Add LangChain options if enabled
+    if (langchainEnabled?.checked) {
+      options.useLangChain = true;
+      options.mood = moodSelect ? moodSelect.value : 'balanced';
+      options.complexity = complexitySelect ? complexitySelect.value : 'moderate';
+      
+      const apiKey = openaiKeyInput?.value.trim();
+      if (apiKey) {
+        options.langChainOptions = {
+          apiKey: apiKey,
+          model: modelSelect ? modelSelect.value : 'gpt-3.5-turbo'
+        };
+      }
+    }
+
+    return options;
   }
 }
 

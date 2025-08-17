@@ -1,16 +1,19 @@
 import { MusicParser } from './parser';
 import { AudioEngine } from './audio';
 import { TextToMusicConverter, TextToMusicOptions } from './textToMusic';
+import { LangChainTextToMusicConverter, EnhancedTextToMusicOptions } from './langchainTextToMusic';
 
 // Main entry point for the application
 class MusicConverter {
   private parser: MusicParser;
   private textConverter: TextToMusicConverter;
+  private langChainConverter: LangChainTextToMusicConverter;
   public audioEngine: AudioEngine; // Make it public for stop functionality
 
   constructor() {
     this.parser = new MusicParser();
     this.textConverter = new TextToMusicConverter();
+    this.langChainConverter = new LangChainTextToMusicConverter();
     this.audioEngine = new AudioEngine();
   }
 
@@ -23,23 +26,36 @@ class MusicConverter {
     return notationPattern.test(input) || tempoPattern.test(input);
   }
 
-  public async convertToMusic(input: string, textOptions?: Partial<TextToMusicOptions>): Promise<void> {
+  public async convertToMusic(input: string, textOptions?: Partial<EnhancedTextToMusicOptions>): Promise<void> {
     let musicData;
     
     if (this.isNotationFormat(input)) {
       // Use existing notation parser
       musicData = this.parser.parse(input);
     } else {
-      // Convert text to music
-      musicData = this.textConverter.convertTextToMusic(input, textOptions);
+      // Check if we should use LangChain or fallback converter
+      if (textOptions?.useLangChain && LangChainTextToMusicConverter.isLangChainAvailable()) {
+        // Generate notation using LangChain and then parse it
+        const notation = await this.langChainConverter.convertTextToNotation(input, textOptions);
+        musicData = this.parser.parse(notation);
+      } else {
+        // Convert text to music using rule-based converter
+        musicData = this.textConverter.convertTextToMusic(input, textOptions);
+      }
     }
     
     await this.audioEngine.play(musicData);
   }
 
-  public convertTextToNotation(text: string, options?: Partial<TextToMusicOptions>): string {
-    const musicData = this.textConverter.convertTextToMusic(text, options);
-    return this.textConverter.musicDataToNotation(musicData);
+  public async convertTextToNotation(text: string, options?: Partial<EnhancedTextToMusicOptions>): Promise<string> {
+    // Check if we should use LangChain or fallback converter
+    if (options?.useLangChain && LangChainTextToMusicConverter.isLangChainAvailable()) {
+      return await this.langChainConverter.convertTextToNotation(text, options);
+    } else {
+      // Use rule-based converter
+      const musicData = this.textConverter.convertTextToMusic(text, options);
+      return this.textConverter.musicDataToNotation(musicData);
+    }
   }
 }
 
@@ -85,5 +101,6 @@ if (typeof window !== 'undefined') {
 }
 
 export default MusicConverter;
-export { MusicConverter, TextToMusicConverter };
+export { MusicConverter, TextToMusicConverter, LangChainTextToMusicConverter };
 export type { TextToMusicOptions } from './textToMusic';
+export type { EnhancedTextToMusicOptions, LangChainOptions } from './langchainTextToMusic';
