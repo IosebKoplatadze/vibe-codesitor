@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts',
+    ui: './src/ui.ts'
+  },
   devtool: 'eval-source-map',
   module: {
     rules: [
@@ -23,11 +26,11 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'index.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
     library: {
-      name: 'MusicConverter',
+      name: '[name]',
       type: 'umd',
       export: 'default',
     },
