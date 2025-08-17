@@ -419,7 +419,7 @@
       <!-- Header -->
       <div class="header">
         <h1>Music Notation Converter</h1>
-        <p>Create, edit, and play music using text notation</p>
+        <p>Create, edit, and play music using text notation or convert any text to music</p>
       </div>
 
       <!-- Content -->
@@ -427,7 +427,47 @@
         <div class="content-inner">
           <!-- Music Input Section -->
           <div class="card">
-            <h2>Enter Music Notation:</h2>
+            <h2>Enter Music Notation or Plain Text:</h2>
+            
+            <!-- Input Mode Toggle -->
+            <div class="button-group" style="margin-bottom: 1rem;">
+              <button id="notation-mode-btn" class="btn btn-primary">Notation Mode</button>
+              <button id="text-mode-btn" class="btn">Text Mode</button>
+            </div>
+
+            <!-- Text-to-Music Settings (hidden by default) -->
+            <div id="text-settings" class="card-section" style="display: none; margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 0.375rem;">
+              <h3 style="margin: 0 0 1rem 0; font-size: 1rem;">Text-to-Music Settings:</h3>
+              <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div>
+                  <label>Style:</label>
+                  <select id="style-select" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
+                    <option value="melodic">Melodic</option>
+                    <option value="rhythmic">Rhythmic</option>
+                    <option value="harmonic">Harmonic</option>
+                    <option value="ambient">Ambient</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Scale:</label>
+                  <select id="scale-select" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                    <option value="pentatonic">Pentatonic</option>
+                    <option value="chromatic">Chromatic</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Tempo:</label>
+                  <input type="number" id="tempo-input" class="form-control" value="120" min="60" max="200" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
+                </div>
+                <div>
+                  <label>Base Octave:</label>
+                  <input type="number" id="octave-input" class="form-control" value="4" min="2" max="6" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.25rem; margin-top: 0.25rem;">
+                </div>
+              </div>
+            </div>
+
             <textarea 
               id="notation-input" 
               class="textarea"
@@ -447,6 +487,12 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;</textarea>
                   <path d="M6 6h8v8H6V6z"/>
                 </svg>
                 Stop
+              </button>
+              <button id="convert-text-btn" class="btn btn-primary" style="display: none;">
+                <svg class="icon" viewBox="0 0 20 20">
+                  <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                </svg>
+                Convert to Notation
               </button>
             </div>
           </div>
@@ -570,6 +616,20 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.25,k.0.25,s.0.5|
 k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">Countdown Rock</button>
+            </div>
+          </div>
+
+          <!-- Text-to-Music Examples Section -->
+          <div class="card">
+            <h2>Text-to-Music Examples:</h2>
+            <p>Try these text examples in Text Mode to hear how different texts convert to music:</p>
+            <div class="grid grid-cols-1 grid-cols-md-2 grid-cols-lg-3">
+              <button class="btn btn-primary text-example-button" data-text="Hello world! This is beautiful music." data-style="melodic" data-scale="major">Simple Greeting</button>
+              <button class="btn btn-primary text-example-button" data-text="The quick brown fox jumps over the lazy dog." data-style="rhythmic" data-scale="pentatonic">Classic Phrase</button>
+              <button class="btn btn-primary text-example-button" data-text="Music is the universal language of mankind." data-style="harmonic" data-scale="minor">Poetic Quote</button>
+              <button class="btn btn-primary text-example-button" data-text="Jazz, blues, rock, and classical music." data-style="melodic" data-scale="chromatic">Music Genres</button>
+              <button class="btn btn-primary text-example-button" data-text="In the beginning was silence. Then came sound." data-style="ambient" data-scale="minor">Philosophical</button>
+              <button class="btn btn-primary text-example-button" data-text="Dance like nobody's watching!" data-style="rhythmic" data-scale="major">Motivational</button>
             </div>
           </div>
         </div>
@@ -785,15 +845,90 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">Countdown Rock</button>
           const playButton = document.getElementById('play-button');
           const stopButton = document.getElementById('stop-button');
           const exampleButtons = document.querySelectorAll('.example-button');
+          const textExampleButtons = document.querySelectorAll('.text-example-button');
           
+          // Text-to-music mode controls
+          const notationModeBtn = document.getElementById('notation-mode-btn');
+          const textModeBtn = document.getElementById('text-mode-btn');
+          const textSettings = document.getElementById('text-settings');
+          const convertTextBtn = document.getElementById('convert-text-btn');
+          
+          let isTextMode = false;
+          
+          // Mode switching
+          notationModeBtn.addEventListener('click', () => {
+            isTextMode = false;
+            notationModeBtn.className = 'btn btn-primary';
+            textModeBtn.className = 'btn';
+            textSettings.style.display = 'none';
+            convertTextBtn.style.display = 'none';
+            notationInput.placeholder = 'Enter music notation here...';
+          });
+          
+          textModeBtn.addEventListener('click', () => {
+            isTextMode = true;
+            textModeBtn.className = 'btn btn-primary';
+            notationModeBtn.className = 'btn';
+            textSettings.style.display = 'block';
+            convertTextBtn.style.display = 'inline-flex';
+            notationInput.placeholder = 'Enter any text to convert to music...';
+          });
+          
+          // Play button with mode awareness
           playButton.addEventListener('click', async () => {
-            if (notationInput.value.trim()) {
-              await converter.convertToMusic(notationInput.value);
+            if (!notationInput.value.trim()) return;
+            
+            try {
+              if (isTextMode) {
+                // Get text-to-music options from UI
+                const options = {
+                  style: document.getElementById('style-select').value,
+                  scale: document.getElementById('scale-select').value,
+                  tempo: parseInt(document.getElementById('tempo-input').value),
+                  baseOctave: parseInt(document.getElementById('octave-input').value)
+                };
+                await converter.convertToMusic(notationInput.value, options);
+              } else {
+                await converter.convertToMusic(notationInput.value);
+              }
+            } catch (error) {
+              console.error('Error playing music:', error);
+              alert('Error playing music. Please check your input.');
+            }
+          });
+          
+          // Convert text to notation button
+          convertTextBtn.addEventListener('click', () => {
+            if (!notationInput.value.trim()) return;
+            
+            try {
+              const options = {
+                style: document.getElementById('style-select').value,
+                scale: document.getElementById('scale-select').value,
+                tempo: parseInt(document.getElementById('tempo-input').value),
+                baseOctave: parseInt(document.getElementById('octave-input').value)
+              };
+              
+              const notation = converter.convertTextToNotation(notationInput.value, options);
+              
+              // Show the generated notation in a modal or replace input
+              if (confirm('Replace current input with generated notation?')) {
+                notationInput.value = notation;
+                // Switch to notation mode
+                isTextMode = false;
+                notationModeBtn.className = 'btn btn-primary';
+                textModeBtn.className = 'btn';
+                textSettings.style.display = 'none';
+                convertTextBtn.style.display = 'none';
+                notationInput.placeholder = 'Enter music notation here...';
+              }
+            } catch (error) {
+              console.error('Error converting text:', error);
+              alert('Error converting text to notation. Please try again.');
             }
           });
           
           stopButton.addEventListener('click', () => {
-            // This would need to be implemented in the AudioEngine
             if (converter.audioEngine && typeof converter.audioEngine.stop === 'function') {
               converter.audioEngine.stop();
             }
@@ -804,6 +939,40 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">Countdown Rock</button>
               const pattern = button.getAttribute('data-pattern');
               if (pattern) {
                 notationInput.value = pattern;
+                // Ensure we're in notation mode when loading examples
+                if (isTextMode) {
+                  isTextMode = false;
+                  notationModeBtn.className = 'btn btn-primary';
+                  textModeBtn.className = 'btn';
+                  textSettings.style.display = 'none';
+                  convertTextBtn.style.display = 'none';
+                  notationInput.placeholder = 'Enter music notation here...';
+                }
+              }
+            });
+          });
+
+          // Handle text example buttons
+          textExampleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+              const text = button.getAttribute('data-text');
+              const style = button.getAttribute('data-style') || 'melodic';
+              const scale = button.getAttribute('data-scale') || 'major';
+              
+              if (text) {
+                notationInput.value = text;
+                
+                // Switch to text mode and set appropriate settings
+                isTextMode = true;
+                textModeBtn.className = 'btn btn-primary';
+                notationModeBtn.className = 'btn';
+                textSettings.style.display = 'block';
+                convertTextBtn.style.display = 'inline-flex';
+                notationInput.placeholder = 'Enter any text to convert to music...';
+                
+                // Set the settings from the example
+                document.getElementById('style-select').value = style;
+                document.getElementById('scale-select').value = scale;
               }
             });
           });
