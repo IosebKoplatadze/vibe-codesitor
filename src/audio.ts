@@ -32,12 +32,6 @@ export class AudioEngine {
     this.instruments.set('lead', new SynthInstrument(this.audioContext, 'lead'));
     this.instruments.set('brass', new SynthInstrument(this.audioContext, 'brass'));
     this.instruments.set('strings', new SynthInstrument(this.audioContext, 'strings'));
-    
-    // Add support for existing instruments
-    this.instruments.set('violin', new SynthInstrument(this.audioContext, 'violin'));
-    this.instruments.set('panduri', new SynthInstrument(this.audioContext, 'panduri'));
-    this.instruments.set('choir', new SynthInstrument(this.audioContext, 'choir'));
-    this.instruments.set('timpani', new SynthInstrument(this.audioContext, 'timpani'));
   }
   
   public async play(musicData: MusicData): Promise<void> {
@@ -190,21 +184,23 @@ class SynthInstrument implements AudioInstrument {
   }
   
   private playChoirNote(note: Note, time: number, secondsPerBeat: number): void {
-    const frequency = this.noteToFrequency(note);
     const duration = note.duration * secondsPerBeat;
     
     // Create multiple oscillators for choir effect
     for (let i = 0; i < 3; i++) {
       const oscillator = this.context.createOscillator();
       const gainNode = this.context.createGain();
-      const filterNode = this.context.createBiquadFilter();
+      const filter = this.context.createBiquadFilter();
       
       // Set oscillator type and filter based on instrument
-      this.configureInstrument(oscillator, filterNode, gainNode, note, time);
-      
+      this.configureInstrument(oscillator, filter, gainNode, note, time);
+
       // Calculate frequency from note information
       const frequency = this.noteToFrequency(note);
-
+      
+      // Sine waves with slight detuning for chorus effect
+      oscillator.type = 'sine';
+      const detune = (i - 1) * 5; // Slight detuning
       oscillator.frequency.value = frequency;
       oscillator.detune.value = detune;
       
@@ -215,10 +211,10 @@ class SynthInstrument implements AudioInstrument {
       
       // Configure envelope based on instrument type
       this.configureEnvelope(gainNode, note, time, secondsPerBeat);
-      
+
       // Connect nodes with optional filter
-      oscillator.connect(filterNode);
-      filterNode.connect(gainNode);
+      oscillator.connect(filter);
+      filter.connect(gainNode);
       gainNode.connect(this.context.destination);
       
       // Play the note
@@ -360,7 +356,40 @@ class SynthInstrument implements AudioInstrument {
         break;
     }
   }
-
+  private playTimpaniNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    // Timpani sound: sine wave with pitch bend
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    const duration = note.duration * secondsPerBeat;
+    
+    // Pitch bend effect (slight downward sweep)
+    oscillator.frequency.setValueAtTime(frequency * 1.1, time);
+    oscillator.frequency.exponentialRampToValueAtTime(frequency, time + 0.1);
+    
+    // Low-pass filter for drum-like sound
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 0.5;
+    
+    // Timpani envelope: sharp attack, long sustain, gradual decay
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.6, time + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    // Connect nodes
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    // Play the note
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+  
   private noteToFrequency(note: Note): number {
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const noteIndex = noteNames.indexOf(note.pitch.toUpperCase());
@@ -528,6 +557,32 @@ class DrumKit implements AudioInstrument {
     
     oscillator.start(time);
     oscillator.stop(time + 0.3);
+  }
+  
+  private playFrameDrum(time: number, duration: number): void {
+    // Frame drum: combination of sine wave and filtered noise
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 200;
+    oscillator.frequency.exponentialRampToValueAtTime(80, time + 0.1);
+    
+    // Band-pass filter for frame drum character
+    filter.type = 'bandpass';
+    filter.frequency.value = 300;
+    filter.Q.value = 2;
+    
+    gainNode.gain.value = 0.8;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + 0.15);
   }
 
   private playGenericDrum(time: number, duration: number): void {
