@@ -73,6 +73,9 @@ async function demo() {
 
 // Run the demo when page loads (only in browser environment)
 if (typeof window !== 'undefined') {
+  // Expose MusicConverter globally for UI to access
+  (window as any).MusicConverter = MusicConverter;
+  
   window.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('beethoven-button');
     if (startButton) {
