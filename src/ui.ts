@@ -85,6 +85,30 @@ class NotationUI {
   init(): void {
     this.renderSavedNotations();
     this.bindEvents();
+    this.initTabs();
+  }
+
+  private initTabs(): void {
+    const savedTab = document.getElementById('saved-tab');
+    const examplesTab = document.getElementById('examples-tab');
+    const textExamplesTab = document.getElementById('text-examples-tab');
+
+    savedTab?.addEventListener('click', () => this.switchTab('saved'));
+    examplesTab?.addEventListener('click', () => this.switchTab('examples'));
+    textExamplesTab?.addEventListener('click', () => this.switchTab('text-examples'));
+  }
+
+  private switchTab(tabName: string): void {
+    // Remove active class from all tabs and content
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // Add active class to selected tab and content
+    const selectedTab = document.getElementById(`${tabName}-tab`);
+    const selectedContent = document.getElementById(`${tabName}-content`);
+
+    selectedTab?.classList.add('active');
+    selectedContent?.classList.add('active');
   }
 
   bindEvents(): void {
@@ -265,8 +289,8 @@ class MusicAppController {
     const notationInput = document.getElementById('notation-input') as HTMLTextAreaElement;
     const playButton = document.getElementById('play-button');
     const stopButton = document.getElementById('stop-button');
-    const exampleButtons = document.querySelectorAll('.example-button');
-    const textExampleButtons = document.querySelectorAll('.text-example-button');
+    const exampleButtons = document.querySelectorAll('.example-item');
+    const textExampleButtons = document.querySelectorAll('.text-example-item');
     
     // Text-to-music mode controls
     const notationModeBtn = document.getElementById('notation-mode-btn');
@@ -287,12 +311,12 @@ class MusicAppController {
     // Stop button
     stopButton?.addEventListener('click', () => this.handleStopButton());
     
-    // Example buttons
+    // Example buttons (new sidebar location)
     exampleButtons.forEach(button => {
       button.addEventListener('click', () => this.handleExampleButton(button as HTMLElement, notationInput, notationModeBtn, textModeBtn, textSettings, convertTextBtn));
     });
 
-    // Text example buttons
+    // Text example buttons (new sidebar location)
     textExampleButtons.forEach(button => {
       button.addEventListener('click', () => this.handleTextExampleButton(button as HTMLElement, notationInput, textModeBtn, notationModeBtn, textSettings, convertTextBtn));
     });
@@ -391,6 +415,11 @@ class MusicAppController {
       if (this.isTextMode) {
         this.switchToNotationMode(notationModeBtn, textModeBtn, textSettings, convertTextBtn, notationInput);
       }
+
+      // Show success message using the notification UI instance
+      if ((window as any).notationUI && (window as any).notationUI.showToast) {
+        (window as any).notationUI.showToast('Example pattern loaded!', 'info');
+      }
     }
   }
 
@@ -417,6 +446,11 @@ class MusicAppController {
       const scaleSelect = document.getElementById('scale-select') as HTMLSelectElement;
       if (styleSelect) styleSelect.value = style;
       if (scaleSelect) scaleSelect.value = scale;
+
+      // Show success message using the notification UI instance
+      if ((window as any).notationUI && (window as any).notationUI.showToast) {
+        (window as any).notationUI.showToast('Text example loaded!', 'info');
+      }
     }
   }
 
