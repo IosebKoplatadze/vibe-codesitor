@@ -4,7 +4,7 @@ import { AudioEngine } from './audio';
 // Main entry point for the application
 class MusicConverter {
   private parser: MusicParser;
-  private audioEngine: AudioEngine;
+  public audioEngine: AudioEngine; // Make it public for stop functionality
 
   constructor() {
     this.parser = new MusicParser();

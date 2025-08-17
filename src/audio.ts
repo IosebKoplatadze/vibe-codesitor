@@ -26,6 +26,12 @@ export class AudioEngine {
     this.instruments.set('choir', new SynthInstrument(this.audioContext, 'choir'));
     this.instruments.set('timpani', new SynthInstrument(this.audioContext, 'timpani'));
     this.instruments.set('drums', new DrumKit(this.audioContext));
+    
+    // Add synthesizer instruments for rock/electronic sounds
+    this.instruments.set('synth', new SynthInstrument(this.audioContext, 'synth'));
+    this.instruments.set('lead', new SynthInstrument(this.audioContext, 'lead'));
+    this.instruments.set('brass', new SynthInstrument(this.audioContext, 'brass'));
+    this.instruments.set('strings', new SynthInstrument(this.audioContext, 'strings'));
   }
   
   public async play(musicData: MusicData): Promise<void> {
@@ -178,7 +184,6 @@ class SynthInstrument implements AudioInstrument {
   }
   
   private playChoirNote(note: Note, time: number, secondsPerBeat: number): void {
-    const frequency = this.noteToFrequency(note);
     const duration = note.duration * secondsPerBeat;
     
     // Create multiple oscillators for choir effect
@@ -186,6 +191,12 @@ class SynthInstrument implements AudioInstrument {
       const oscillator = this.context.createOscillator();
       const gainNode = this.context.createGain();
       const filter = this.context.createBiquadFilter();
+      
+      // Set oscillator type and filter based on instrument
+      this.configureInstrument(oscillator, filter, gainNode, note, time);
+
+      // Calculate frequency from note information
+      const frequency = this.noteToFrequency(note);
       
       // Sine waves with slight detuning for chorus effect
       oscillator.type = 'sine';
@@ -198,13 +209,10 @@ class SynthInstrument implements AudioInstrument {
       filter.frequency.value = frequency * (2 + i * 0.5);
       filter.Q.value = 2;
       
-      // Soft attack and sustain
-      gainNode.gain.setValueAtTime(0, time);
-      gainNode.gain.linearRampToValueAtTime(note.velocity * 0.3, time + 0.2);
-      gainNode.gain.linearRampToValueAtTime(note.velocity * 0.25, time + duration * 0.8);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-      
-      // Connect nodes
+      // Configure envelope based on instrument type
+      this.configureEnvelope(gainNode, note, time, secondsPerBeat);
+
+      // Connect nodes with optional filter
       oscillator.connect(filter);
       filter.connect(gainNode);
       gainNode.connect(this.context.destination);
@@ -215,6 +223,139 @@ class SynthInstrument implements AudioInstrument {
     }
   }
   
+  private configureInstrument(oscillator: OscillatorNode, filter: BiquadFilterNode, gain: GainNode, note: Note, time: number): void {
+    switch(this.type) {
+      case 'piano':
+        oscillator.type = 'triangle';
+        filter.type = 'lowpass';
+        filter.frequency.value = 2000;
+        break;
+        
+      case 'bass':
+        oscillator.type = 'sine';
+        filter.type = 'lowpass';
+        filter.frequency.value = 300;
+        break;
+        
+      case 'synth':
+      case 'lead':
+        oscillator.type = 'sawtooth';
+        filter.type = 'lowpass';
+        filter.frequency.value = 1200;
+        filter.Q.value = 8;
+        // Add slight filter sweep for synth lead
+        if (this.type === 'lead') {
+          filter.frequency.setValueAtTime(1200, time);
+          filter.frequency.linearRampToValueAtTime(2400, time + 0.1);
+          filter.frequency.exponentialRampToValueAtTime(800, time + note.duration * (60/120));
+        }
+        break;
+        
+      case 'brass':
+        oscillator.type = 'square';
+        filter.type = 'lowpass';
+        filter.frequency.value = 1500;
+        filter.Q.value = 2;
+        break;
+        
+      case 'strings':
+        oscillator.type = 'sawtooth';
+        filter.type = 'lowpass';
+        filter.frequency.value = 2500;
+        filter.Q.value = 1;
+        break;
+        
+      case 'violin':
+        oscillator.type = 'triangle';
+        filter.type = 'highpass';
+        filter.frequency.value = 200;
+        break;
+        
+      case 'panduri':
+        oscillator.type = 'triangle';
+        filter.type = 'bandpass';
+        filter.frequency.value = 800;
+        filter.Q.value = 5;
+        break;
+        
+      case 'choir':
+        oscillator.type = 'sine';
+        filter.type = 'lowpass';
+        filter.frequency.value = 1800;
+        break;
+        
+      case 'timpani':
+        oscillator.type = 'sine';
+        filter.type = 'lowpass';
+        filter.frequency.value = 400;
+        break;
+        
+      default:
+        oscillator.type = 'sine';
+        filter.type = 'allpass';
+        break;
+    }
+  }
+
+  private configureEnvelope(gain: GainNode, note: Note, time: number, secondsPerBeat: number): void {
+    const duration = note.duration * secondsPerBeat;
+    const velocity = note.velocity * 0.3; // Reduce overall volume
+    
+    switch(this.type) {
+      case 'piano':
+      case 'panduri':
+        // Sharp attack, quick decay
+        gain.gain.setValueAtTime(velocity, time);
+        gain.gain.exponentialRampToValueAtTime(velocity * 0.1, time + duration);
+        break;
+        
+      case 'bass':
+        // Sustained bass
+        gain.gain.setValueAtTime(velocity * 0.8, time);
+        gain.gain.setValueAtTime(velocity * 0.7, time + duration * 0.8);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        break;
+        
+      case 'synth':
+      case 'lead':
+        // Classic synth envelope with sustain
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(velocity, time + 0.02); // Quick attack
+        gain.gain.linearRampToValueAtTime(velocity * 0.7, time + 0.1); // Decay
+        gain.gain.setValueAtTime(velocity * 0.7, time + duration * 0.7); // Sustain
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration); // Release
+        break;
+        
+      case 'brass':
+        // Brass-like envelope with slower attack
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(velocity * 0.9, time + 0.05);
+        gain.gain.setValueAtTime(velocity * 0.8, time + duration * 0.8);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        break;
+        
+      case 'strings':
+      case 'violin':
+      case 'choir':
+        // Slow attack for bowed/breath instruments
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(velocity * 0.8, time + 0.1);
+        gain.gain.setValueAtTime(velocity * 0.7, time + duration * 0.9);
+        gain.gain.linearRampToValueAtTime(0, time + duration);
+        break;
+        
+      case 'timpani':
+        // Percussion-like envelope
+        gain.gain.setValueAtTime(velocity, time);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(duration, 2.0));
+        break;
+        
+      default:
+        gain.gain.setValueAtTime(velocity, time);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        break;
+    }
+  }
   private playTimpaniNote(note: Note, time: number, secondsPerBeat: number): void {
     const oscillator = this.context.createOscillator();
     const gainNode = this.context.createGain();
@@ -287,8 +428,14 @@ class DrumKit implements AudioInstrument {
         case 'h': // Hi-hat
           this.playHihat(time, note.duration);
           break;
-        case 'd': // Frame drum/doli
-          this.playFrameDrum(time, note.duration);
+        case 'c': // Crash cymbal
+          this.playCrash(time, note.duration);
+          break;
+        case 't': // Tom
+          this.playTom(time, note.duration);
+          break;
+        case 'd': // Generic drum (from existing patterns)
+          this.playGenericDrum(time, note.duration);
           break;
       }
     }
@@ -364,6 +511,53 @@ class DrumKit implements AudioInstrument {
     noise.start(time);
     noise.stop(time + 0.05);
   }
+
+  private playCrash(time: number, duration: number): void {
+    // White noise with band-pass filter for crash cymbal
+    const bufferSize = this.context.sampleRate * 0.5;
+    const buffer = this.context.createBuffer(1, bufferSize, this.context.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    
+    const noise = this.context.createBufferSource();
+    noise.buffer = buffer;
+    
+    const filter = this.context.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.value = 4000;
+    
+    const gainNode = this.context.createGain();
+    gainNode.gain.value = 0.6;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.8);
+    
+    noise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    noise.start(time);
+    noise.stop(time + 0.8);
+  }
+
+  private playTom(time: number, duration: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 200;
+    oscillator.frequency.exponentialRampToValueAtTime(50, time + 0.2);
+    
+    gainNode.gain.value = 0.8;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + 0.3);
+  }
   
   private playFrameDrum(time: number, duration: number): void {
     // Frame drum: combination of sine wave and filtered noise
@@ -389,5 +583,24 @@ class DrumKit implements AudioInstrument {
     
     oscillator.start(time);
     oscillator.stop(time + 0.15);
+  }
+
+  private playGenericDrum(time: number, duration: number): void {
+    // Generic drum sound for 'd' - similar to existing patterns
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    
+    oscillator.type = 'triangle';
+    oscillator.frequency.value = 100;
+    oscillator.frequency.exponentialRampToValueAtTime(40, time + 0.15);
+    
+    gainNode.gain.value = 0.7;
+    gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + 0.2);
   }
 }
