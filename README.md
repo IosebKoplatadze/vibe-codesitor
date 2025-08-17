@@ -6,6 +6,12 @@ A modern web-based music notation converter that transforms custom text-based mu
 ![Web Audio](https://img.shields.io/badge/Web%20Audio-FF6B6B?style=for-the-badge)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
+## 🌐 Live Demo
+
+**Try it now:** [https://iosebkoplatadze.github.io/vibe-codesitor/](https://iosebkoplatadze.github.io/vibe-codesitor/)
+
+No installation required - just open the link and start creating music!
+
 ## ✨ Features
 
 - **🎼 Custom Notation System**: Simple text-based notation for complex musical compositions
@@ -46,6 +52,21 @@ npm start
 ### Building for Production
 ```bash
 npm run build
+```
+
+### Deploying to GitHub Pages
+
+This project is set up for automatic deployment to GitHub Pages via GitHub Actions. The deployment happens automatically when you push to the `main` branch.
+
+**Manual deployment steps:**
+1. Ensure your repository is public or has GitHub Pages enabled
+2. Push your changes to the `main` branch
+3. GitHub Actions will automatically build and deploy the site
+4. Your site will be available at `https://yourusername.github.io/vibe-codesitor/`
+
+**Local testing of production build:**
+```bash
+npm run preview
 ```
 
 ## 🎵 Notation Syntax

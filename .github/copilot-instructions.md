@@ -50,7 +50,13 @@ element.className = 'px-4 py-2 bg-blue-500 text-white hover:bg-blue-600';
 npm run build    # Production webpack build
 npm start        # Dev server on port 9000 (or try 8080 if occupied)
 npm test         # Jest tests (limited coverage)
+npm run preview  # Test production build locally
 ```
+
+### Deployment
+- **Auto-deploy**: Push to `main` branch triggers GitHub Pages deployment via Actions
+- **Live site**: https://iosebkoplatadze.github.io/vibe-codesitor/
+- **Webpack config**: Different `publicPath` for dev vs production (GitHub Pages compatibility)
 
 ### MIDI Export Implementation
 Uses `midi-writer-js` library:
