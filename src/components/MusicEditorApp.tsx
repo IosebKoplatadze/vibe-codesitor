@@ -227,7 +227,6 @@ const MusicEditorApp: React.FC = () => {
         }}
         onLoadTextExample={(text, options) => {
           setNotation(text);
-          setTextSettings(prev => ({ ...prev, ...options }));
           setIsTextMode(true);
           setSidebarOpen(false);
         }}
