@@ -245,7 +245,7 @@ const MusicEditorApp: React.FC = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-white min-w-0">
+      <div className="flex-1 flex flex-col bg-white min-w-0 overflow-y-auto">
         {/* Header */}
         <Header
           tempo={tempo}
