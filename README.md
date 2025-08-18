@@ -1,8 +1,9 @@
 # 🎵 Vibe Codesitor
 
-A modern web-based music notation converter that transforms custom text-based musical notation into playable audio. Built with TypeScript, Web Audio API, and featuring both traditional notation and AI-powered text-to-music conversion.
+A modern web-based music notation converter that transforms custom text-based musical notation into playable audio. Built with React, TypeScript, Web Audio API, and featuring both traditional notation and AI-powered text-to-music conversion.
 
-![Vibe Codesitor Interface](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Web Audio](https://img.shields.io/badge/Web%20Audio-FF6B6B?style=for-the-badge)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
@@ -48,24 +49,20 @@ npm install
 npm start
 ```
 
-4. **Set up environment variables** (for AI-powered features):
+4. **For AI-powered features** (optional):
    
-   Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
+   Enter your API key directly in the app's settings panel:
+   - Switch to "Text Mode" 
+   - Click the AI settings toggle
+   - Enter your OpenAI, Gemini, or Claude API key
+   - The key is stored locally in your browser
    
-   Edit `.env` and add your Gemini API key:
-   ```bash
-   GEMINI_API_KEY=your_gemini_api_key_here
-   AI_PROVIDER=gemini
-   ```
-   
-   Get your API key from: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
-   
-   **Note:** The app now supports both OpenAI and Gemini. Set `AI_PROVIDER=openai` if you prefer to use OpenAI instead.
+   **API Key Sources:**
+   - OpenAI: [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)
+   - Google Gemini: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+   - Anthropic Claude: [https://console.anthropic.com/](https://console.anthropic.com/)
 
-5. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
+5. Open your browser and navigate to `http://localhost:8080`
 
 
 ### Building for Production
@@ -139,17 +136,19 @@ Transform any text into beautiful musical notation using advanced AI technology:
 
 ### Getting Started with AI Music Generation
 
-1. **Switch to Text Mode**: Click the "Text Mode" button
-2. **Enable AI Generation**: Check the "🤖 AI-Powered Generation" checkbox
-3. **Add API Key**: Enter your OpenAI API key (stored locally)
-4. **Configure Settings**: Choose mood, complexity, and musical style
-5. **Enter Text**: Write any text prompt describing the music you want
-6. **Generate**: Click "Convert Text to Music" to create AI-powered notation
+1. **Switch to Text Mode**: Click the "Text Mode" button in the app
+2. **Enable AI Generation**: Toggle the AI settings panel
+3. **Select Provider**: Choose OpenAI, Gemini, or Claude
+4. **Add API Key**: Enter your API key (stored locally in browser)
+5. **Configure Settings**: Choose mood, complexity, and musical style
+6. **Enter Text**: Write any text prompt describing the music you want
+7. **Generate**: Click "Convert Text to Music" to create AI-powered notation
 
 ### AI Settings
 
-- **API Key**: Your OpenAI API key (stored securely in browser localStorage)
-- **AI Model**: Choose between GPT-3.5 Turbo (fast) or GPT-4 (better quality)
+- **API Key**: Your OpenAI/Gemini/Claude API key (stored securely in browser localStorage)
+- **Provider**: Choose between OpenAI, Google Gemini, or Anthropic Claude
+- **AI Model**: Select from available models (GPT-3.5, GPT-4, Gemini-Pro, Claude-3, etc.)
 - **Mood**: Balanced, Happy, Sad, Energetic, Peaceful, Dramatic, Romantic, Mysterious
 - **Complexity**: Simple, Moderate, or Complex musical arrangements
 - **Style**: Melodic, Rhythmic, Harmonic, or Ambient
@@ -187,17 +186,20 @@ This method provides consistent, predictable results without requiring API keys.
 ## 🏗️ Architecture
 
 ### Core Components
+
 - **`MusicConverter`** (`src/index.ts`): Main orchestrator with AI/rule-based routing
 - **`LangChainTextToMusicConverter`** (`src/langchainTextToMusic.ts`): AI-powered text conversion
 - **`TextToMusicConverter`** (`src/textToMusic.ts`): Rule-based text conversion
 - **`MusicParser`** (`src/parser.ts`): Notation parsing engine
 - **`AudioEngine`** (`src/audio.ts`): Web Audio synthesis
-- **`MusicAppController`** (`src/ui.ts`): UI management with AI controls
+- **React Components** (`src/components/`): Modern UI built with React and TypeScript
 
 ### Technology Stack
+
+- **React**: Modern UI framework with hooks and functional components
 - **TypeScript**: Type-safe JavaScript development
-- **LangChain + OpenAI**: AI-powered text-to-music generation
-- **Webpack**: Multi-entry bundling (`index.js` + `ui.js`)
+- **LangChain + AI APIs**: OpenAI, Gemini, and Claude for AI-powered text-to-music generation
+- **Webpack**: Multi-entry bundling with React support
 - **Web Audio API**: Real-time audio synthesis
 - **Tailwind CSS**: Utility-first styling
 - **midi-writer-js**: MIDI file generation
@@ -205,21 +207,28 @@ This method provides consistent, predictable results without requiring API keys.
 ## 🎯 Development
 
 ### Project Structure
+
 ```
 vibe-codesitor/
 ├── src/
-│   ├── index.ts        # Main MusicConverter class
-│   ├── parser.ts       # Notation parser
-│   ├── audio.ts        # Audio engine and instruments
-│   ├── ui.ts          # UI controller and event handling
-│   └── textToMusic.ts  # Text-to-music conversion
-├── index.html          # Main interface
-├── webpack.config.js   # Build configuration
-├── package.json        # Dependencies and scripts
-└── README.md          # This file
+│   ├── components/          # React components
+│   │   ├── MusicEditorApp.tsx    # Main app component
+│   │   ├── EditorSection.tsx     # Editor UI
+│   │   ├── Sidebar.tsx           # Sidebar with examples
+│   │   ├── Header.tsx            # App header
+│   │   └── TextSettings.tsx      # AI settings panel
+│   ├── index.ts            # Core music logic
+│   ├── parser.ts           # Notation parser
+│   ├── audio.ts            # Audio engine
+│   ├── langchainTextToMusic.ts   # AI text-to-music
+│   └── textToMusic.ts      # Rule-based text-to-music
+├── index.html              # React app mount point
+├── webpack.config.js       # Build configuration
+└── package.json           # Dependencies and scripts
 ```
 
 ### Development Commands
+
 ```bash
 npm start       # Start development server
 npm run build   # Production build
@@ -227,10 +236,11 @@ npm test        # Run tests
 ```
 
 ### Adding New Instruments
+
 1. Add instrument mapping in `AudioEngine.setupInstruments()`
 2. Create synthesis method in `SynthInstrument` class
 3. Configure oscillator type, filters, and envelope
-4. Update MIDI export mapping in `ui.ts`
+4. Update MIDI export mapping in React components
 
 ## 🎵 Examples
 
