@@ -272,15 +272,34 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
           <div id="langchain-settings" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md" style="display: none;">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">API Key:</label>
+                <label class="block text-xs font-medium text-gray-700 mb-1">AI Provider:</label>
+                <select id="provider-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option value="openai">OpenAI</option>
+                  <option value="gemini">Google Gemini</option>
+                </select>
+              </div>
+              <div id="openai-key-container">
+                <label class="block text-xs font-medium text-gray-700 mb-1">OpenAI API Key:</label>
                 <input type="password" id="openai-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="sk-...">
                 <div class="text-xs text-gray-500 mt-1">OpenAI API key (stored locally)</div>
+              </div>
+              <div id="gemini-key-container" style="display: none;">
+                <label class="block text-xs font-medium text-gray-700 mb-1">Gemini API Key:</label>
+                <input type="password" id="gemini-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="AIza...">
+                <div class="text-xs text-gray-500 mt-1">Google AI API key (stored locally)</div>
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1">AI Model:</label>
                 <select id="model-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast)</option>
-                  <option value="gpt-4">GPT-4 (Better)</option>
+                  <!-- OpenAI models -->
+                  <option value="gpt-3.5-turbo" data-provider="openai">GPT-3.5 Turbo</option>
+                  <option value="gpt-4" data-provider="openai">GPT-4</option>
+                  <option value="gpt-4-turbo" data-provider="openai">GPT-4 Turbo</option>
+                  <!-- Gemini models -->
+                  <option value="gemini-2.0-flash-exp" data-provider="gemini">Gemini 2.0 Flash (Experimental)</option>
+                  <option value="gemini-1.5-pro-002" data-provider="gemini">Gemini 1.5 Pro</option>
+                  <option value="gemini-1.5-flash-002" data-provider="gemini">Gemini 1.5 Flash</option>
+                  <option value="gemini-1.5-flash-8b" data-provider="gemini">Gemini 1.5 Flash 8B</option>
                 </select>
               </div>
               <div>

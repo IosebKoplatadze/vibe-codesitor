@@ -5,7 +5,11 @@ jest.mock('@langchain/openai', () => ({
   ChatOpenAI: jest.fn()
 }));
 
-jest.mock('langchain/schema', () => ({
+jest.mock('@langchain/google-genai', () => ({
+  ChatGoogleGenerativeAI: jest.fn()
+}));
+
+jest.mock('@langchain/core/messages', () => ({
   SystemMessage: jest.fn(),
   HumanMessage: jest.fn()
 }));
@@ -20,12 +24,20 @@ describe('LangChainTextToMusicConverter', () => {
   describe('isLangChainAvailable', () => {
     it('should return false when no API key is available', () => {
       delete process.env.OPENAI_API_KEY;
+      delete process.env.GEMINI_API_KEY;
       expect(LangChainTextToMusicConverter.isLangChainAvailable()).toBe(false);
     });
 
-    it('should return true when API key is available', () => {
+    it('should return true when OpenAI API key is available', () => {
       process.env.OPENAI_API_KEY = 'test-key';
       expect(LangChainTextToMusicConverter.isLangChainAvailable()).toBe(true);
+      delete process.env.OPENAI_API_KEY;
+    });
+
+    it('should return true when Gemini API key is available', () => {
+      process.env.GEMINI_API_KEY = 'test-key';
+      expect(LangChainTextToMusicConverter.isLangChainAvailable()).toBe(true);
+      delete process.env.GEMINI_API_KEY;
     });
   });
 

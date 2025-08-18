@@ -21,7 +21,9 @@ module.exports = (env, argv) => {
             options: {
               compilerOptions: {
                 sourceMap: true,
+                skipLibCheck: true
               },
+              transpileOnly: true
             },
           },
           exclude: /node_modules/,

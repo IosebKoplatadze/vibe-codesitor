@@ -55,12 +55,15 @@ npm start
    cp .env.example .env
    ```
    
-   Edit `.env` and add your OpenAI API key:
+   Edit `.env` and add your Gemini API key:
    ```bash
-   OPENAI_API_KEY=your_openai_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
+   AI_PROVIDER=gemini
    ```
    
-   Get your API key from: [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)
+   Get your API key from: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+   
+   **Note:** The app now supports both OpenAI and Gemini. Set `AI_PROVIDER=openai` if you prefer to use OpenAI instead.
 
 5. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
 

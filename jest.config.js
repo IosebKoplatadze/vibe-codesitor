@@ -12,5 +12,8 @@ module.exports = {
     'src/**/*.ts',
     '!src/**/__tests__/**',
     '!src/**/*.d.ts'
+  ],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@langchain/.*|p-queue|p-timeout)/)'
   ]
 };

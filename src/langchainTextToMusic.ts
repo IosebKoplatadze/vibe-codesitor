@@ -1,5 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { SystemMessage, HumanMessage } from "langchain/schema";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { MusicData } from './parser';
 import { TextToMusicConverter, TextToMusicOptions } from './textToMusic';
 
@@ -8,6 +9,7 @@ export interface LangChainOptions {
   model?: string;
   temperature?: number;
   maxTokens?: number;
+  provider?: 'openai' | 'gemini';
 }
 
 export interface EnhancedTextToMusicOptions extends TextToMusicOptions {
@@ -18,11 +20,12 @@ export interface EnhancedTextToMusicOptions extends TextToMusicOptions {
 }
 
 export class LangChainTextToMusicConverter {
-  private fallbackConverter: TextToMusicConverter;
-  private defaultLangChainOptions: LangChainOptions = {
-    model: 'gpt-3.5-turbo',
+  private readonly fallbackConverter: TextToMusicConverter;
+  private readonly defaultLangChainOptions: LangChainOptions = {
+    model: 'gemini-1.5-pro',
     temperature: 0.7,
-    maxTokens: 1000
+    maxTokens: 1000,
+    provider: 'gemini'
   };
 
   constructor() {
@@ -88,25 +91,49 @@ Now convert the user's text into musical notation that captures its essence and 
   ): Promise<string> {
     const { langChainOptions } = options;
     
-    // Get API key from various sources
+    // Determine provider from options or environment
+    const provider = langChainOptions?.provider || 
+      (typeof process !== 'undefined' && process.env?.AI_PROVIDER) || 
+      this.defaultLangChainOptions.provider || 'gemini';
+    
+    // Get API key based on provider
     let apiKey = langChainOptions?.apiKey;
     if (!apiKey && typeof process !== 'undefined' && process.env) {
-      apiKey = process.env.OPENAI_API_KEY;
+      if (provider === 'gemini') {
+        apiKey = process.env.GEMINI_API_KEY;
+      } else {
+        apiKey = process.env.OPENAI_API_KEY;
+      }
     }
     if (!apiKey && typeof window !== 'undefined') {
-      apiKey = (window as any).OPENAI_API_KEY;
+      if (provider === 'gemini') {
+        apiKey = (window as any).GEMINI_API_KEY;
+      } else {
+        apiKey = (window as any).OPENAI_API_KEY;
+      }
     }
 
     if (!apiKey) {
-      throw new Error('OpenAI API key not provided. Please set OPENAI_API_KEY environment variable or provide it in langChainOptions.');
+      throw new Error(`${provider === 'gemini' ? 'Gemini' : 'OpenAI'} API key not provided. Please set ${provider === 'gemini' ? 'GEMINI_API_KEY' : 'OPENAI_API_KEY'} environment variable or provide it in langChainOptions.`);
     }
 
-    const llm = new ChatOpenAI({
-      openAIApiKey: apiKey,
-      modelName: langChainOptions?.model || this.defaultLangChainOptions.model,
-      temperature: langChainOptions?.temperature ?? this.defaultLangChainOptions.temperature,
-      maxTokens: langChainOptions?.maxTokens || this.defaultLangChainOptions.maxTokens,
-    });
+    // Create the appropriate LLM based on provider
+    let llm;
+    if (provider === 'gemini') {
+      llm = new ChatGoogleGenerativeAI({
+        apiKey: apiKey,
+        model: langChainOptions?.model || 'gemini-1.5-pro',
+        temperature: langChainOptions?.temperature ?? this.defaultLangChainOptions.temperature,
+        maxOutputTokens: langChainOptions?.maxTokens || this.defaultLangChainOptions.maxTokens,
+      });
+    } else {
+      llm = new ChatOpenAI({
+        openAIApiKey: apiKey,
+        modelName: langChainOptions?.model || 'gpt-3.5-turbo',
+        temperature: langChainOptions?.temperature ?? this.defaultLangChainOptions.temperature,
+        maxTokens: langChainOptions?.maxTokens || this.defaultLangChainOptions.maxTokens,
+      });
+    }
 
     const systemPrompt = this.createSystemPrompt(options);
     const messages = [
@@ -116,7 +143,21 @@ Now convert the user's text into musical notation that captures its essence and 
 
     try {
       const response = await llm.invoke(messages);
-      const notation = response.content.toString().trim();
+      let notation: string;
+      
+      if (typeof response.content === 'string') {
+        notation = response.content.trim();
+      } else if (Array.isArray(response.content)) {
+        // Handle array of content parts (for some models)
+        notation = response.content
+          .map(part => typeof part === 'string' ? part : JSON.stringify(part))
+          .join('').trim();
+      } else {
+        // Fallback for other content types
+        notation = JSON.stringify(response.content).trim();
+      }
+      
+      console.log('🚀 ~ LangChainTextToMusicConverter ~ generateNotationWithLangChain ~ notation:', notation)
       
       // Validate that the response looks like notation
       if (!this.isValidNotation(notation)) {
@@ -125,7 +166,7 @@ Now convert the user's text into musical notation that captures its essence and 
 
       return notation;
     } catch (error) {
-      console.warn('LangChain generation failed:', error);
+      console.warn(`${provider === 'gemini' ? 'Gemini' : 'OpenAI'} generation failed:`, error);
       throw error;
     }
   }
@@ -133,7 +174,7 @@ Now convert the user's text into musical notation that captures its essence and 
   private isValidNotation(notation: string): boolean {
     // Basic validation to ensure the response looks like musical notation
     const hasInstrument = /\w+\s*:/.test(notation);
-    const hasNotes = /[A-Ga-g#b]\d*\.\d*/.test(notation);
+    const hasNotes = /[A-G][#b]?\d+\.\d+/.test(notation);
     const hasSemicolon = /;/.test(notation);
     
     return hasInstrument && hasNotes && hasSemicolon;
@@ -177,7 +218,7 @@ Now convert the user's text into musical notation that captures its essence and 
   ): Promise<MusicData> {
     // For now, we generate notation first and then parse it
     // This ensures compatibility with the existing system
-    const notation = await this.convertTextToNotation(text, options);
+    await this.convertTextToNotation(text, options);
     
     // We would need access to MusicParser to parse the generated notation
     // For now, return a basic structure - this should be integrated with the main converter
@@ -193,8 +234,11 @@ Now convert the user's text into musical notation that captures its essence and 
   // Utility method to check if LangChain is available
   public static isLangChainAvailable(): boolean {
     // Check for environment variables in both Node.js and browser environments
-    const hasEnvKey = typeof process !== 'undefined' && process.env && process.env.OPENAI_API_KEY;
-    const hasWindowKey = typeof window !== 'undefined' && (window as any).OPENAI_API_KEY;
-    return !!(hasEnvKey || hasWindowKey);
+    const hasOpenAIKey = typeof process !== 'undefined' && process.env?.OPENAI_API_KEY ||
+      typeof window !== 'undefined' && (window as any).OPENAI_API_KEY;
+    const hasGeminiKey = typeof process !== 'undefined' && process.env?.GEMINI_API_KEY ||
+      typeof window !== 'undefined' && (window as any).GEMINI_API_KEY;
+    
+    return !!(hasOpenAIKey || hasGeminiKey);
   }
 }

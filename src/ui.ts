@@ -24,6 +24,7 @@ interface TextToMusicOptions {
   langChainOptions?: {
     apiKey?: string;
     model?: string;
+    provider?: string;
   };
 }
 
@@ -378,6 +379,20 @@ class MusicAppController {
   private bindLangChainEvents(): void {
     const langchainEnabled = document.getElementById('langchain-enabled') as HTMLInputElement;
     const langchainSettings = document.getElementById('langchain-settings');
+    const providerSelect = document.getElementById('provider-select') as HTMLSelectElement;
+    const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+
+    // Provider switching
+    providerSelect?.addEventListener('change', () => this.handleProviderChange());
+    
+    // Model selection
+    modelSelect?.addEventListener('change', () => this.handleModelChange());
+
+    // Load saved preferences
+    this.loadProviderPreferences();
+
+    // Initialize provider-specific UI
+    this.updateProviderUI();
     const langchainStatus = document.getElementById('langchain-status');
     const openaiKeyInput = document.getElementById('openai-key') as HTMLInputElement;
 
@@ -396,14 +411,19 @@ class MusicAppController {
     openaiKeyInput?.addEventListener('change', () => {
       const apiKey = openaiKeyInput.value.trim();
       if (apiKey) {
+        console.log('🚀 ~ MusicAppController ~ bindLangChainEvents ~ apiKey:', apiKey)
         localStorage.setItem('openai-api-key', apiKey);
+        (window as any).OPENAI_API_KEY = apiKey;
       }
     });
 
     // Load API key from localStorage on page load
     const savedApiKey = localStorage.getItem('openai-api-key');
     if (savedApiKey && openaiKeyInput) {
+        console.log('🚀2 ~ MusicAppController ~ bindLangChainEvents ~ apiKey:', savedApiKey)
+
       openaiKeyInput.value = savedApiKey;
+      (window as any).OPENAI_API_KEY = savedApiKey;
     }
   }
 
@@ -696,7 +716,9 @@ class MusicAppController {
     
     // LangChain options
     const langchainEnabled = document.getElementById('langchain-enabled') as HTMLInputElement;
+    const providerSelect = document.getElementById('provider-select') as HTMLSelectElement;
     const openaiKeyInput = document.getElementById('openai-key') as HTMLInputElement;
+    const geminiKeyInput = document.getElementById('gemini-key') as HTMLInputElement;
     const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
     const moodSelect = document.getElementById('mood-select') as HTMLSelectElement;
     const complexitySelect = document.getElementById('complexity-select') as HTMLSelectElement;
@@ -714,16 +736,113 @@ class MusicAppController {
       options.mood = moodSelect ? moodSelect.value : 'balanced';
       options.complexity = complexitySelect ? complexitySelect.value : 'moderate';
       
-      const apiKey = openaiKeyInput?.value.trim();
+      const selectedProvider = providerSelect?.value || 'openai';
+      const selectedModel = modelSelect?.value || 'gpt-3.5-turbo';
+      
+      // Get the appropriate API key based on provider
+      let apiKey = '';
+      if (selectedProvider === 'openai') {
+        apiKey = openaiKeyInput?.value.trim() || '';
+      } else if (selectedProvider === 'gemini') {
+        apiKey = geminiKeyInput?.value.trim() || '';
+      }
+      
       if (apiKey) {
         options.langChainOptions = {
           apiKey: apiKey,
-          model: modelSelect ? modelSelect.value : 'gpt-3.5-turbo'
+          model: selectedModel,
+          provider: selectedProvider
         };
       }
     }
 
     return options;
+  }
+
+  private handleProviderChange(): void {
+    const providerSelect = document.getElementById('provider-select') as HTMLSelectElement;
+    const selectedProvider = providerSelect?.value;
+    
+    // Save provider preference
+    localStorage.setItem('selectedProvider', selectedProvider || 'openai');
+    
+    // Update UI to show appropriate settings
+    this.updateProviderUI();
+    
+    // Filter models based on provider
+    this.filterModelsByProvider(selectedProvider);
+  }
+
+  private handleModelChange(): void {
+    const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+    const selectedModel = modelSelect?.value;
+    
+    // Save model preference
+    localStorage.setItem('selectedModel', selectedModel || 'gpt-3.5-turbo');
+  }
+
+  private loadProviderPreferences(): void {
+    const savedProvider = localStorage.getItem('selectedProvider') || 'openai';
+    const savedModel = localStorage.getItem('selectedModel') || 'gpt-3.5-turbo';
+    
+    const providerSelect = document.getElementById('provider-select') as HTMLSelectElement;
+    const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+    
+    if (providerSelect) {
+      providerSelect.value = savedProvider;
+    }
+    
+    // Filter models first, then set the saved model
+    this.filterModelsByProvider(savedProvider);
+    
+    if (modelSelect) {
+      modelSelect.value = savedModel;
+    }
+  }
+
+  private updateProviderUI(): void {
+    const providerSelect = document.getElementById('provider-select') as HTMLSelectElement;
+    const selectedProvider = providerSelect?.value || 'openai';
+    
+    const openaiKeyContainer = document.getElementById('openai-key-container');
+    const geminiKeyContainer = document.getElementById('gemini-key-container');
+    
+    if (selectedProvider === 'openai') {
+      if (openaiKeyContainer) openaiKeyContainer.style.display = 'block';
+      if (geminiKeyContainer) geminiKeyContainer.style.display = 'none';
+    } else if (selectedProvider === 'gemini') {
+      if (openaiKeyContainer) openaiKeyContainer.style.display = 'none';
+      if (geminiKeyContainer) geminiKeyContainer.style.display = 'block';
+    }
+  }
+
+  private filterModelsByProvider(provider: string): void {
+    const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
+    if (!modelSelect) return;
+    
+    // Hide all options first
+    Array.from(modelSelect.options).forEach(option => {
+      const dataProvider = option.getAttribute('data-provider');
+      
+      if (dataProvider === provider) {
+        option.style.display = 'block';
+        option.disabled = false;
+      } else {
+        option.style.display = 'none';
+        option.disabled = true;
+      }
+    });
+    
+    // Set first available option as selected
+    const firstAvailableOption = Array.from(modelSelect.options).find(option => 
+      option.getAttribute('data-provider') === provider
+    );
+    
+    if (firstAvailableOption) {
+      modelSelect.value = firstAvailableOption.value;
+      // Trigger change event to save the selection
+      this.handleModelChange();
+    }
   }
 }
 
