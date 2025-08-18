@@ -16,14 +16,19 @@ No installation required - just open the link and start creating music!
 ## ✨ Features
 
 - **🎼 Custom Notation System**: Simple text-based notation for complex musical compositions
-- **🎹 Multiple Instruments**: Piano, violin, bass, panduri, choir, timpani, drums, and more
-- **🤖 AI-Powered Text-to-Music**: Convert plain text into sophisticated musical notation using LangChain and OpenAI
+- **🎹 Comprehensive Instrument Library**: 76+ instruments including full orchestra, world instruments, synthesizers, and extensive percussion
+- **🥁 Advanced Percussion**: 50+ drum sounds from basic kit to ethnic percussion, orchestral, and electronic effects
+- **🎭 Sophisticated Synthesis**: Each instrument features realistic ADSR envelopes, frequency-dependent filtering, and authentic timbres
+- **🌍 World Music Support**: Instruments from Georgian (panduri), Indian (sitar, tabla), Middle Eastern (oud, duduk), African (djembe, kalimba), and more
+- **🤖 AI-Powered Text-to-Music**: Convert plain text into sophisticated musical notation using LangChain with OpenAI/Gemini
 - **🎯 Rule-Based Text Conversion**: Built-in character mapping algorithms for deterministic text-to-music conversion
-- **💾 Local Storage**: Save and manage your musical compositions locally
-- **📱 Responsive UI**: Modern sidebar-based interface with tabbed navigation
-- **🎵 Real-time Playback**: Instant audio feedback using Web Audio API
+- **💾 Local Storage**: Save and manage your musical compositions locally with versioning
+- **📱 Responsive UI**: Modern sidebar-based interface with tabbed navigation and mobile optimization
+- **🎵 Real-time Playback**: Instant audio feedback using advanced Web Audio API synthesis
 - **📁 MIDI Export**: Download your compositions as standard MIDI files
-- **🎨 Beautiful UI**: Tailwind CSS-powered interface with smooth animations
+- **🎨 Beautiful Examples**: Rich library of examples from classical to electronic to world fusion
+- **🔄 Multiple Synthesis Modes**: From acoustic simulation to analog synthesizer to FM synthesis
+- **🎚️ Dynamic Expression**: Support for velocity, duration, and articulation control
 
 ## 🚀 Quick Start
 
@@ -98,11 +103,26 @@ nextInstrument:note1.duration;
 piano:C4.1+E4.1+G4.1,F4.1+A4.1+C5.1|G4.1+B4.1+D5.1,C4.2+E4.2+G4.2;
 ```
 
-### Example - Multi-Instrument Rock Song
+### Example - Epic Orchestral Composition
 ```
-piano:C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5|D4.0.5+F4.0.5+B4.0.5,C4.0.5+E4.0.5+G4.0.5;
-bass:C2.1|G2.1|F2.1|C2.1;
-drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;
+// String section with rich harmonies
+violin:G5.2+B5.2+D6.2|A5.2+C6.2+E6.2|B5.2+D6.2+F#6.2|G5.4+B5.4+D6.4;
+viola:D5.2+G5.2+B5.2|E5.2+A5.2+C6.2|F#5.2+B5.2+D6.2|D5.4+G5.4+B5.4;
+cello:G3.2+D4.2|A3.2+E4.2|B3.2+F#4.2|G3.4+D4.4;
+double_bass:G2.4|A2.4|B2.4|G2.4;
+
+// Brass fanfare
+trumpet:D6.1,E6.1,F#6.1,G6.1|A6.2,G6.1,F#6.1|E6.2,D6.2|G6.4;
+french_horn:G4.2+B4.2+D5.2|A4.2+C5.2+E5.2|B4.2+D5.2+F#5.2|G4.4+B4.4+D5.4;
+trombone:G3.4|A3.4|B3.4|G3.4;
+
+// Woodwind flourishes
+flute:D6.0.5,E6.0.5,F#6.0.5,G6.0.5|A6.1,G6.0.5,F#6.0.5|E6.1,D6.1|G6.4;
+clarinet:B4.2+D5.2+G5.2|C5.2+E5.2+A5.2|D5.2+F#5.2+B5.2|B4.4+D5.4+G5.4;
+
+// Dramatic percussion
+timpani:G2.4|A2.4|B2.4|G2.4;
+drums:k.1,s.0.5,h.0.5|c.2,r.1,r.1|k.0.5,s.0.5,t.0.5,f.0.5,c.2;
 ```
 
 ### Syntax Rules
@@ -113,22 +133,103 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;
 - **Note Format**: `PitchOctave.Duration` (e.g., `C4.1`, `F#3.0.5`)
 - **Rests**: Empty positions or commas without notes
 
-## 🎼 Supported Instruments
+## 🎼 Supported Instruments (76 Total)
 
-### Melodic Instruments
-- **piano**: Standard piano with triangle wave
-- **violin**: Sawtooth wave with lowpass filter and slow attack
-- **bass**: Deep bass tones for basslines
-- **panduri**: Georgian traditional plucked string instrument
-- **choir**: Multiple detuned sine waves for chorus effect
-- **timpani**: Sine wave with pitch bend for orchestral kettle drums
+### Keyboard Instruments (5)
 
-### Percussion
-- **drums**: Multi-sound percussion kit
-  - `k` - Kick drum
-  - `s` - Snare drum  
-  - `h` - Hi-hat
-  - `d` - Frame drum (doli)
+`piano` • `electric_piano` • `harpsichord` • `organ` • `accordion`
+
+### String Instruments (14)
+
+`violin` • `viola` • `cello` • `double_bass` • `bass` • `guitar` • `electric_guitar` • `acoustic_guitar` • `banjo` • `mandolin` • `harp` • `sitar` • `oud` • `panduri`
+
+### Brass Instruments (7)
+
+`trumpet` • `cornet` • `trombone` • `french_horn` • `tuba` • `euphonium` • `brass`
+
+### Woodwind Instruments (13)
+
+`flute` • `piccolo` • `recorder` • `clarinet` • `bass_clarinet` • `saxophone` • `alto_sax` • `tenor_sax` • `baritone_sax` • `oboe` • `english_horn` • `bassoon` • `duduk`
+
+### Voice (5)
+
+`choir` • `soprano` • `alto` • `tenor` • `bass_voice`
+
+### Mallet Percussion (6)
+
+`xylophone` • `marimba` • `vibraphone` • `glockenspiel` • `bells` • `celesta`
+
+### Orchestral Percussion (10)
+
+`timpani` • `drums` • `triangle` • `tambourine` • `castanets` • `wood_block` • `temple_block` • `gong` • `tam_tam` • `cymbal`
+
+### Electronic/Synthesizer (10)
+
+`synth` • `lead` • `pad` • `arp` • `pluck` • `strings` • `warm_pad` • `bright_pad` • `polysynth` • `fm_synth`
+
+### Exotic/Unique Instruments (6)
+
+`theremin` • `glass_harmonica` • `musical_saw` • `kalimba` • `steel_drum` • `hang_drum`
+
+### Percussion Kit
+
+The drums instrument supports comprehensive percussion sounds:
+
+#### Basic Kit
+
+- `k` or `kick` - Bass drum
+- `s` or `snare` - Snare drum
+- `h` or `hihat` - Closed hi-hat
+- `o` or `open_hihat` - Open hi-hat
+- `c` or `crash` - Crash cymbal
+- `r` or `ride` - Ride cymbal
+- `t` or `tom` - Tom drum
+- `f` or `floor_tom` - Floor tom
+
+#### Extended Kit
+
+- `sp` or `splash` - Splash cymbal
+- `ch` or `china` - China cymbal
+- `rb` or `ride_bell` - Ride bell
+- `cb` or `cowbell` - Cowbell
+- `wb` or `wood_block` - Wood block
+- `cl` or `clap` - Hand clap
+
+#### Shakers & Hand Percussion
+
+- `tam` or `tambourine` - Tambourine
+- `sha` or `shaker` - Shaker
+- `ca` or `cabasa` - Cabasa
+- `ma` or `maracas` - Maracas
+
+#### Ethnic Percussion
+
+- `d` or `frame_drum` - Traditional frame drum
+- `ta` or `tabla` - Indian tabla
+- `bongo` - Bongo drums
+- `conga` - Conga drums
+- `djembe` - West African djembe
+- `cai` or `cajon` - Box drum
+- `ti` or `timbale` - Latin timbales
+- `uk` or `udu` - Nigerian clay pot drum
+
+#### Orchestral Percussion
+
+- `tim` or `timpani` - Orchestral timpani
+- `gong` - Large gong
+- `tri` or `triangle` - Triangle
+- `sus` or `suspended_cymbal` - Suspended cymbal
+- `vib` or `vibraslap` - Vibraslap
+
+#### Special Effects
+
+- `ws` or `wind_chimes` - Wind chimes
+- `ra` or `ratchet` - Ratchet
+- `wh` or `whip` - Whip crack
+- `808` or `kick_808` - Electronic 808 kick
+- `elec` or `electronic_snare` - Electronic snare
+- `rev` or `reverse_cymbal` - Reverse cymbal swell
+- `gat` or `gated_snare` - Gated reverb snare
 
 ## 🤖 AI-Powered Text-to-Music Conversion
 

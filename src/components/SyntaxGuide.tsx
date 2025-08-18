@@ -16,7 +16,31 @@ Format:
 - Chords created by joining notes with plus (+)
 - Note format: pitchOctave.duration (e.g., C4.1)
 - Drum sounds: k (kick), s (snare), h (hi-hat), c (crash), t (tom), d (generic)
-- Instruments: piano, bass, drums, synth, lead, brass, strings, violin, choir, etc.
+
+Available Instruments (76 total):
+
+Keyboard: piano, electric_piano, harpsichord, organ, accordion
+
+String: violin, viola, cello, double_bass, bass, guitar, electric_guitar, 
+acoustic_guitar, banjo, mandolin, harp, sitar, oud, panduri
+
+Brass: trumpet, cornet, trombone, french_horn, tuba, euphonium, brass
+
+Woodwind: flute, piccolo, recorder, clarinet, bass_clarinet, saxophone,
+alto_sax, tenor_sax, baritone_sax, oboe, english_horn, bassoon, duduk
+
+Voice: choir, soprano, alto, tenor, bass_voice
+
+Mallet Percussion: xylophone, marimba, vibraphone, glockenspiel, bells, celesta
+
+Orchestral Percussion: timpani, drums, triangle, tambourine, castanets,
+wood_block, temple_block, gong, tam_tam, cymbal
+
+Electronic/Synth: synth, lead, pad, arp, pluck, strings, warm_pad, bright_pad,
+polysynth, fm_synth
+
+Exotic/Unique: theremin, glass_harmonica, musical_saw, kalimba, steel_drum,
+hang_drum
 
 Examples:
 piano:C4.1+E4.1+G4.1|F4.1+A4.1+C5.1;  // C chord then F chord
