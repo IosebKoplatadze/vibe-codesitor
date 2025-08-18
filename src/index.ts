@@ -1,6 +1,6 @@
 import { MusicParser } from './parser';
 import { AudioEngine } from './audio';
-import { TextToMusicConverter, TextToMusicOptions } from './textToMusic';
+import { TextToMusicConverter } from './textToMusic';
 import { LangChainTextToMusicConverter, EnhancedTextToMusicOptions } from './langchainTextToMusic';
 
 // Main entry point for the application
@@ -40,7 +40,7 @@ class MusicConverter {
         musicData = this.parser.parse(notation);
       } else {
         // Convert text to music using rule-based converter
-        musicData = this.textConverter.convertTextToMusic(input, textOptions);
+        musicData = this.textConverter.convertTextToMusic(input);
       }
     }
     
@@ -53,7 +53,7 @@ class MusicConverter {
       return await this.langChainConverter.convertTextToNotation(text, options);
     } else {
       // Use rule-based converter
-      const musicData = this.textConverter.convertTextToMusic(text, options);
+      const musicData = this.textConverter.convertTextToMusic(text);
       return this.textConverter.musicDataToNotation(musicData);
     }
   }
@@ -108,5 +108,4 @@ if (typeof window !== 'undefined') {
 
 export default MusicConverter;
 export { MusicConverter, TextToMusicConverter, LangChainTextToMusicConverter };
-export type { TextToMusicOptions } from './textToMusic';
 export type { EnhancedTextToMusicOptions, LangChainOptions } from './langchainTextToMusic';
