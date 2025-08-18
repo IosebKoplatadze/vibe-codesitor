@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -20,7 +21,9 @@ module.exports = (env, argv) => {
             options: {
               compilerOptions: {
                 sourceMap: true,
+                skipLibCheck: true
               },
+              transpileOnly: true
             },
           },
           exclude: /node_modules/,
@@ -42,6 +45,14 @@ module.exports = (env, argv) => {
       globalObject: 'this',
       clean: true, // Clean dist folder on each build
     },
+    plugins: [
+      new Dotenv({
+        path: path.resolve(__dirname, '.env'),
+        safe: false, // Don't require .env.example
+        systemvars: true, // Allow system environment variables
+        silent: false // Show errors if .env file is missing
+      })
+    ],
     devServer: {
       static: {
         directory: path.join(__dirname, '.'),

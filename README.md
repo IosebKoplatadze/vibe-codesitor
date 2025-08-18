@@ -16,7 +16,8 @@ No installation required - just open the link and start creating music!
 
 - **🎼 Custom Notation System**: Simple text-based notation for complex musical compositions
 - **🎹 Multiple Instruments**: Piano, violin, bass, panduri, choir, timpani, drums, and more
-- **🤖 Text-to-Music AI**: Convert plain text into musical notation using character mapping algorithms
+- **🤖 AI-Powered Text-to-Music**: Convert plain text into sophisticated musical notation using LangChain and OpenAI
+- **🎯 Rule-Based Text Conversion**: Built-in character mapping algorithms for deterministic text-to-music conversion
 - **💾 Local Storage**: Save and manage your musical compositions locally
 - **📱 Responsive UI**: Modern sidebar-based interface with tabbed navigation
 - **🎵 Real-time Playback**: Instant audio feedback using Web Audio API
@@ -47,7 +48,25 @@ npm install
 npm start
 ```
 
-4. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
+4. **Set up environment variables** (for AI-powered features):
+   
+   Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your Gemini API key:
+   ```bash
+   GEMINI_API_KEY=your_gemini_api_key_here
+   AI_PROVIDER=gemini
+   ```
+   
+   Get your API key from: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+   
+   **Note:** The app now supports both OpenAI and Gemini. Set `AI_PROVIDER=openai` if you prefer to use OpenAI instead.
+
+5. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
+
 
 ### Building for Production
 ```bash
@@ -114,9 +133,42 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;
   - `h` - Hi-hat
   - `d` - Frame drum (doli)
 
-## 🤖 Text-to-Music Conversion
+## 🤖 AI-Powered Text-to-Music Conversion
 
-Convert any text into musical notation using our AI-powered text-to-music engine:
+Transform any text into beautiful musical notation using advanced AI technology:
+
+### Getting Started with AI Music Generation
+
+1. **Switch to Text Mode**: Click the "Text Mode" button
+2. **Enable AI Generation**: Check the "🤖 AI-Powered Generation" checkbox
+3. **Add API Key**: Enter your OpenAI API key (stored locally)
+4. **Configure Settings**: Choose mood, complexity, and musical style
+5. **Enter Text**: Write any text prompt describing the music you want
+6. **Generate**: Click "Convert Text to Music" to create AI-powered notation
+
+### AI Settings
+
+- **API Key**: Your OpenAI API key (stored securely in browser localStorage)
+- **AI Model**: Choose between GPT-3.5 Turbo (fast) or GPT-4 (better quality)
+- **Mood**: Balanced, Happy, Sad, Energetic, Peaceful, Dramatic, Romantic, Mysterious
+- **Complexity**: Simple, Moderate, or Complex musical arrangements
+- **Style**: Melodic, Rhythmic, Harmonic, or Ambient
+- **Scale**: Major, Minor, Pentatonic, or Chromatic
+
+### AI-Optimized Example Prompts
+
+- *"Create a triumphant melody that builds to an epic crescendo, like a hero's journey"*
+- *"Compose a gentle lullaby that flows like a peaceful river under moonlight"*
+- *"Write an energetic jazz piece with syncopated rhythms that makes you want to dance"*
+- *"Imagine the sound of rain falling on leaves while birds sing in a mystical forest"*
+
+### Fallback System
+
+If AI generation fails or is unavailable, the system automatically falls back to the built-in rule-based text-to-music converter, ensuring your text is always converted to music.
+
+## 🎯 Rule-Based Text-to-Music Conversion
+
+For users who prefer deterministic conversion or don't have an AI API key:
 
 1. Switch to "Text Mode"
 2. Enter any text (e.g., "Hello world! This creates beautiful music.")
@@ -130,17 +182,21 @@ The system maps characters to musical notes based on:
 - **Punctuation** → Rhythm variations
 - **Text length** → Composition structure
 
+This method provides consistent, predictable results without requiring API keys.
+
 ## 🏗️ Architecture
 
 ### Core Components
-- **`MusicConverter`** (`src/index.ts`): Main orchestrator
+- **`MusicConverter`** (`src/index.ts`): Main orchestrator with AI/rule-based routing
+- **`LangChainTextToMusicConverter`** (`src/langchainTextToMusic.ts`): AI-powered text conversion
+- **`TextToMusicConverter`** (`src/textToMusic.ts`): Rule-based text conversion
 - **`MusicParser`** (`src/parser.ts`): Notation parsing engine
 - **`AudioEngine`** (`src/audio.ts`): Web Audio synthesis
-- **`MusicAppController`** (`src/ui.ts`): UI management
-- **`TextToMusicConverter`** (`src/textToMusic.ts`): AI text conversion
+- **`MusicAppController`** (`src/ui.ts`): UI management with AI controls
 
 ### Technology Stack
 - **TypeScript**: Type-safe JavaScript development
+- **LangChain + OpenAI**: AI-powered text-to-music generation
 - **Webpack**: Multi-entry bundling (`index.js` + `ui.js`)
 - **Web Audio API**: Real-time audio synthesis
 - **Tailwind CSS**: Utility-first styling
