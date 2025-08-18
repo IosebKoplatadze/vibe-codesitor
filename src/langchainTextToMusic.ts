@@ -2,7 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { MusicData } from './parser';
-import { TextToMusicConverter, TextToMusicOptions } from './textToMusic';
+import { TextToMusicConverter } from './textToMusic';
 
 export interface LangChainOptions {
   apiKey?: string;
@@ -12,7 +12,12 @@ export interface LangChainOptions {
   provider?: 'openai' | 'gemini';
 }
 
-export interface EnhancedTextToMusicOptions extends TextToMusicOptions {
+export interface EnhancedTextToMusicOptions {
+  style?: 'melodic' | 'rhythmic' | 'harmonic' | 'ambient';
+  scale?: 'major' | 'minor' | 'pentatonic' | 'chromatic';
+  tempo?: number;
+  baseOctave?: number;
+  instruments?: string[];
   useLangChain?: boolean;
   langChainOptions?: LangChainOptions;
   mood?: 'happy' | 'sad' | 'energetic' | 'peaceful' | 'dramatic' | 'romantic' | 'mysterious' | 'balanced';
@@ -48,7 +53,7 @@ NOTATION FORMAT:
 
 COMPOSITION GUIDELINES:
 - Style: ${style}
-- Scale: ${scale} (${this.getScaleNotes(scale)})
+- Scale: ${scale} (${this.getScaleNotes(scale || 'major')})
 - Tempo: ${tempo} BPM
 - Mood: ${mood || 'balanced'}
 - Complexity: ${complexity || 'moderate'}
@@ -202,12 +207,12 @@ Now convert the user's text into musical notation that captures its essence and 
       } catch (error) {
         console.warn('LangChain conversion failed, falling back to rule-based converter:', error);
         // Fall back to rule-based converter
-        const musicData = this.fallbackConverter.convertTextToMusic(text, opts);
+        const musicData = this.fallbackConverter.convertTextToMusic(text);
         return this.fallbackConverter.musicDataToNotation(musicData);
       }
     } else {
       // Use the original rule-based converter
-      const musicData = this.fallbackConverter.convertTextToMusic(text, opts);
+      const musicData = this.fallbackConverter.convertTextToMusic(text);
       return this.fallbackConverter.musicDataToNotation(musicData);
     }
   }

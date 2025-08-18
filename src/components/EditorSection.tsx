@@ -7,8 +7,6 @@ const EditorSection: React.FC<EditorSectionProps> = ({
   onNotationChange,
   isTextMode,
   onToggleMode,
-  textSettings,
-  onTextSettingsChange,
   langchainSettings,
   onLangchainSettingsChange,
   isPlaying,
@@ -46,8 +44,6 @@ const EditorSection: React.FC<EditorSectionProps> = ({
       {/* Text Settings */}
       {isTextMode && (
         <TextSettings
-          textSettings={textSettings}
-          onTextSettingsChange={onTextSettingsChange}
           langchainSettings={langchainSettings}
           onLangchainSettingsChange={onLangchainSettingsChange}
         />

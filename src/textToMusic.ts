@@ -1,24 +1,9 @@
 import { MusicData, Track, Note, Chord } from './parser';
 
-export interface TextToMusicOptions {
-  style: 'melodic' | 'rhythmic' | 'harmonic' | 'ambient';
-  scale: 'major' | 'minor' | 'pentatonic' | 'chromatic';
-  tempo: number;
-  baseOctave: number;
-  instruments: string[];
-}
-
 export class TextToMusicConverter {
-  private defaultOptions: TextToMusicOptions = {
-    style: 'melodic',
-    scale: 'major',
-    tempo: 120,
-    baseOctave: 4,
-    instruments: ['piano']
-  };
 
   // Musical scales for mapping
-  private scales = {
+  private readonly scales = {
     major: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
     minor: ['C', 'D', 'Eb', 'F', 'G', 'Ab', 'Bb'],
     pentatonic: ['C', 'D', 'E', 'G', 'A'],
@@ -97,43 +82,25 @@ export class TextToMusicConverter {
     };
   }
 
-  public convertTextToMusic(text: string, options: Partial<TextToMusicOptions> = {}): MusicData {
-    const opts = { ...this.defaultOptions, ...options };
-    const scale = this.scales[opts.scale];
-    const structure = this.analyzeTextStructure(text);
+  public convertTextToMusic(text: string): MusicData {
+    const scale = this.scales.major;
 
     const musicData: MusicData = {
       tracks: [],
-      tempo: opts.tempo
+      tempo: 120
     };
 
-    // Create tracks based on style
-    switch (opts.style) {
-      case 'melodic':
-        musicData.tracks.push(this.createMelodicTrack(text, scale, opts));
-        break;
-      case 'rhythmic':
-        musicData.tracks.push(this.createMelodicTrack(text, scale, opts));
-        musicData.tracks.push(this.createRhythmicTrack(text, opts));
-        break;
-      case 'harmonic':
-        musicData.tracks.push(this.createMelodicTrack(text, scale, opts));
-        musicData.tracks.push(this.createHarmonicTrack(text, scale, opts));
-        break;
-      case 'ambient':
-        musicData.tracks.push(this.createAmbientTrack(text, scale, opts));
-        break;
-    }
+    // Create melodic track (simplified, no style options)
+    musicData.tracks.push(this.createMelodicTrack(text, scale));
 
     return musicData;
   }
 
-  private createMelodicTrack(text: string, scale: string[], options: TextToMusicOptions): Track {
+  private createMelodicTrack(text: string, scale: string[]): Track {
     const notes: Note[] = [];
     
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      const note = this.getCharacterNote(char, scale, options.baseOctave);
+    for (const char of text) {
+      const note = this.getCharacterNote(char, scale, 4); // baseOctave = 4
       notes.push(note);
     }
 
@@ -167,108 +134,8 @@ export class TextToMusicConverter {
     }
 
     return {
-      instrument: options.instruments[0] || 'piano',
+      instrument: 'piano',
       patterns: patterns.length > 0 ? patterns : [[]]
-    };
-  }
-
-  private createRhythmicTrack(text: string, options: TextToMusicOptions): Track {
-    const chords: Chord[] = [];
-    
-    // Create rhythm based on text structure
-    const words = text.split(/\s+/);
-    for (const word of words) {
-      // Kick on word start
-      chords.push({
-        notes: [{ pitch: 'k', octave: 0, duration: 0.25, velocity: 0.8 }],
-        duration: 0.25
-      });
-      
-      // Hi-hat between characters
-      for (let i = 1; i < word.length; i++) {
-        chords.push({
-          notes: [{ pitch: 'h', octave: 0, duration: 0.125, velocity: 0.4 }],
-          duration: 0.125
-        });
-      }
-      
-      // Snare at word end if punctuation follows
-      if (this.isPunctuation(word[word.length - 1])) {
-        chords.push({
-          notes: [{ pitch: 's', octave: 0, duration: 0.25, velocity: 0.7 }],
-          duration: 0.25
-        });
-      }
-    }
-
-    return {
-      instrument: 'drums',
-      patterns: [chords]
-    };
-  }
-
-  private createHarmonicTrack(text: string, scale: string[], options: TextToMusicOptions): Track {
-    const chords: Chord[] = [];
-    const words = text.split(/\s+/);
-    
-    // Create harmony based on words
-    for (const word of words) {
-      if (word.length >= 3) {
-        // Create chord from first 3 characters
-        const harmonicNotes: Note[] = [];
-        for (let i = 0; i < Math.min(3, word.length); i++) {
-          const note = this.getCharacterNote(word[i], scale, options.baseOctave - 1);
-          note.duration = word.length * 0.25; // Longer words = longer chords
-          note.velocity *= 0.6; // Softer for harmony
-          harmonicNotes.push(note);
-        }
-        
-        chords.push({
-          notes: harmonicNotes,
-          duration: word.length * 0.25
-        });
-      }
-    }
-
-    return {
-      instrument: 'strings',
-      patterns: [chords]
-    };
-  }
-
-  private createAmbientTrack(text: string, scale: string[], options: TextToMusicOptions): Track {
-    const chords: Chord[] = [];
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    
-    // Create ambient pads based on sentence characteristics
-    for (const sentence of sentences) {
-      const vowelCount = sentence.split('').filter(c => this.isVowel(c)).length;
-      const consonantCount = sentence.length - vowelCount;
-      
-      // Base note from first character
-      const baseNote = this.getCharacterNote(sentence[0], scale, options.baseOctave - 1);
-      baseNote.duration = 2.0; // Long ambient notes
-      baseNote.velocity = 0.5;
-      
-      // Add harmonic content based on vowel/consonant ratio
-      const ambientNotes = [baseNote];
-      if (vowelCount > consonantCount) {
-        // More vowels = brighter harmony
-        const brightNote = this.getCharacterNote(sentence[sentence.length - 1], scale, options.baseOctave);
-        brightNote.duration = 2.0;
-        brightNote.velocity = 0.3;
-        ambientNotes.push(brightNote);
-      }
-
-      chords.push({
-        notes: ambientNotes,
-        duration: 2.0
-      });
-    }
-
-    return {
-      instrument: 'choir',
-      patterns: [chords]
     };
   }
 
