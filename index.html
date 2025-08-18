@@ -19,11 +19,24 @@
 </head>
 <body class="bg-gray-50 text-gray-900 leading-relaxed">
   <div class="flex h-screen overflow-hidden">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden" onclick="toggleSidebar()"></div>
+    
     <!-- Left Sidebar for Saved Notations and Examples -->
-    <div class="w-80 bg-white border-r border-gray-200 shadow-sm flex flex-col">
+    <div id="sidebar" class="fixed lg:relative lg:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out z-50 w-80 lg:w-80 bg-white border-r border-gray-200 shadow-sm flex flex-col h-full">
+      <!-- Mobile Sidebar Header with Close Button -->
+      <div class="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 bg-blue-50">
+        <h2 class="text-lg font-semibold text-gray-800">Library</h2>
+        <button onclick="toggleSidebar()" class="p-2 rounded-md hover:bg-gray-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      
       <div class="p-4 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800 mb-3">Library</h2>
-        <button id="save-notation-btn" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3 hidden lg:block">Library</h2>
+        <button id="save-notation-btn" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600 touch-manipulation">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
@@ -32,10 +45,10 @@
       </div>
       
       <!-- Tab Navigation -->
-      <div class="flex border-b border-gray-200 bg-gray-50">
-        <button id="saved-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500 text-blue-500 border-b-blue-500 bg-white">Saved</button>
-        <button id="examples-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500">Examples</button>
-        <button id="text-examples-tab" class="flex-1 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500">Text Examples</button>
+      <div class="flex border-b border-gray-200 bg-gray-50 overflow-x-auto">
+        <button id="saved-tab" class="flex-1 min-w-0 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500 text-blue-500 border-b-blue-500 bg-white touch-manipulation">Saved</button>
+        <button id="examples-tab" class="flex-1 min-w-0 py-3 px-2 border-0 bg-transparent text-gray-500 font-medium text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500 touch-manipulation">Examples</button>
+        <button id="text-examples-tab" class="flex-1 min-w-0 py-3 px-1 border-0 bg-transparent text-gray-500 font-medium text-xs lg:text-sm cursor-pointer transition-all duration-200 border-b-2 border-transparent hover:bg-blue-50 hover:text-blue-500 touch-manipulation">Text Examples</button>
       </div>
       
       <div class="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full hover:scrollbar-thumb-slate-400">
@@ -222,13 +235,21 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
     </div>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col bg-white">
+    <div class="flex-1 flex flex-col bg-white min-w-0">
       <!-- Header -->
       <div class="bg-white border-b border-gray-200 p-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 mb-1">Vibe Codesitor</h1>
-            <p class="text-sm text-gray-500">Create music with simple notation</p>
+          <div class="flex items-center gap-3">
+            <!-- Mobile Hamburger Menu -->
+            <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 touch-manipulation">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Vibe Codesitor</h1>
+              <p class="text-sm text-gray-500">Create music with simple notation</p>
+            </div>
           </div>
           <div class="flex items-center gap-2">
             <label for="tempo" class="text-sm font-medium text-gray-700">Tempo:</label>
@@ -238,18 +259,18 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
               value="120" 
               min="60" 
               max="200" 
-              class="w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+              class="w-16 sm:w-20 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 touch-manipulation">
             <span class="text-sm text-gray-500">BPM</span>
           </div>
         </div>
       </div>
 
       <!-- Editor Section -->
-      <div class="flex-1 flex flex-col p-6">
+      <div class="flex-1 flex flex-col p-4 sm:p-6 overflow-y-auto">
         <!-- Input Mode Toggle -->
         <div class="flex gap-2 mb-4">
-          <button id="notation-mode-btn" class="px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Notation Mode</button>
-          <button id="text-mode-btn" class="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Text Mode</button>
+          <button id="notation-mode-btn" class="flex-1 sm:flex-none px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 touch-manipulation">Notation Mode</button>
+          <button id="text-mode-btn" class="flex-1 sm:flex-none px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 touch-manipulation">Text Mode</button>
         </div>
 
         <!-- Text-to-Music Settings (hidden by default) -->
@@ -270,27 +291,27 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
 
           <!-- AI Settings Panel (hidden by default) -->
           <div id="langchain-settings" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md" style="display: none;">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1">AI Provider:</label>
-                <select id="provider-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="provider-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                   <option value="openai">OpenAI</option>
                   <option value="gemini">Google Gemini</option>
                 </select>
               </div>
               <div id="openai-key-container">
                 <label class="block text-xs font-medium text-gray-700 mb-1">OpenAI API Key:</label>
-                <input type="password" id="openai-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="sk-...">
+                <input type="password" id="openai-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation" placeholder="sk-...">
                 <div class="text-xs text-gray-500 mt-1">OpenAI API key (stored locally)</div>
               </div>
               <div id="gemini-key-container" style="display: none;">
                 <label class="block text-xs font-medium text-gray-700 mb-1">Gemini API Key:</label>
-                <input type="password" id="gemini-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="AIza...">
+                <input type="password" id="gemini-key" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation" placeholder="AIza...">
                 <div class="text-xs text-gray-500 mt-1">Google AI API key (stored locally)</div>
               </div>
-              <div>
+              <div class="sm:col-span-2">
                 <label class="block text-xs font-medium text-gray-700 mb-1">AI Model:</label>
-                <select id="model-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="model-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                   <!-- OpenAI models -->
                   <option value="gpt-3.5-turbo" data-provider="openai">GPT-3.5 Turbo</option>
                   <option value="gpt-4" data-provider="openai">GPT-4</option>
@@ -304,7 +325,7 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1">Mood:</label>
-                <select id="mood-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="mood-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                   <option value="balanced">Balanced</option>
                   <option value="happy">Happy</option>
                   <option value="sad">Sad</option>
@@ -317,7 +338,7 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
               </div>
               <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1">Complexity:</label>
-                <select id="complexity-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="complexity-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                   <option value="simple">Simple</option>
                   <option value="moderate">Moderate</option>
                   <option value="complex">Complex</option>
@@ -326,10 +347,10 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
             </div>
           </div>
           
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
               <label class="block text-xs font-medium text-gray-700 mb-1">Style:</label>
-              <select id="style-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <select id="style-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                 <option value="melodic">Melodic</option>
                 <option value="rhythmic">Rhythmic</option>
                 <option value="harmonic">Harmonic</option>
@@ -338,7 +359,7 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 mb-1">Scale:</label>
-              <select id="scale-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <select id="scale-select" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation">
                 <option value="major">Major</option>
                 <option value="minor">Minor</option>
                 <option value="pentatonic">Pentatonic</option>
@@ -347,59 +368,61 @@ k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,c.1;">
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 mb-1">Tempo:</label>
-              <input type="number" id="tempo-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="120" min="60" max="200">
+              <input type="number" id="tempo-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation" value="120" min="60" max="200">
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 mb-1">Base Octave:</label>
-              <input type="number" id="octave-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="4" min="2" max="6">
+              <input type="number" id="octave-input" class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 touch-manipulation" value="4" min="2" max="6">
             </div>
           </div>
         </div>
 
-        <div class="mb-4">
+                <div class="mb-4">
           <label for="notation-input" class="block text-sm font-medium text-gray-700 mb-2">
             Music Notation or Text Description:
           </label>
           <textarea 
             id="notation-input" 
             placeholder="Enter music notation (e.g., 'piano:C4.1,E4.1,G4.1;') or describe your music in plain text..."
-            class="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg resize-y focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 font-mono text-sm leading-relaxed bg-gray-50"></textarea>
+            class="w-full h-32 sm:h-40 px-4 py-3 border border-gray-300 rounded-lg resize-y focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 font-mono text-sm leading-relaxed bg-gray-50 touch-manipulation"></textarea>
         </div>
         
-        <div class="flex flex-wrap items-center gap-3 mb-6">
-          <button id="play-button" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-green-500 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 mb-6">
+          <button id="play-button" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-green-500 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 touch-manipulation">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
               <path d="M8 5v10l8-5z"/>
             </svg>
             Play
           </button>
           
-          <button id="stop-button" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+          <button id="stop-button" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 touch-manipulation">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
               <rect x="6" y="6" width="8" height="8"/>
             </svg>
             Stop
           </button>
           
-          <button id="convert-text-btn" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <button id="convert-text-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 touch-manipulation">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 00-8 0v3h8v-3z"/>
             </svg>
-            Convert Text to Music
+            <span class="hidden sm:inline">Convert Text to Music</span>
+            <span class="sm:hidden">Convert</span>
           </button>
           
-          <button id="download-btn" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-purple-500 text-white hover:bg-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+          <button id="download-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-md font-medium cursor-pointer border-0 transition-all duration-200 bg-purple-500 text-white hover:bg-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 touch-manipulation">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
               <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
             </svg>
-            Download MIDI
+            <span class="hidden sm:inline">Download MIDI</span>
+            <span class="sm:hidden">Download</span>
           </button>
         </div>
 
         <!-- Syntax Guide Section -->
-        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-6">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Notation Syntax Guide:</h2>
-          <div class="bg-white border border-gray-200 rounded-md p-4 overflow-x-auto">
+          <div class="bg-white border border-gray-200 rounded-md p-3 sm:p-4 overflow-x-auto">
             <pre class="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">instrument:note1.duration,note2.duration|nextMeasure;
 nextInstrument:note1.duration;
 
@@ -424,6 +447,46 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5;         // Basic drum pattern</pre>
 
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <!-- JavaScript for Mobile Sidebar Toggle -->
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      
+      if (sidebar && overlay) {
+        const isOpen = !sidebar.classList.contains('-translate-x-full');
+        
+        if (isOpen) {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+        } else {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('DOMContentLoaded', function() {
+      const overlay = document.getElementById('sidebar-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
+      }
+      
+      // Close sidebar on window resize if desktop
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 1024) { // lg breakpoint
+          const sidebar = document.getElementById('sidebar');
+          const overlay = document.getElementById('sidebar-overlay');
+          if (sidebar && overlay) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.add('hidden');
+          }
+        }
+      });
+    });
+  </script>
 
   <script src="dist/index.js"></script>
   <script src="dist/ui.js"></script>
