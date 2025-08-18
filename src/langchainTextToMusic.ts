@@ -39,12 +39,52 @@ export class LangChainTextToMusicConverter {
 
 NOTATION FORMAT:
 - Structure: instrument:notes|measures;next_instrument:notes;
-- Instruments: piano, violin, bass, drums, panduri, choir, timpani, strings
 - Notes: PitchOctave.Duration (e.g., C4.1, F#3.0.5)
 - Chords: Use + to join notes (C4.1+E4.1+G4.1)
 - Measures: Separate with | 
 - Duration: 0.25=sixteenth, 0.5=eighth, 1=quarter, 2=half, 4=whole
-- Drums: k=kick, s=snare, h=hi-hat, d=frame_drum
+
+AVAILABLE INSTRUMENTS:
+
+=== KEYBOARD ===
+- piano, electric_piano, harpsichord, organ, accordion
+
+=== STRINGS ===
+- violin, viola, cello, double_bass, bass, guitar, electric_guitar, acoustic_guitar
+- banjo, mandolin, harp, sitar, oud, panduri
+
+=== BRASS ===
+- trumpet, cornet, trombone, french_horn, tuba, euphonium, brass
+
+=== WOODWINDS ===
+- flute, piccolo, recorder, clarinet, bass_clarinet, saxophone, alto_sax
+- tenor_sax, baritone_sax, oboe, english_horn, bassoon, duduk
+
+=== VOICE ===
+- choir, soprano, alto, tenor, bass_voice
+
+=== MALLET PERCUSSION ===
+- xylophone, marimba, vibraphone, glockenspiel, bells, celesta
+
+=== ORCHESTRAL PERCUSSION ===
+- timpani, triangle, tambourine, castanets, wood_block, temple_block
+- gong, tam_tam, cymbal
+
+=== SYNTHESIZER ===
+- synth, lead, pad, arp, pluck, strings, warm_pad, bright_pad
+- polysynth, fm_synth
+
+=== EXOTIC/UNIQUE ===
+- theremin, glass_harmonica, musical_saw, kalimba, steel_drum, hang_drum
+
+=== DRUMS (use single letters or full names) ===
+Basic Kit: k=kick, s=snare, h=hihat, o=open_hihat, c=crash, r=ride, t=tom, f=floor_tom
+Extended: sp=splash, ch=china, rb=ride_bell, cb=cowbell, wb=wood_block, cl=clap
+Shakers: tam=tambourine, sha=shaker, ca=cabasa, ma=maracas
+Ethnic: d=frame_drum, ta=tabla, bongo, conga, djembe, cai=cajon, ti=timbale, uk=udu
+Orchestral: tim=timpani, gong, tri=triangle, sus=suspended_cymbal, vib=vibraslap
+Special: ws=wind_chimes, ra=ratchet, wh=whip, 808=808_kick, elec=electronic_snare
+Effects: rev=reverse_cymbal, gat=gated_snare
 
 COMPOSITION GUIDELINES:
 - Style: ${style}
@@ -61,16 +101,19 @@ MUSICAL RULES:
 5. Keep octaves between 2-6 for realistic playback
 6. Consider the text's punctuation for musical phrasing
 7. Match the mood with appropriate chord progressions and instrument choices
+8. Use the extensive instrument library to create rich, layered compositions
 
 STYLE SPECIFIC INSTRUCTIONS:
-- melodic: Focus on a single beautiful melody line
-- rhythmic: Add drum tracks and varied rhythmic patterns
-- harmonic: Include chord progressions and multiple instruments
-- ambient: Use longer notes, choir/strings, create atmospheric soundscapes
+- melodic: Focus on beautiful melody lines with supporting harmony
+- rhythmic: Add comprehensive drum tracks and varied rhythmic patterns
+- harmonic: Include rich chord progressions and multiple complementary instruments
+- ambient: Use pads, choir, strings, longer notes, create atmospheric soundscapes
 
 EXAMPLES:
 Simple piano melody: "piano:C4.1,D4.1,E4.1,F4.1|G4.2,F4.1,E4.1|D4.1,C4.2;"
-Rock with bass/drums: "piano:C4.0.5+E4.0.5+G4.0.5,F4.0.5+A4.0.5+C5.0.5|G4.0.5+B4.0.5+D5.0.5,C4.1+E4.1+G4.1;bass:C2.1|F2.1|G2.1,C2.1;drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,h.0.25,h.0.25,s.0.5;"
+Rich orchestral: "violin:G4.2+B4.2+D5.2|C5.1+E5.1+G5.1;cello:G2.2+D3.2|C3.2+G3.2;timpani:G2.4|C3.4;"
+Electronic beat: "synth:C4.0.5+E4.0.5,G4.0.5+B4.0.5;drums:k.0.5,s.0.5,h.0.25,h.0.25,k.0.5,s.0.5;"
+Ethnic fusion: "sitar:C4.1,E4.0.5,G4.1;tabla:ta.0.5,ta.0.25,ta.0.25;duduk:C5.2;"
 
 Now convert the user's text into musical notation that captures its essence and emotion. Return ONLY the notation string, no explanations.`;
   }

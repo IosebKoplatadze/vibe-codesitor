@@ -16,14 +16,19 @@ No installation required - just open the link and start creating music!
 ## ✨ Features
 
 - **🎼 Custom Notation System**: Simple text-based notation for complex musical compositions
-- **🎹 Multiple Instruments**: Piano, violin, bass, panduri, choir, timpani, drums, and more
-- **🤖 AI-Powered Text-to-Music**: Convert plain text into sophisticated musical notation using LangChain and OpenAI
+- **🎹 Comprehensive Instrument Library**: 80+ instruments including full orchestra, world instruments, synthesizers, and extensive percussion
+- **🥁 Advanced Percussion**: 50+ drum sounds from basic kit to ethnic percussion, orchestral, and electronic effects
+- **🎭 Sophisticated Synthesis**: Each instrument features realistic ADSR envelopes, frequency-dependent filtering, and authentic timbres
+- **🌍 World Music Support**: Instruments from Georgian (panduri), Indian (sitar, tabla), Middle Eastern (oud, duduk), African (djembe, kalimba), and more
+- **🤖 AI-Powered Text-to-Music**: Convert plain text into sophisticated musical notation using LangChain with OpenAI/Gemini
 - **🎯 Rule-Based Text Conversion**: Built-in character mapping algorithms for deterministic text-to-music conversion
-- **💾 Local Storage**: Save and manage your musical compositions locally
-- **📱 Responsive UI**: Modern sidebar-based interface with tabbed navigation
-- **🎵 Real-time Playback**: Instant audio feedback using Web Audio API
+- **💾 Local Storage**: Save and manage your musical compositions locally with versioning
+- **📱 Responsive UI**: Modern sidebar-based interface with tabbed navigation and mobile optimization
+- **🎵 Real-time Playback**: Instant audio feedback using advanced Web Audio API synthesis
 - **📁 MIDI Export**: Download your compositions as standard MIDI files
-- **🎨 Beautiful UI**: Tailwind CSS-powered interface with smooth animations
+- **🎨 Beautiful Examples**: Rich library of examples from classical to electronic to world fusion
+- **🔄 Multiple Synthesis Modes**: From acoustic simulation to analog synthesizer to FM synthesis
+- **🎚️ Dynamic Expression**: Support for velocity, duration, and articulation control
 
 ## 🚀 Quick Start
 
@@ -98,11 +103,26 @@ nextInstrument:note1.duration;
 piano:C4.1+E4.1+G4.1,F4.1+A4.1+C5.1|G4.1+B4.1+D5.1,C4.2+E4.2+G4.2;
 ```
 
-### Example - Multi-Instrument Rock Song
+### Example - Epic Orchestral Composition
 ```
-piano:C4.0.5+E4.0.5+G4.0.5,C4.0.5+F4.0.5+A4.0.5|D4.0.5+F4.0.5+B4.0.5,C4.0.5+E4.0.5+G4.0.5;
-bass:C2.1|G2.1|F2.1|C2.1;
-drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;
+// String section with rich harmonies
+violin:G5.2+B5.2+D6.2|A5.2+C6.2+E6.2|B5.2+D6.2+F#6.2|G5.4+B5.4+D6.4;
+viola:D5.2+G5.2+B5.2|E5.2+A5.2+C6.2|F#5.2+B5.2+D6.2|D5.4+G5.4+B5.4;
+cello:G3.2+D4.2|A3.2+E4.2|B3.2+F#4.2|G3.4+D4.4;
+double_bass:G2.4|A2.4|B2.4|G2.4;
+
+// Brass fanfare
+trumpet:D6.1,E6.1,F#6.1,G6.1|A6.2,G6.1,F#6.1|E6.2,D6.2|G6.4;
+french_horn:G4.2+B4.2+D5.2|A4.2+C5.2+E5.2|B4.2+D5.2+F#5.2|G4.4+B4.4+D5.4;
+trombone:G3.4|A3.4|B3.4|G3.4;
+
+// Woodwind flourishes
+flute:D6.0.5,E6.0.5,F#6.0.5,G6.0.5|A6.1,G6.0.5,F#6.0.5|E6.1,D6.1|G6.4;
+clarinet:B4.2+D5.2+G5.2|C5.2+E5.2+A5.2|D5.2+F#5.2+B5.2|B4.4+D5.4+G5.4;
+
+// Dramatic percussion
+timpani:G2.4|A2.4|B2.4|G2.4;
+drums:k.1,s.0.5,h.0.5|c.2,r.1,r.1|k.0.5,s.0.5,t.0.5,f.0.5,c.2;
 ```
 
 ### Syntax Rules
@@ -115,20 +135,151 @@ drums:k.0.5,s.0.5,k.0.5,s.0.5|k.0.5,s.0.5,k.0.5,s.0.5;
 
 ## 🎼 Supported Instruments
 
-### Melodic Instruments
-- **piano**: Standard piano with triangle wave
-- **violin**: Sawtooth wave with lowpass filter and slow attack
-- **bass**: Deep bass tones for basslines
-- **panduri**: Georgian traditional plucked string instrument
-- **choir**: Multiple detuned sine waves for chorus effect
-- **timpani**: Sine wave with pitch bend for orchestral kettle drums
+### Keyboard Instruments
+- **piano**: Standard acoustic piano with triangle wave synthesis
+- **electric_piano**: Electric piano with sine wave and enhanced harmonics
+- **harpsichord**: Baroque keyboard with sharp attack and quick decay
+- **organ**: Church/Hammond organ with square wave harmonics
+- **accordion**: Folk accordion with sawtooth wave and bandpass filtering
 
-### Percussion
-- **drums**: Multi-sound percussion kit
-  - `k` - Kick drum
-  - `s` - Snare drum  
-  - `h` - Hi-hat
-  - `d` - Frame drum (doli)
+### String Instruments
+- **violin**: Bowed strings with sawtooth wave and slow attack envelope
+- **viola**: Mid-range bowed strings, similar to violin but warmer
+- **cello**: Lower bowed strings with rich harmonic content
+- **double_bass**: Deepest orchestral strings with fundamental emphasis
+- **bass**: Electric/acoustic bass for rhythm section work
+- **guitar**: Acoustic guitar with triangle wave and bandpass filtering
+- **electric_guitar**: Electric guitar with square wave and high-Q filtering
+- **acoustic_guitar**: Warm acoustic guitar sound
+- **banjo**: Bright plucked strings with high-pass emphasis
+- **mandolin**: Paired-string instrument with bright attack
+- **harp**: Ethereal plucked strings with gentle envelope
+- **sitar**: Indian classical with resonant overtones
+- **oud**: Middle Eastern lute with warm, woody timbre
+- **panduri**: Georgian traditional three-string instrument
+
+### Brass Instruments
+- **trumpet**: Bright brass with square wave and sharp attack
+- **cornet**: Similar to trumpet but slightly warmer
+- **trombone**: Mid-range brass with sustained envelope
+- **french_horn**: Warm brass with triangular wave synthesis
+- **tuba**: Deep brass foundation with sine wave emphasis
+- **euphonium**: Mid-low brass with smooth envelope
+- **brass**: Generic brass section sound
+
+### Woodwind Instruments
+- **flute**: Breathy wind instrument with sine wave and gentle attack
+- **piccolo**: High flute with bright harmonics
+- **recorder**: Simple wind instrument with triangle wave
+- **clarinet**: Single reed with square wave and controlled harmonics
+- **bass_clarinet**: Lower range clarinet with deeper filtering
+- **saxophone**: Jazz saxophone with square wave and bandpass filtering
+- **alto_sax**: Mid-range saxophone
+- **tenor_sax**: Lower saxophone register
+- **baritone_sax**: Deepest common saxophone
+- **oboe**: Double reed with distinctive nasal quality
+- **english_horn**: Lower oboe with warmer timbre
+- **bassoon**: Double reed bass instrument
+- **duduk**: Armenian woodwind with haunting, breathy quality
+
+### Voice
+- **choir**: Layered voices with multiple oscillators and detuning
+- **soprano**: High female voice
+- **alto**: Lower female voice
+- **tenor**: High male voice
+- **bass_voice**: Low male voice
+
+### Mallet Percussion
+- **xylophone**: Wooden bars with sharp attack and bright tone
+- **marimba**: Resonant wooden bars with warm envelope
+- **vibraphone**: Metal bars with sustain and vibrato effect
+- **glockenspiel**: High metallic bars with crystalline sound
+- **bells**: Orchestral bells with long sustain
+- **celesta**: Delicate metallic percussion
+
+### Orchestral Percussion
+- **timpani**: Kettle drums with pitch bending and long sustain
+- **triangle**: Pure metallic ring with multiple harmonics
+- **tambourine**: Frame drum with metallic jingles
+- **castanets**: Sharp wooden clicks
+- **wood_block**: Dry, resonant wood percussion
+- **temple_block**: Hollow wooden percussion
+- **gong**: Large metallic percussion with complex harmonics
+- **tam_tam**: Large gong with dramatic swell
+- **cymbal**: Crash cymbals with noise-based synthesis
+
+### Synthesizer
+- **synth**: Classic analog synthesizer with filter sweeps
+- **lead**: Lead synthesizer with prominent filter modulation
+- **pad**: Atmospheric synthesizer with slow attack
+- **arp**: Arpeggiated synthesizer with short, punchy envelope
+- **pluck**: Synthesized plucked sound with quick decay
+- **strings**: Synthesized string section
+- **warm_pad**: Warm, analog-style pad
+- **bright_pad**: Bright, digital-style pad
+- **polysynth**: Polyphonic synthesizer
+- **fm_synth**: Frequency modulation synthesizer
+
+### Exotic/Unique Instruments
+- **theremin**: Electronic instrument with ethereal, continuous pitch
+- **glass_harmonica**: Crystalline instrument with pure sine waves
+- **musical_saw**: Bowed saw with distinctive vibrato
+- **kalimba**: African thumb piano with percussive attack
+- **steel_drum**: Caribbean percussion with melodic capabilities
+- **hang_drum**: Modern percussion with resonant, meditative quality
+
+### Percussion Kit
+The drums instrument supports comprehensive percussion sounds:
+
+#### Basic Kit
+- `k` or `kick` - Bass drum
+- `s` or `snare` - Snare drum
+- `h` or `hihat` - Closed hi-hat
+- `o` or `open_hihat` - Open hi-hat
+- `c` or `crash` - Crash cymbal
+- `r` or `ride` - Ride cymbal
+- `t` or `tom` - Tom drum
+- `f` or `floor_tom` - Floor tom
+
+#### Extended Kit
+- `sp` or `splash` - Splash cymbal
+- `ch` or `china` - China cymbal
+- `rb` or `ride_bell` - Ride bell
+- `cb` or `cowbell` - Cowbell
+- `wb` or `wood_block` - Wood block
+- `cl` or `clap` - Hand clap
+
+#### Shakers & Hand Percussion
+- `tam` or `tambourine` - Tambourine
+- `sha` or `shaker` - Shaker
+- `ca` or `cabasa` - Cabasa
+- `ma` or `maracas` - Maracas
+
+#### Ethnic Percussion
+- `d` or `frame_drum` - Traditional frame drum
+- `ta` or `tabla` - Indian tabla
+- `bongo` - Bongo drums
+- `conga` - Conga drums
+- `djembe` - West African djembe
+- `cai` or `cajon` - Box drum
+- `ti` or `timbale` - Latin timbales
+- `uk` or `udu` - Nigerian clay pot drum
+
+#### Orchestral Percussion
+- `tim` or `timpani` - Orchestral timpani
+- `gong` - Large gong
+- `tri` or `triangle` - Triangle
+- `sus` or `suspended_cymbal` - Suspended cymbal
+- `vib` or `vibraslap` - Vibraslap
+
+#### Special Effects
+- `ws` or `wind_chimes` - Wind chimes
+- `ra` or `ratchet` - Ratchet
+- `wh` or `whip` - Whip crack
+- `808` or `kick_808` - Electronic 808 kick
+- `elec` or `electronic_snare` - Electronic snare
+- `rev` or `reverse_cymbal` - Reverse cymbal swell
+- `gat` or `gated_snare` - Gated reverb snare
 
 ## 🤖 AI-Powered Text-to-Music Conversion
 

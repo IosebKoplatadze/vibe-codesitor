@@ -14,7 +14,7 @@ export class TextToMusicConverter {
     scale: 'major',
     tempo: 120,
     baseOctave: 4,
-    instruments: ['piano']
+    instruments: ['piano', 'violin', 'cello', 'flute']
   };
 
   // Musical scales for mapping
