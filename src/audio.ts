@@ -161,20 +161,249 @@ class SynthInstrument implements AudioInstrument {
     
     for (const note of chord.notes) {
       switch (this.type.toLowerCase()) {
+        // === KEYBOARD INSTRUMENTS ===
+        case 'piano':
+          this.playPianoNote(note, time, secondsPerBeat);
+          break;
+        case 'electric_piano':
+          this.playElectricPianoNote(note, time, secondsPerBeat);
+          break;
+        case 'harpsichord':
+          this.playHarpsichordNote(note, time, secondsPerBeat);
+          break;
+        case 'organ':
+          this.playOrganNote(note, time, secondsPerBeat);
+          break;
+        case 'accordion':
+          this.playAccordionNote(note, time, secondsPerBeat);
+          break;
+        
+        // === STRING INSTRUMENTS ===
         case 'violin':
           this.playViolinNote(note, time, secondsPerBeat);
+          break;
+        case 'viola':
+          this.playViolaNote(note, time, secondsPerBeat);
+          break;
+        case 'cello':
+          this.playCelloNote(note, time, secondsPerBeat);
+          break;
+        case 'double_bass':
+          this.playDoubleBassNote(note, time, secondsPerBeat);
+          break;
+        case 'bass':
+          this.playBassNote(note, time, secondsPerBeat);
+          break;
+        case 'guitar':
+          this.playGuitarNote(note, time, secondsPerBeat);
+          break;
+        case 'electric_guitar':
+          this.playElectricGuitarNote(note, time, secondsPerBeat);
+          break;
+        case 'acoustic_guitar':
+          this.playAcousticGuitarNote(note, time, secondsPerBeat);
+          break;
+        case 'banjo':
+          this.playBanjoNote(note, time, secondsPerBeat);
+          break;
+        case 'mandolin':
+          this.playMandolinNote(note, time, secondsPerBeat);
+          break;
+        case 'harp':
+          this.playHarpNote(note, time, secondsPerBeat);
+          break;
+        case 'sitar':
+          this.playSitarNote(note, time, secondsPerBeat);
+          break;
+        case 'oud':
+          this.playOudNote(note, time, secondsPerBeat);
           break;
         case 'panduri':
           this.playPanduriNote(note, time, secondsPerBeat);
           break;
+        
+        // === BRASS INSTRUMENTS ===
+        case 'trumpet':
+          this.playTrumpetNote(note, time, secondsPerBeat);
+          break;
+        case 'cornet':
+          this.playCornetNote(note, time, secondsPerBeat);
+          break;
+        case 'trombone':
+          this.playTromboneNote(note, time, secondsPerBeat);
+          break;
+        case 'french_horn':
+          this.playFrenchHornNote(note, time, secondsPerBeat);
+          break;
+        case 'tuba':
+          this.playTubaNote(note, time, secondsPerBeat);
+          break;
+        case 'euphonium':
+          this.playEuphoniumNote(note, time, secondsPerBeat);
+          break;
+        case 'brass':
+          this.playBrassNote(note, time, secondsPerBeat);
+          break;
+        
+        // === WOODWIND INSTRUMENTS ===
+        case 'flute':
+          this.playFluteNote(note, time, secondsPerBeat);
+          break;
+        case 'piccolo':
+          this.playPiccoloNote(note, time, secondsPerBeat);
+          break;
+        case 'recorder':
+          this.playRecorderNote(note, time, secondsPerBeat);
+          break;
+        case 'clarinet':
+          this.playClarinetNote(note, time, secondsPerBeat);
+          break;
+        case 'bass_clarinet':
+          this.playBassClarinetNote(note, time, secondsPerBeat);
+          break;
+        case 'saxophone':
+          this.playSaxophoneNote(note, time, secondsPerBeat);
+          break;
+        case 'alto_sax':
+          this.playAltoSaxNote(note, time, secondsPerBeat);
+          break;
+        case 'tenor_sax':
+          this.playTenorSaxNote(note, time, secondsPerBeat);
+          break;
+        case 'baritone_sax':
+          this.playBaritoneSaxNote(note, time, secondsPerBeat);
+          break;
+        case 'oboe':
+          this.playOboeNote(note, time, secondsPerBeat);
+          break;
+        case 'english_horn':
+          this.playEnglishHornNote(note, time, secondsPerBeat);
+          break;
+        case 'bassoon':
+          this.playBassoonNote(note, time, secondsPerBeat);
+          break;
+        case 'duduk':
+          this.playDudukNote(note, time, secondsPerBeat);
+          break;
+        
+        // === VOICE ===
         case 'choir':
           this.playChoirNote(note, time, secondsPerBeat);
           break;
+        case 'soprano':
+          this.playSopranoNote(note, time, secondsPerBeat);
+          break;
+        case 'alto':
+          this.playAltoNote(note, time, secondsPerBeat);
+          break;
+        case 'tenor':
+          this.playTenorNote(note, time, secondsPerBeat);
+          break;
+        case 'bass_voice':
+          this.playBassVoiceNote(note, time, secondsPerBeat);
+          break;
+        
+        // === MALLET PERCUSSION ===
+        case 'xylophone':
+          this.playXylophoneNote(note, time, secondsPerBeat);
+          break;
+        case 'marimba':
+          this.playMarimbaNote(note, time, secondsPerBeat);
+          break;
+        case 'vibraphone':
+          this.playVibraphoneNote(note, time, secondsPerBeat);
+          break;
+        case 'glockenspiel':
+          this.playGlockenspielNote(note, time, secondsPerBeat);
+          break;
+        case 'bells':
+          this.playBellsNote(note, time, secondsPerBeat);
+          break;
+        case 'celesta':
+          this.playCelestaNote(note, time, secondsPerBeat);
+          break;
+        
+        // === ORCHESTRAL PERCUSSION ===
         case 'timpani':
           this.playTimpaniNote(note, time, secondsPerBeat);
           break;
-        case 'piano':
-        case 'bass':
+        case 'triangle':
+          this.playTriangleNote(note, time, secondsPerBeat);
+          break;
+        case 'tambourine':
+          this.playTambourineNote(note, time, secondsPerBeat);
+          break;
+        case 'castanets':
+          this.playCastanetsNote(note, time, secondsPerBeat);
+          break;
+        case 'wood_block':
+          this.playWoodBlockNote(note, time, secondsPerBeat);
+          break;
+        case 'temple_block':
+          this.playTempleBlockNote(note, time, secondsPerBeat);
+          break;
+        case 'gong':
+          this.playGongNote(note, time, secondsPerBeat);
+          break;
+        case 'tam_tam':
+          this.playTamTamNote(note, time, secondsPerBeat);
+          break;
+        case 'cymbal':
+          this.playCymbalNote(note, time, secondsPerBeat);
+          break;
+        
+        // === ELECTRONIC/SYNTHESIZER ===
+        case 'synth':
+          this.playSynthNote(note, time, secondsPerBeat);
+          break;
+        case 'lead':
+          this.playLeadNote(note, time, secondsPerBeat);
+          break;
+        case 'pad':
+          this.playPadNote(note, time, secondsPerBeat);
+          break;
+        case 'arp':
+          this.playArpNote(note, time, secondsPerBeat);
+          break;
+        case 'pluck':
+          this.playPluckNote(note, time, secondsPerBeat);
+          break;
+        case 'strings':
+          this.playStringsNote(note, time, secondsPerBeat);
+          break;
+        case 'warm_pad':
+          this.playWarmPadNote(note, time, secondsPerBeat);
+          break;
+        case 'bright_pad':
+          this.playBrightPadNote(note, time, secondsPerBeat);
+          break;
+        case 'polysynth':
+          this.playPolysynthNote(note, time, secondsPerBeat);
+          break;
+        case 'fm_synth':
+          this.playFMSynthNote(note, time, secondsPerBeat);
+          break;
+        
+        // === EXOTIC/UNIQUE INSTRUMENTS ===
+        case 'theremin':
+          this.playThereminNote(note, time, secondsPerBeat);
+          break;
+        case 'glass_harmonica':
+          this.playGlassHarmonicaNote(note, time, secondsPerBeat);
+          break;
+        case 'musical_saw':
+          this.playMusicalSawNote(note, time, secondsPerBeat);
+          break;
+        case 'kalimba':
+          this.playKalimbaNote(note, time, secondsPerBeat);
+          break;
+        case 'steel_drum':
+          this.playSteelDrumNote(note, time, secondsPerBeat);
+          break;
+        case 'hang_drum':
+          this.playHangDrumNote(note, time, secondsPerBeat);
+          break;
+        
         default:
           this.playBasicNote(note, time, secondsPerBeat);
           break;
@@ -1082,7 +1311,1880 @@ class SynthInstrument implements AudioInstrument {
     oscillator.start(time);
     oscillator.stop(time + duration + 0.1);
   }
-  
+
+  // === KEYBOARD INSTRUMENTS ===
+  private playPianoNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = Math.min(2000, frequency * 4);
+    filter.Q.value = 0.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playElectricPianoNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = Math.min(3000, frequency * 6);
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playHarpsichordNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.5;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(0.5, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playOrganNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.1);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playAccordionNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === STRING INSTRUMENTS ===
+  private playViolaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 1.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playCelloNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.9, time + 0.4);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playDoubleBassNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 2.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.5);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBassNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playGuitarNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.1, time + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playElectricGuitarNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.5;
+    filter.Q.value = 5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.2, time + 0.2);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playAcousticGuitarNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 6;
+    filter.Q.value = 1.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.15, time + 0.4);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBanjoNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.8;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(0.6, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playMandolinNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(0.4, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playHarpNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 5;
+    filter.Q.value = 0.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 0.5);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playSitarNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Add sympathetic resonance effect
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 1.5;
+    filter.Q.value = 8;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.4, time + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playOudNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.2, time + 0.4);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === BRASS INSTRUMENTS ===
+  private playTrumpetNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.1);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playCornetNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.9, time + 0.1);
+    gainNode.gain.setValueAtTime(note.velocity * 0.9, time + duration - 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTromboneNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 1.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playFrenchHornNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTubaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playEuphoniumNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.9, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.9, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBrassNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 2.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === WOODWIND INSTRUMENTS ===
+  private playFluteNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.5;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.7, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity * 0.7, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playPiccoloNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.8;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.6, time + 0.1);
+    gainNode.gain.setValueAtTime(note.velocity * 0.6, time + duration - 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playRecorderNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.1);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playClarinetNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBassClarinetNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playSaxophoneNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 1.5;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playAltoSaxNote(note: Note, time: number, secondsPerBeat: number): void {
+    this.playSaxophoneNote(note, time, secondsPerBeat);
+  }
+
+  private playTenorSaxNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 1.2;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.25);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBaritoneSaxNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playOboeNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.2);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.2);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playEnglishHornNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.9, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.9, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBassoonNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playDudukNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.7, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity * 0.7, time + duration - 0.4);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === VOICE INSTRUMENTS ===
+  private playSopranoNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playAltoNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTenorNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBassVoiceNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === MALLET PERCUSSION ===
+  private playXylophoneNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.8;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(1.0, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playMarimbaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playVibraphoneNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const vibrato = this.context.createOscillator();
+    const vibratoGain = this.context.createGain();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Add vibrato
+    vibrato.type = 'sine';
+    vibrato.frequency.value = 5; // 5Hz vibrato
+    vibratoGain.gain.value = frequency * 0.01; // 1% vibrato depth
+    vibrato.connect(vibratoGain);
+    vibratoGain.connect(oscillator.frequency);
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 0.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.4, time + 1.0);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    vibrato.start(time);
+    oscillator.start(time);
+    vibrato.stop(time + duration + 0.1);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playGlockenspielNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(2.0, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBellsNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 6;
+    filter.Q.value = 0.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.5, time + 1.0);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playCelestaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 5;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity * 0.7, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(1.5, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  // === ORCHESTRAL PERCUSSION ===
+  private playTriangleNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTambourineNote(note: Note, time: number, secondsPerBeat: number): void {
+    // Create metallic jingles with noise
+    const noise = this.context.createBufferSource();
+    const noiseBuffer = this.context.createBuffer(1, this.context.sampleRate * 0.1, this.context.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < noiseBuffer.length; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    noise.buffer = noiseBuffer;
+    
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    filter.type = 'highpass';
+    filter.frequency.value = 2000;
+    filter.Q.value = 2;
+    
+    const duration = Math.min(note.duration * secondsPerBeat, 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.5, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    noise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    noise.start(time);
+    noise.stop(time + duration);
+  }
+
+  private playCastanetsNote(note: Note, time: number, secondsPerBeat: number): void {
+    // Create short sharp click
+    const noise = this.context.createBufferSource();
+    const noiseBuffer = this.context.createBuffer(1, this.context.sampleRate * 0.05, this.context.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < noiseBuffer.length; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    noise.buffer = noiseBuffer;
+    
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    filter.type = 'highpass';
+    filter.frequency.value = 1000;
+    filter.Q.value = 3;
+    
+    const duration = 0.05;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    noise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    noise.start(time);
+    noise.stop(time + duration);
+  }
+
+  private playWoodBlockNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 5;
+    
+    const duration = Math.min(note.duration * secondsPerBeat, 0.2);
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTempleBlockNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 1.5;
+    filter.Q.value = 8;
+    
+    const duration = Math.min(note.duration * secondsPerBeat, 0.3);
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playGongNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Add frequency sweep for gong effect
+    oscillator.frequency.setValueAtTime(frequency * 1.2, time);
+    oscillator.frequency.exponentialRampToValueAtTime(frequency, time + 0.5);
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 2.0);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playTamTamNote(note: Note, time: number, secondsPerBeat: number): void {
+    // Similar to gong but with more dramatic effect
+    this.playGongNote(note, time, secondsPerBeat);
+  }
+
+  private playCymbalNote(note: Note, time: number, secondsPerBeat: number): void {
+    // Create metallic crash with noise
+    const noise = this.context.createBufferSource();
+    const noiseBuffer = this.context.createBuffer(1, this.context.sampleRate * 0.5, this.context.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < noiseBuffer.length; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    noise.buffer = noiseBuffer;
+    
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    filter.type = 'highpass';
+    filter.frequency.value = 3000;
+    filter.Q.value = 1;
+    
+    const duration = Math.min(note.duration * secondsPerBeat, 2.0);
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    noise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    noise.start(time);
+    noise.stop(time + duration);
+  }
+
+  // === ELECTRONIC/SYNTHESIZER ===
+  private playSynthNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(frequency * 8, time);
+    filter.frequency.exponentialRampToValueAtTime(frequency * 2, time + 0.5);
+    filter.Q.value = 5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playLeadNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(frequency * 10, time);
+    filter.frequency.exponentialRampToValueAtTime(frequency * 3, time + 0.3);
+    filter.Q.value = 8;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playPadNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.7, time + 0.5);
+    gainNode.gain.setValueAtTime(note.velocity * 0.7, time + duration - 0.5);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playArpNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'square';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(0.3, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playPluckNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 6;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + Math.min(0.5, duration));
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playStringsNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 4;
+    filter.Q.value = 1;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playWarmPadNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 1.5;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.6, time + 0.8);
+    gainNode.gain.setValueAtTime(note.velocity * 0.6, time + duration - 0.8);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playBrightPadNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.5;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.6, time + 0.6);
+    gainNode.gain.setValueAtTime(note.velocity * 0.6, time + duration - 0.6);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playPolysynthNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sawtooth';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 5;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.5, time + 0.2);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playFMSynthNote(note: Note, time: number, secondsPerBeat: number): void {
+    const carrier = this.context.createOscillator();
+    const modulator = this.context.createOscillator();
+    const modulatorGain = this.context.createGain();
+    const gainNode = this.context.createGain();
+    
+    const frequency = this.noteToFrequency(note);
+    carrier.type = 'sine';
+    carrier.frequency.value = frequency;
+    
+    modulator.type = 'sine';
+    modulator.frequency.value = frequency * 2;
+    modulatorGain.gain.value = frequency * 0.5;
+    
+    modulator.connect(modulatorGain);
+    modulatorGain.connect(carrier.frequency);
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    carrier.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    modulator.start(time);
+    carrier.start(time);
+    modulator.stop(time + duration + 0.1);
+    carrier.stop(time + duration + 0.1);
+  }
+
+  // === EXOTIC/UNIQUE INSTRUMENTS ===
+  private playThereminNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const vibrato = this.context.createOscillator();
+    const vibratoGain = this.context.createGain();
+    const gainNode = this.context.createGain();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Add vibrato
+    vibrato.type = 'sine';
+    vibrato.frequency.value = 6;
+    vibratoGain.gain.value = frequency * 0.05; // 5% vibrato depth
+    vibrato.connect(vibratoGain);
+    vibratoGain.connect(oscillator.frequency);
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.8, time + 0.3);
+    gainNode.gain.setValueAtTime(note.velocity * 0.8, time + duration - 0.3);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    vibrato.start(time);
+    oscillator.start(time);
+    vibrato.stop(time + duration + 0.1);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playGlassHarmonicaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'highpass';
+    filter.frequency.value = frequency * 0.8;
+    filter.Q.value = 8;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.6, time + 0.5);
+    gainNode.gain.setValueAtTime(note.velocity * 0.6, time + duration - 0.5);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playMusicalSawNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const vibrato = this.context.createOscillator();
+    const vibratoGain = this.context.createGain();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    // Add strong vibrato
+    vibrato.type = 'sine';
+    vibrato.frequency.value = 4;
+    vibratoGain.gain.value = frequency * 0.08; // 8% vibrato depth
+    vibrato.connect(vibratoGain);
+    vibratoGain.connect(oscillator.frequency);
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(0, time);
+    gainNode.gain.linearRampToValueAtTime(note.velocity * 0.7, time + 0.4);
+    gainNode.gain.setValueAtTime(note.velocity * 0.7, time + duration - 0.4);
+    gainNode.gain.linearRampToValueAtTime(0, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    vibrato.start(time);
+    oscillator.start(time);
+    vibrato.stop(time + duration + 0.1);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playKalimbaNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'triangle';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 3;
+    filter.Q.value = 2;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.2, time + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playSteelDrumNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'bandpass';
+    filter.frequency.value = frequency * 2;
+    filter.Q.value = 4;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.3, time + 0.5);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
+  private playHangDrumNote(note: Note, time: number, secondsPerBeat: number): void {
+    const oscillator = this.context.createOscillator();
+    const gainNode = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    
+    oscillator.type = 'sine';
+    const frequency = this.noteToFrequency(note);
+    oscillator.frequency.value = frequency;
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = frequency * 2.5;
+    filter.Q.value = 3;
+    
+    const duration = note.duration * secondsPerBeat;
+    gainNode.gain.setValueAtTime(note.velocity, time);
+    gainNode.gain.exponentialRampToValueAtTime(note.velocity * 0.4, time + 1.0);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    
+    oscillator.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(this.context.destination);
+    
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.1);
+  }
+
   private noteToFrequency(note: Note): number {
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const noteIndex = noteNames.indexOf(note.pitch.toUpperCase());

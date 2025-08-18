@@ -16,7 +16,7 @@ No installation required - just open the link and start creating music!
 ## ✨ Features
 
 - **🎼 Custom Notation System**: Simple text-based notation for complex musical compositions
-- **🎹 Comprehensive Instrument Library**: 80+ instruments including full orchestra, world instruments, synthesizers, and extensive percussion
+- **🎹 Comprehensive Instrument Library**: 76+ instruments including full orchestra, world instruments, synthesizers, and extensive percussion
 - **🥁 Advanced Percussion**: 50+ drum sounds from basic kit to ethnic percussion, orchestral, and electronic effects
 - **🎭 Sophisticated Synthesis**: Each instrument features realistic ADSR envelopes, frequency-dependent filtering, and authentic timbres
 - **🌍 World Music Support**: Instruments from Georgian (panduri), Indian (sitar, tabla), Middle Eastern (oud, duduk), African (djembe, kalimba), and more
@@ -133,105 +133,50 @@ drums:k.1,s.0.5,h.0.5|c.2,r.1,r.1|k.0.5,s.0.5,t.0.5,f.0.5,c.2;
 - **Note Format**: `PitchOctave.Duration` (e.g., `C4.1`, `F#3.0.5`)
 - **Rests**: Empty positions or commas without notes
 
-## 🎼 Supported Instruments
+## 🎼 Supported Instruments (76 Total)
 
-### Keyboard Instruments
-- **piano**: Standard acoustic piano with triangle wave synthesis
-- **electric_piano**: Electric piano with sine wave and enhanced harmonics
-- **harpsichord**: Baroque keyboard with sharp attack and quick decay
-- **organ**: Church/Hammond organ with square wave harmonics
-- **accordion**: Folk accordion with sawtooth wave and bandpass filtering
+### Keyboard Instruments (5)
 
-### String Instruments
-- **violin**: Bowed strings with sawtooth wave and slow attack envelope
-- **viola**: Mid-range bowed strings, similar to violin but warmer
-- **cello**: Lower bowed strings with rich harmonic content
-- **double_bass**: Deepest orchestral strings with fundamental emphasis
-- **bass**: Electric/acoustic bass for rhythm section work
-- **guitar**: Acoustic guitar with triangle wave and bandpass filtering
-- **electric_guitar**: Electric guitar with square wave and high-Q filtering
-- **acoustic_guitar**: Warm acoustic guitar sound
-- **banjo**: Bright plucked strings with high-pass emphasis
-- **mandolin**: Paired-string instrument with bright attack
-- **harp**: Ethereal plucked strings with gentle envelope
-- **sitar**: Indian classical with resonant overtones
-- **oud**: Middle Eastern lute with warm, woody timbre
-- **panduri**: Georgian traditional three-string instrument
+`piano` • `electric_piano` • `harpsichord` • `organ` • `accordion`
 
-### Brass Instruments
-- **trumpet**: Bright brass with square wave and sharp attack
-- **cornet**: Similar to trumpet but slightly warmer
-- **trombone**: Mid-range brass with sustained envelope
-- **french_horn**: Warm brass with triangular wave synthesis
-- **tuba**: Deep brass foundation with sine wave emphasis
-- **euphonium**: Mid-low brass with smooth envelope
-- **brass**: Generic brass section sound
+### String Instruments (14)
 
-### Woodwind Instruments
-- **flute**: Breathy wind instrument with sine wave and gentle attack
-- **piccolo**: High flute with bright harmonics
-- **recorder**: Simple wind instrument with triangle wave
-- **clarinet**: Single reed with square wave and controlled harmonics
-- **bass_clarinet**: Lower range clarinet with deeper filtering
-- **saxophone**: Jazz saxophone with square wave and bandpass filtering
-- **alto_sax**: Mid-range saxophone
-- **tenor_sax**: Lower saxophone register
-- **baritone_sax**: Deepest common saxophone
-- **oboe**: Double reed with distinctive nasal quality
-- **english_horn**: Lower oboe with warmer timbre
-- **bassoon**: Double reed bass instrument
-- **duduk**: Armenian woodwind with haunting, breathy quality
+`violin` • `viola` • `cello` • `double_bass` • `bass` • `guitar` • `electric_guitar` • `acoustic_guitar` • `banjo` • `mandolin` • `harp` • `sitar` • `oud` • `panduri`
 
-### Voice
-- **choir**: Layered voices with multiple oscillators and detuning
-- **soprano**: High female voice
-- **alto**: Lower female voice
-- **tenor**: High male voice
-- **bass_voice**: Low male voice
+### Brass Instruments (7)
 
-### Mallet Percussion
-- **xylophone**: Wooden bars with sharp attack and bright tone
-- **marimba**: Resonant wooden bars with warm envelope
-- **vibraphone**: Metal bars with sustain and vibrato effect
-- **glockenspiel**: High metallic bars with crystalline sound
-- **bells**: Orchestral bells with long sustain
-- **celesta**: Delicate metallic percussion
+`trumpet` • `cornet` • `trombone` • `french_horn` • `tuba` • `euphonium` • `brass`
 
-### Orchestral Percussion
-- **timpani**: Kettle drums with pitch bending and long sustain
-- **triangle**: Pure metallic ring with multiple harmonics
-- **tambourine**: Frame drum with metallic jingles
-- **castanets**: Sharp wooden clicks
-- **wood_block**: Dry, resonant wood percussion
-- **temple_block**: Hollow wooden percussion
-- **gong**: Large metallic percussion with complex harmonics
-- **tam_tam**: Large gong with dramatic swell
-- **cymbal**: Crash cymbals with noise-based synthesis
+### Woodwind Instruments (13)
 
-### Synthesizer
-- **synth**: Classic analog synthesizer with filter sweeps
-- **lead**: Lead synthesizer with prominent filter modulation
-- **pad**: Atmospheric synthesizer with slow attack
-- **arp**: Arpeggiated synthesizer with short, punchy envelope
-- **pluck**: Synthesized plucked sound with quick decay
-- **strings**: Synthesized string section
-- **warm_pad**: Warm, analog-style pad
-- **bright_pad**: Bright, digital-style pad
-- **polysynth**: Polyphonic synthesizer
-- **fm_synth**: Frequency modulation synthesizer
+`flute` • `piccolo` • `recorder` • `clarinet` • `bass_clarinet` • `saxophone` • `alto_sax` • `tenor_sax` • `baritone_sax` • `oboe` • `english_horn` • `bassoon` • `duduk`
 
-### Exotic/Unique Instruments
-- **theremin**: Electronic instrument with ethereal, continuous pitch
-- **glass_harmonica**: Crystalline instrument with pure sine waves
-- **musical_saw**: Bowed saw with distinctive vibrato
-- **kalimba**: African thumb piano with percussive attack
-- **steel_drum**: Caribbean percussion with melodic capabilities
-- **hang_drum**: Modern percussion with resonant, meditative quality
+### Voice (5)
+
+`choir` • `soprano` • `alto` • `tenor` • `bass_voice`
+
+### Mallet Percussion (6)
+
+`xylophone` • `marimba` • `vibraphone` • `glockenspiel` • `bells` • `celesta`
+
+### Orchestral Percussion (10)
+
+`timpani` • `drums` • `triangle` • `tambourine` • `castanets` • `wood_block` • `temple_block` • `gong` • `tam_tam` • `cymbal`
+
+### Electronic/Synthesizer (10)
+
+`synth` • `lead` • `pad` • `arp` • `pluck` • `strings` • `warm_pad` • `bright_pad` • `polysynth` • `fm_synth`
+
+### Exotic/Unique Instruments (6)
+
+`theremin` • `glass_harmonica` • `musical_saw` • `kalimba` • `steel_drum` • `hang_drum`
 
 ### Percussion Kit
+
 The drums instrument supports comprehensive percussion sounds:
 
 #### Basic Kit
+
 - `k` or `kick` - Bass drum
 - `s` or `snare` - Snare drum
 - `h` or `hihat` - Closed hi-hat
@@ -242,6 +187,7 @@ The drums instrument supports comprehensive percussion sounds:
 - `f` or `floor_tom` - Floor tom
 
 #### Extended Kit
+
 - `sp` or `splash` - Splash cymbal
 - `ch` or `china` - China cymbal
 - `rb` or `ride_bell` - Ride bell
@@ -250,12 +196,14 @@ The drums instrument supports comprehensive percussion sounds:
 - `cl` or `clap` - Hand clap
 
 #### Shakers & Hand Percussion
+
 - `tam` or `tambourine` - Tambourine
 - `sha` or `shaker` - Shaker
 - `ca` or `cabasa` - Cabasa
 - `ma` or `maracas` - Maracas
 
 #### Ethnic Percussion
+
 - `d` or `frame_drum` - Traditional frame drum
 - `ta` or `tabla` - Indian tabla
 - `bongo` - Bongo drums
@@ -266,6 +214,7 @@ The drums instrument supports comprehensive percussion sounds:
 - `uk` or `udu` - Nigerian clay pot drum
 
 #### Orchestral Percussion
+
 - `tim` or `timpani` - Orchestral timpani
 - `gong` - Large gong
 - `tri` or `triangle` - Triangle
@@ -273,6 +222,7 @@ The drums instrument supports comprehensive percussion sounds:
 - `vib` or `vibraslap` - Vibraslap
 
 #### Special Effects
+
 - `ws` or `wind_chimes` - Wind chimes
 - `ra` or `ratchet` - Ratchet
 - `wh` or `whip` - Whip crack

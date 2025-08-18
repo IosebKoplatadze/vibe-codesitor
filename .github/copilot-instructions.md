@@ -13,7 +13,7 @@ This is a **React-based TypeScript music editor** with a **custom notation-to-au
 
 - **`MusicConverter`** (`src/index.ts`): Main orchestrator, detects notation vs. text input, coordinates parsing/audio
 - **`MusicParser`** (`src/parser.ts`): Converts custom notation syntax to structured `MusicData` objects
-- **`AudioEngine`** (`src/audio.ts`): Web Audio synthesis with instrument-specific sound design (violin, panduri, timpani, etc.)
+- **`AudioEngine`** (`src/audio.ts`): Web Audio synthesis with 76+ instruments including full orchestra (strings, brass, woodwinds), world instruments (panduri, sitar, oud, duduk), synthesizers, mallet percussion, and exotic instruments (theremin, kalimba, hang_drum)
 - **`LangChainTextToMusicConverter`** (`src/langchainTextToMusic.ts`): AI-powered text-to-music using LangChain + OpenAI/Gemini/Claude
 - **`TextToMusicConverter`** (`src/textToMusic.ts`): Rule-based text-to-music generation using character-to-note mapping
 
@@ -33,6 +33,8 @@ This is a **React-based TypeScript music editor** with a **custom notation-to-au
 "piano:C4.1+E4.1+G4.1,F4.1+A4.1+C5.1|G4.1+B4.1+D5.1;"
 ```
 - Instruments separated by `;`, measures by `|`, notes by `,`, chords by `+`
+- **76+ Available Instruments**: piano, violin, guitar, drums, synth, brass, flute, choir, sitar, panduri, theremin, etc.
+- **Complete instrument categories**: Keyboard (5), String (14), Brass (7), Woodwind (13), Voice (5), Mallet Percussion (6), Orchestral Percussion (10), Electronic/Synth (10), Exotic/Unique (6)
 - **Always test notation parsing** with `MusicParser.parse()` before audio rendering
 
 ### Event Binding Convention
