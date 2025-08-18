@@ -34,7 +34,7 @@ class MusicConverter {
       musicData = this.parser.parse(input);
     } else {
       // Check if we should use LangChain or fallback converter
-      if (textOptions?.useLangChain && LangChainTextToMusicConverter.isLangChainAvailable()) {
+      if (textOptions?.useLangChain && this.hasValidApiKey(textOptions)) {
         // Generate notation using LangChain and then parse it
         const notation = await this.langChainConverter.convertTextToNotation(input, textOptions);
         musicData = this.parser.parse(notation);
@@ -49,13 +49,19 @@ class MusicConverter {
 
   public async convertTextToNotation(text: string, options?: Partial<EnhancedTextToMusicOptions>): Promise<string> {
     // Check if we should use LangChain or fallback converter
-    if (options?.useLangChain && LangChainTextToMusicConverter.isLangChainAvailable()) {
+    if (options?.useLangChain && this.hasValidApiKey(options)) {
       return await this.langChainConverter.convertTextToNotation(text, options);
     } else {
       // Use rule-based converter
       const musicData = this.textConverter.convertTextToMusic(text, options);
       return this.textConverter.musicDataToNotation(musicData);
     }
+  }
+
+  // Helper method to check if we have a valid API key
+  private hasValidApiKey(options?: Partial<EnhancedTextToMusicOptions>): boolean {
+    const apiKey = options?.langChainOptions?.apiKey;
+    return !!(apiKey && apiKey.trim().length > 0);
   }
 }
 

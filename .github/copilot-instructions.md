@@ -2,11 +2,11 @@
 
 ## Architecture Overview
 
-This is a **modular TypeScript music editor** with a **custom notation-to-audio pipeline**. Key architectural decisions:
+This is a **React-based TypeScript music editor** with a **custom notation-to-audio pipeline**. Key architectural decisions:
 
-- **Multi-entry Webpack build**: `src/index.ts` (core logic) + `src/ui.ts` (UI management) generate separate bundles
-- **Parser → Audio Engine**: Custom text notation gets parsed into structured `MusicData`, then rendered via Web Audio API
-- **Separation of concerns**: UI logic extracted from HTML, all styling via Tailwind CSS (no custom CSS)
+- **React Frontend**: Modern component-based UI built with React, TypeScript, and Tailwind CSS
+- **Parser → Audio Engine**: Custom text notation gets parsed into structured `MusicData`, then rendered via Web Audio API  
+- **Component Architecture**: All UI logic in React components with hooks for state management
 - **LocalStorage persistence**: User notations saved client-side with versioning support
 
 ### Core Components
@@ -14,8 +14,16 @@ This is a **modular TypeScript music editor** with a **custom notation-to-audio 
 - **`MusicConverter`** (`src/index.ts`): Main orchestrator, detects notation vs. text input, coordinates parsing/audio
 - **`MusicParser`** (`src/parser.ts`): Converts custom notation syntax to structured `MusicData` objects
 - **`AudioEngine`** (`src/audio.ts`): Web Audio synthesis with instrument-specific sound design (violin, panduri, timpani, etc.)
-- **`MusicAppController`** (`src/ui.ts`): Manages all UI interactions, tabs, examples, saved notations, MIDI export
-- **`TextToMusicConverter`** (`src/textToMusic.ts`): AI-like text-to-music generation using character-to-note mapping
+- **`LangChainTextToMusicConverter`** (`src/langchainTextToMusic.ts`): AI-powered text-to-music using LangChain + OpenAI/Gemini/Claude
+- **`TextToMusicConverter`** (`src/textToMusic.ts`): Rule-based text-to-music generation using character-to-note mapping
+
+### React Components
+
+- **`MusicEditorApp.tsx`**: Main app component, manages global state, coordinates all interactions
+- **`EditorSection.tsx`**: Text editor, mode switching, control buttons (play/stop/convert/download)
+- **`Sidebar.tsx`**: Examples, saved notations, syntax guide with mobile-responsive collapsible design  
+- **`TextSettings.tsx`**: AI provider selection, API key management, text-to-music options
+- **`Header.tsx`**: App title, tempo control, sidebar toggle for mobile
 
 ## Key Development Patterns
 
@@ -28,27 +36,32 @@ This is a **modular TypeScript music editor** with a **custom notation-to-audio 
 - **Always test notation parsing** with `MusicParser.parse()` before audio rendering
 
 ### Event Binding Convention
-All UI events use **direct DOM manipulation** in `src/ui.ts`:
-```typescript
-button?.addEventListener('click', () => this.handleButtonAction());
+All UI events use **React event handlers** in components:
+```tsx
+// React functional component with event handlers
+<button onClick={() => handleButtonAction()}>Click Me</button>
 ```
-- **Never embed JavaScript in HTML** - all logic moved to TypeScript modules
-- Global window bindings only for onclick handlers in dynamically generated HTML
+- **Never embed JavaScript in HTML** - all logic in React components
+- State management via React hooks (`useState`, `useCallback`, `useRef`)
+- Props passed down from parent components for communication
 
 ### Tailwind-First Styling
-```typescript
-// All dynamic styling uses Tailwind classes
-element.className = 'px-4 py-2 bg-blue-500 text-white hover:bg-blue-600';
+```tsx
+// All styling uses Tailwind classes in JSX
+<div className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600">
+  Button Content
+</div>
 ```
 - **No custom CSS files** - utility-first approach throughout
-- Dynamic UI updates manipulate Tailwind classes, not inline styles
+- Conditional classes using template literals and state
+- Mobile-responsive design with Tailwind breakpoints (`sm:`, `lg:`)
 
 ## Development Workflow
 
 ### Build & Test Commands
 ```bash
 npm run build    # Production webpack build
-npm start        # Dev server on port 9000 (or try 8080 if occupied)
+npm start        # Dev server on port 8080 (React app)
 npm test         # Jest tests (limited coverage)
 npm run preview  # Test production build locally
 ```
@@ -59,9 +72,10 @@ npm run preview  # Test production build locally
 - **Webpack config**: Different `publicPath` for dev vs production (GitHub Pages compatibility)
 
 ### MIDI Export Implementation
-Uses `midi-writer-js` library:
-```typescript
+Uses `midi-writer-js` library in React components:
+```tsx
 // Pattern: Convert MusicData → MIDI via instrument/note mapping
+const MidiWriter = await import('midi-writer-js');
 const track = new (MidiWriter as any).Track();
 // Note: Library uses 'any' casting due to incomplete TypeScript definitions
 ```
@@ -73,21 +87,12 @@ const audioEngine = new AudioEngine();
 await audioEngine.play(musicData); // Check browser console for Web Audio errors
 ```
 Common issues: **AudioContext requires user interaction** - audio won't play without click event first.
-
-## Project-Specific Conventions
-
-### Instrument Sound Design
-Each instrument has **custom Web Audio synthesis**:
-- **`violin`**: Sawtooth + lowpass filter + slow attack envelope
-- **`panduri`**: Triangle + bandpass filter + plucked string decay
-- **`choir`**: Multiple detuned sine waves for chorus effect
-- **`timpani`**: Sine + pitch bend + drum-like envelope
-
 ### File Organization Logic
+- `src/components/`: **React components** - all UI logic with hooks and state management
 - `src/parser.ts`: **Pure parsing logic** - no UI/audio dependencies
 - `src/audio.ts`: **Web Audio synthesis** - no UI dependencies  
-- `src/ui.ts`: **UI orchestration** - imports and coordinates other modules
-- `index.html`: **Static structure** - all behavior in TypeScript
+- `src/index.ts`: **Core orchestration** - imports and coordinates other modules
+- `index.html`: **React mount point** - all behavior in React components
 
 ### LocalStorage Schema
 ```typescript
@@ -111,9 +116,9 @@ converter.convertTextToNotation(text, { style: 'melodic', scale: 'major' })
 - **Different from standard MIDI** - uses custom notation as intermediate format
 
 ### Cross-Component Communication
-- **`MusicAppController`** holds references to parser, audio engine, text converter
-- **UI state management** via class properties (tab switching, mode toggling)
-- **Toast notifications** via centralized `NotationUI.showToast()` method
+- **`MusicConverter`** holds references to parser, audio engine, text converter
+- **React state management** via hooks (`useState`, `useRef`, `useCallback`)
+- **Props drilling** for parent-child component communication
 
 ## Common Debugging Patterns
 
@@ -129,9 +134,9 @@ console.log('Parsed tracks:', musicData.tracks.length);
 - **Instrument mapping** - verify instrument name exists in `AudioEngine.setupInstruments()`
 - **Note format validation** - ensure `pitch.octave.duration` format
 
-### UI State Synchronization
-- **Tab switching** updates both visual classes and content visibility
-- **Mode switching** (notation vs. text) shows/hides relevant UI elements
-- **Example loading** populates textarea and switches to appropriate mode
+### React State Synchronization
+- **Mode switching** (notation vs. text) updates component state via `setIsTextMode()`
+- **Example loading** populates textarea via `setNotation()` and switches modes
+- **Toast notifications** managed via `useState` array and timeout cleanup
 
 When modifying this codebase, **always test the full pipeline**: notation input → parsing → audio output → UI feedback.

@@ -1,49 +1,61 @@
-# Environment Variables Example
+# API Keys Configuration
 
-This project uses environment variables to configure the OpenAI integration for AI-powered text-to-music conversion.
+This React-based music editor uses AI APIs for text-to-music conversion. API keys are managed entirely through the browser interface - no environment variables needed.
 
 ## Setup Instructions
 
-1. **Copy the example file:**
-   ```bash
-   cp .env.example .env
-   ```
+1. **Open the app** in your browser
+2. **Switch to Text Mode** by clicking the "Text Mode" button
+3. **Open AI Settings** by toggling the AI settings panel
+4. **Select Provider**: Choose OpenAI, Google Gemini, or Anthropic Claude
+5. **Enter API Key**: Input your API key in the appropriate field
+6. **Start Creating**: The key is stored securely in browser localStorage
 
-2. **Edit the `.env` file:**
-   ```bash
-   # Required: Your OpenAI API key
-   OPENAI_API_KEY=sk-your-actual-openai-api-key-here
+## Supported AI Providers
 
-   # Optional: Specify the model (defaults to gpt-3.5-turbo)
-   OPENAI_MODEL=gpt-3.5-turbo
+### OpenAI
+- **Models**: GPT-3.5 Turbo, GPT-4, GPT-4 Turbo
+- **API Key**: Get from [OpenAI Platform](https://platform.openai.com/account/api-keys)
+- **Features**: High-quality music generation, fast processing
 
-   # Optional: Set creativity level 0-2 (defaults to 0.7)
-   OPENAI_TEMPERATURE=0.7
-   ```
+### Google Gemini
+- **Models**: Gemini-1.0-Pro, Gemini-1.5-Pro  
+- **API Key**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- **Features**: Creative music generation, good for experimental styles
 
-3. **Get your API key:**
-   - Visit [OpenAI Platform](https://platform.openai.com/account/api-keys)
-   - Create a new API key
-   - Copy it to your `.env` file
+### Anthropic Claude
+- **Models**: Claude-3 Haiku, Claude-3 Sonnet, Claude-3 Opus
+- **API Key**: Get from [Anthropic Console](https://console.anthropic.com/)
+- **Features**: Thoughtful composition, excellent for complex arrangements
 
-## How it Works
+## How It Works
 
-The application checks for the OpenAI API key in the following order:
+The React app checks for API keys in the following order:
 
-1. **Environment Variable**: `process.env.OPENAI_API_KEY`
-2. **Window Global**: `window.OPENAI_API_KEY` (for browser environments)
-3. **Direct Option**: Passed via `langChainOptions.apiKey`
+1. **Browser localStorage**: Keys entered via the UI settings panel
+2. **Component props**: Passed down from parent components
+3. **Runtime options**: Direct API key passing to conversion functions
 
-If no API key is found, the AI text-to-music feature will show an error message asking you to configure it.
+If no API key is configured, the AI text-to-music feature will show a user-friendly message with setup instructions.
 
 ## Development vs Production
 
-- **Development**: Environment variables are loaded via `dotenv-webpack` from your `.env` file
-- **Production**: Set environment variables in your deployment platform (Vercel, Netlify, etc.)
-- **GitHub Pages**: Since GitHub Pages only serves static files, users enter their API key directly in the browser UI (stored in localStorage)
+- **Development**: API keys entered via browser UI (stored in localStorage)
+- **Production**: Same as development - all client-side configuration
+- **GitHub Pages**: Works seamlessly since all configuration is browser-based
 
-## Security Note
+## Security & Privacy
 
-⚠️ **Never commit your `.env` file to version control!** 
+✅ **Client-Side Storage**: API keys stored only in your browser's localStorage  
+✅ **No Server**: Keys never sent to our servers - only directly to AI providers  
+✅ **Local Control**: You can clear keys anytime via browser developer tools  
+✅ **No Tracking**: We don't collect or store your API keys or usage data
 
-The `.env` file is already included in `.gitignore` to prevent accidental commits of your API keys.
+## Fallback System
+
+If AI generation fails or no API key is provided:
+- **Automatic fallback** to rule-based text-to-music conversion
+- **Character mapping** algorithm converts any text to music notation
+- **No API key required** for basic text-to-music functionality
+
+This ensures the app always works, even without AI API access.

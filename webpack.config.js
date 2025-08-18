@@ -8,20 +8,20 @@ module.exports = (env, argv) => {
   
   return {
     entry: {
-      index: './src/index.ts',
-      ui: './src/ui.ts'
+      app: './src/App.tsx'
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(tsx?|jsx?)$/,
           use: {
             loader: 'ts-loader',
             options: {
               compilerOptions: {
                 sourceMap: true,
-                skipLibCheck: true
+                skipLibCheck: true,
+                jsx: 'react-jsx'
               },
               transpileOnly: true
             },
@@ -31,18 +31,12 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
       publicPath: publicPath,
-      library: {
-        name: '[name]',
-        type: 'umd',
-        export: 'default',
-      },
-      globalObject: 'this',
       clean: true, // Clean dist folder on each build
     },
     plugins: [
