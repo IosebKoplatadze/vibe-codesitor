@@ -52,8 +52,6 @@ export interface EditorSectionProps {
   onNotationChange: (notation: string) => void;
   isTextMode: boolean;
   onToggleMode: (isTextMode: boolean) => void;
-  textSettings: any;
-  onTextSettingsChange: (settings: any) => void;
   langchainSettings: {
     provider: string;
     model: string;

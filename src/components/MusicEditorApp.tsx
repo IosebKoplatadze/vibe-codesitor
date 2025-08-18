@@ -6,7 +6,7 @@ import Header from './Header';
 import EditorSection from './EditorSection';
 import SyntaxGuide from './SyntaxGuide';
 import ToastContainer from './ToastContainer';
-import { SavedNotation, TextToMusicOptions, Toast } from '../types';
+import { SavedNotation, Toast } from '../types';
 
 const MusicEditorApp: React.FC = () => {
   // State management
@@ -18,17 +18,6 @@ const MusicEditorApp: React.FC = () => {
   const [savedNotations, setSavedNotations] = useState<SavedNotation[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
   
-  // Text-to-music settings
-  const [textSettings, setTextSettings] = useState({
-    style: 'melodic',
-    scale: 'major',
-    tempo: 120,
-    baseOctave: 4,
-    useLangChain: false,
-    mood: 'balanced',
-    complexity: 'moderate',
-  });
-
   // LangChain settings
   const [langchainSettings, setLangchainSettings] = useState({
     provider: 'openai',
@@ -76,8 +65,8 @@ const MusicEditorApp: React.FC = () => {
 
     setIsPlaying(true);
     try {
-      const options: Partial<TextToMusicOptions> = {
-        ...textSettings,
+      const options = {
+        useLangChain: true,
         langChainOptions: {
           apiKey: langchainSettings.provider === 'openai' ? langchainSettings.openaiKey : langchainSettings.geminiKey,
           model: langchainSettings.model,
@@ -93,7 +82,7 @@ const MusicEditorApp: React.FC = () => {
     } finally {
       setIsPlaying(false);
     }
-  }, [notation, textSettings, langchainSettings, showToast]);
+  }, [notation, langchainSettings, showToast]);
 
   const handleStop = useCallback(() => {
     if (musicConverterRef.current.audioEngine) {
@@ -111,8 +100,8 @@ const MusicEditorApp: React.FC = () => {
     }
 
     try {
-      const options: Partial<TextToMusicOptions> = {
-        ...textSettings,
+      const options = {
+        useLangChain: true,
         langChainOptions: {
           apiKey: langchainSettings.provider === 'openai' ? langchainSettings.openaiKey : langchainSettings.geminiKey,
           model: langchainSettings.model,
@@ -126,13 +115,13 @@ const MusicEditorApp: React.FC = () => {
       showToast('Text converted to notation successfully', 'success');
     } catch (error) {
       console.error('Error converting text:', error);
-      if (textSettings.useLangChain && (error as Error).message?.includes('API key')) {
-        showToast('OpenAI API key is required for AI-powered generation. Please enter your API key in the settings.', 'error');
+      if ((error as Error).message?.includes('API key')) {
+        showToast('API key is required for AI-powered generation. Please enter your API key in the settings.', 'error');
       } else {
         showToast('Error converting text to notation. Please try again.', 'error');
       }
     }
-  }, [notation, textSettings, langchainSettings, showToast]);
+  }, [notation, langchainSettings, showToast]);
 
   // MIDI download
   const handleDownload = useCallback(async () => {
@@ -259,8 +248,6 @@ const MusicEditorApp: React.FC = () => {
           onNotationChange={setNotation}
           isTextMode={isTextMode}
           onToggleMode={setIsTextMode}
-          textSettings={textSettings}
-          onTextSettingsChange={setTextSettings}
           langchainSettings={langchainSettings}
           onLangchainSettingsChange={setLangchainSettings}
           isPlaying={isPlaying}
