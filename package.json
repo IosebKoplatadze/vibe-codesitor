@@ -18,6 +18,7 @@
   ],
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "dotenv-webpack": "^8.1.1",
     "http-server": "^14.1.1",
     "jest": "^27.2.0",
     "ts-jest": "^27.0.5",
@@ -28,8 +29,8 @@
     "webpack-dev-server": "^4.2.1"
   },
   "dependencies": {
-    "midi-writer-js": "^3.1.1",
+    "@langchain/openai": "^0.0.14",
     "langchain": "^0.0.212",
-    "@langchain/openai": "^0.0.14"
+    "midi-writer-js": "^3.1.1"
   }
 }

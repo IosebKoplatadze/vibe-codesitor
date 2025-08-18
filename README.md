@@ -48,7 +48,22 @@ npm install
 npm start
 ```
 
-4. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
+4. **Set up environment variables** (for AI-powered features):
+   
+   Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your OpenAI API key:
+   ```bash
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+   
+   Get your API key from: [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)
+
+5. Open your browser and navigate to `http://localhost:9000` (or `http://localhost:8080` if 9000 is occupied)
+
 
 ### Building for Production
 ```bash

@@ -115,7 +115,7 @@ Now convert the user's text into musical notation that captures its essence and 
     ];
 
     try {
-      const response = await llm.call(messages);
+      const response = await llm.invoke(messages);
       const notation = response.content.toString().trim();
       
       // Validate that the response looks like notation
