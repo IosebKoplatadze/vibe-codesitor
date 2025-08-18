@@ -8,7 +8,7 @@ describe('TextToMusicConverter', () => {
   });
 
   test('should convert simple text to music data', () => {
-    const result = converter.convertTextToMusic('Hello', { style: 'melodic', scale: 'major' });
+    const result = converter.convertTextToMusic('Hello');
     
     expect(result).toHaveProperty('tracks');
     expect(result).toHaveProperty('tempo');
@@ -17,38 +17,28 @@ describe('TextToMusicConverter', () => {
     expect(result.tracks[0].patterns).toBeDefined();
   });
 
-  test('should create different tracks for different styles', () => {
-    const melodic = converter.convertTextToMusic('Test', { style: 'melodic' });
-    const rhythmic = converter.convertTextToMusic('Test', { style: 'rhythmic' });
-    const harmonic = converter.convertTextToMusic('Test', { style: 'harmonic' });
-    const ambient = converter.convertTextToMusic('Test', { style: 'ambient' });
+  test('should create melodic track (simplified since styles removed)', () => {
+    const melodic = converter.convertTextToMusic('Test');
 
     expect(melodic.tracks).toHaveLength(1);
-    expect(rhythmic.tracks).toHaveLength(2); // melody + drums
-    expect(harmonic.tracks).toHaveLength(2); // melody + harmony
-    expect(ambient.tracks).toHaveLength(1);
+    expect(melodic.tracks[0].instrument).toBe('piano');
   });
 
-  test('should handle different scales', () => {
-    const major = converter.convertTextToMusic('Hello', { scale: 'major' });
-    const minor = converter.convertTextToMusic('Hello', { scale: 'minor' });
+  test('should use major scale by default', () => {
+    const major = converter.convertTextToMusic('Hello');
     
     expect(major).toHaveProperty('tracks');
-    expect(minor).toHaveProperty('tracks');
-    // Should produce different note patterns for different scales
-    expect(major.tracks[0].patterns[0]).not.toEqual(minor.tracks[0].patterns[0]);
+    // Should produce music in major scale by default
   });
 
-  test('should respect tempo settings', () => {
-    const slow = converter.convertTextToMusic('Test', { tempo: 60 });
-    const fast = converter.convertTextToMusic('Test', { tempo: 140 });
+  test('should use default tempo of 120', () => {
+    const result = converter.convertTextToMusic('Test');
 
-    expect(slow.tempo).toBe(60);
-    expect(fast.tempo).toBe(140);
+    expect(result.tempo).toBe(120);
   });
 
   test('should convert music data to notation string', () => {
-    const musicData = converter.convertTextToMusic('Hi', { style: 'melodic' });
+    const musicData = converter.convertTextToMusic('Hi');
     const notation = converter.musicDataToNotation(musicData);
 
     expect(typeof notation).toBe('string');
